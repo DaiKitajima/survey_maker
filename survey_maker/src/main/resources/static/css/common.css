@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+/** 見出し左枠線 */
+.og_headline-left-border {
+	border-left:solid 5px;
+	border-left-color : #0dcaf0;
+	background-color: white;
+}
+
+/** 見出し左枠線 アクティブ */
+.og_headline-left-border-active {
+	border-left:solid 5px;
+	border-left-color : #0dcaf0;
+	background-color: rgba(13, 202, 240, 0.1);
+}
+
+/** 選択中下線 */
+.og_underline-bottom-border {
+	border-bottom:solid 2px;
+	border-bottom-color : #0dcaf0;
+	background-color: white;
+}
+
