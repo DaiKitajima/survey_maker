@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+
+		<script th:src="@{/js/displaySwitching.js}"></script>
+		<script th:src="@{/js/tableDataList.js}"></script>
+		<title>診断コンテンツ登録画面</title>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="commonNav.html" />
+
+		<div class="container-fluid mb-5">
+			<!-- タイトル -->
+			<div class="d-flex justify-content-start mt-3 mb-2">
+				<span class="h5"> コンテンツ登録</span>
+			</div>
+
+			<div class="card shadow-lg">
+				<div class="card-body">
+					<form action="/surveyContentDetail/surveyContentRegist/exec" method="post" th:object="${surveyContentUpdateForm}" id="submitFormId" enctype="multipart/form-data">
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{userId}">
+
+						<div class="row">
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツ名</span>
+								<input name="surveyName" class="form-control" required/>
+							</div>
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツパターン</span>
+								<select class="form-control" name="surveyPatternId" required>
+									<option value="">未選択</option>
+									<option	value="1">単数</option>
+									<option	value="2">複数（ポイント型）</option>
+									<option	value="3">複数（結果加算型）</option>
+									<option	value="4">フロー</option>
+								</select>
+							</div>
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツ画像</span>
+								<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required>
+							</div>
+						</div>
+						
+						<div class="row mt-4 mb-4">
+							<div class="col d-flex justify-content-center">
+								<button type="submit" class="btn btn-sm btn-success" id="tableDataUpdate" data-target="submitFormId">登　録</button>
+								<button type="reset" class="btn btn-sm btn-secondary" >クリア</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -52,7 +52,7 @@ public class LoginController {
 		
 		session.setAttribute(CommonConstants.SESSION_KEY_USER_LOGIN, resultUser);
 		
-		mav.setViewName("redirect:/top");
+		mav.setViewName("redirect:/surveyContentList");
 
 		return mav;
 	}

@@ -12,7 +12,7 @@
 	<artifactId>survey_maker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>survey_maker</name>
-	<description>Demo project for Spring Boot</description>
+	<description>A project for making survey content.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

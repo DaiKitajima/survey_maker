@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+		<title>エラー画面</title>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="commonNav.html" />
+
+		<div class="d-flex justify-content-around mt-3 mb-2">
+			<span class="h3">●●エラー発生</span>
+			<span></span>
+			<span></span>
+		</div>
+
+		<div class="container-fluid mb-5">
+			<div class="card p-1 shadow-lg mt-2">
+				<div class="d-flex justify-content-center bd-highlight">
+					<div class="p-2 bd-highlight h1">Error</div>
+				</div>
+				<div class="d-flex justify-content-center bd-highlight">
+					<div class="p-2 bd-highlight h5">
+						<p>Sorry, an error has occurred.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
