@@ -18,5 +18,7 @@ public class SurveyContentUpdateForm {
 	
 	private MultipartFile surveyImgFile;
 	
+	private String surveyImage;
+	
 	private Integer surveyPatternId;
 }

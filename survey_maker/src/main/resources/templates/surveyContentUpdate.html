@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+
+		<script th:src="@{/js/displaySwitching.js}"></script>
+		<script th:src="@{/js/surveyContentList.js}"></script>
+		<title>診断コンテンツ編集画面</title>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="commonNav.html" />
+
+		<div class="container-fluid mb-5">
+			<!-- タイトル -->
+			<div class="d-flex justify-content-start mt-3 mb-2">
+				<span class="h5"> コンテンツ編集</span>
+			</div>
+
+			<div class="card shadow-lg">
+				<div class="card-body">
+					<form action="/surveyContentDetail/surveyContentRegist/exec" method="post" th:object="${surveyContentUpdateForm}" id="submitFormId" enctype="multipart/form-data">
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{userId}">
+
+						<div class="row">
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツ名</span>
+								<input name="surveyName" class="form-control" th:value="高齢者健康調査" required/>
+								<span class="h6 text-danger">※コンテンツパターン変更不可</span>
+							</div>
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツ画像</span>
+								<div class="input-group mb-3 previewContentImg">
+									<input name="surveyImage" class="form-control" th:value="高齢者健康調査.jpg" readonly />
+									<div class="input-group-append">
+										<button class="btn btn-primary" type="button" id="previewContentImg" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
+										<button class="btn btn-danger" type="button" id="changeContentImg">変更</button>  
+									</div>
+								</div>
+								<div class="input-group mb-3 fileChangeContentImg" style="display:none;">
+									<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+									<div class="input-group-append">  
+										<button class="btn btn-primary" type="button" id="modoruContentImg">戻る</button>  
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row mt-4 mb-4">
+							<div class="col d-flex justify-content-center">
+								<button type="submit" class="btn btn-sm btn-primary me-5" id="tableDataUpdate" data-target="submitFormId" style="width:150px;">更新</button>
+								<button type="reset" class="btn btn-sm btn-secondary" style="width:150px;">クリア</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

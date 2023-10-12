@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+
+		<script th:src="@{/js/displaySwitching.js}"></script>
+		<script th:src="@{/js/tableDataList.js}"></script>
+		<title>診断結果カテゴリーコンテンツ登録画面</title>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="commonNav.html" />
+
+		<div class="container-fluid mb-5">
+			<!-- タイトル -->
+			<div class="d-flex justify-content-start mt-3 mb-2">
+				<span class="h5" th:text="「高齢者健康調査」カテゴリーコンテンツ登録"> 「高齢者健康調査」カテゴリーコンテンツ登録</span>
+			</div>
+
+			<div class="card shadow-lg">
+				<div class="card-body">
+					<form action="/surveyContentDetail/surveyCategoryRegist/exec" method="post" th:object="${surveyCategoryUpdateForm}" id="submitFormId" enctype="multipart/form-data">
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{surveyManagementId}">
+
+						<!-- カテゴリー名 -->
+						<div class="row">
+							<span class="h6">カテゴリー名</span>
+						</div>
+						<div class="row">
+							<div class="col-4 mt-2 mb-2">
+								<input name="surveyCategoryName" class="form-control" required/>
+							</div>
+						</div>
+						
+						<!-- カテゴリーコンテンツ -->
+						<div class="row">
+							<span class="h6">カテゴリーコンテンツ</span>
+						</div>
+						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat::{categoryContentLst}"> -->
+						<div class="categoryContent mb-2 ms-2 container" style="background-color:rgb(220,235,250);" >
+							<div class="row">
+								<div class="col-5 mt-2 mb-2 ">
+									<span class="h6">ポイント評価範囲</span><br>
+									<div class="row">
+										<div class="col-4">
+											<input name="pointFrom" class="form-control" />
+										</div>
+										<div class="col-2" style="text-align:center">
+											<span  class="h6">～</span>
+										</div>
+										<div class="col-4">
+											<input name="pointTo" class="form-control" />
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-3 mt-2 mb-2">
+									<span class="h6">ポイント評価結果</span><br>
+									<input name="surveyResult" class="form-control"/>
+								</div>
+								<div class="col-3 mt-2 mb-2">
+									<span class="h6">診断結果画像</span><br>
+									<input class="form-control" type="file" name="surveyResultImage" accept=".jpg,.jpeg,.png,.gif">
+								</div>
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end">
+									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
+								</div>
+							</div>
+							<div class="row" >
+								<div class="col-12 mt-2 mb-2">
+									<span class="h6">診断結果詳細</span><br>
+									<textarea class="form-control" rows="5" name="surveyResultDetail"></textarea>
+								</div>
+							</div>
+						</div>
+						<div class="categoryContentAdd mb-2 ms-2">
+							<button type="button" class="btn btn-secondary" style="background-color:rgb(220,235,250);">
+								<span class="h1"><i class="bi bi-plus-circle-fill"></i></span>
+							</button>
+						</div>
+
+						<div class="row mt-4 mb-4">
+							<div class="col d-flex justify-content-center">
+								<button type="submit" class="btn btn-sm btn-success me-5" data-target="submitFormId" style="width:150px;">登　録</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,13 +19,25 @@ import lombok.extern.slf4j.Slf4j;
 public class SurveyContentListController {
 	 
 	//一覧表示
-	@SuppressWarnings("unchecked")
 	@GetMapping("/surveyContentList")
 	public ModelAndView init(
 			HttpServletRequest request,
 			HttpSession session,
 			@PageableDefault(page = 0, size = 10000)Pageable pageable,
 			@RequestParam(value="isReturn", required = false, defaultValue="false") boolean isReturn ) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("surveyContentListForm", new SurveyContentListForm());
+		mav.setViewName("/surveyContentList");
+		
+		return mav;
+	}
+	
+	@PostMapping("/surveyContentList/search")
+	public ModelAndView search(
+			HttpServletRequest request,
+			HttpSession session,
+			SurveyContentListForm surveyContentListForm ) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.addObject("surveyContentListForm", new SurveyContentListForm());
