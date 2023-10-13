@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+
+		<script th:src="@{/js/displaySwitching.js}"></script>
+		<script th:src="@{/js/tableDataList.js}"></script>
+		<title>診断質問コンテンツ登録画面</title>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="commonNav.html" />
+
+		<div class="container-fluid mb-5">
+			<!-- タイトル -->
+			<div class="d-flex justify-content-start mt-3 mb-2">
+				<span class="h5" th:text="「高齢者健康調査」質問コンテンツ登録"> 「高齢者健康調査」質問コンテンツ登録</span>
+			</div>
+
+			<div class="card shadow-lg">
+				<div class="card-body">
+					<form action="/surveyContentDetail/questionContentRegist/exec" method="post" th:object="${questionContentUpdateForm}" id="submitFormId" enctype="multipart/form-data">
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{surveyManagementId}">
+
+						<div class="row">
+							<span class="h6">質問内容</span>
+						</div>
+						<div class="row">
+							<div class="col-4 mb-2">
+								<input name="questionTitle" class="form-control" required/>
+							</div>
+						</div>
+						
+						<div class="row">
+							<span class="h6">質問画像</span>
+						</div>
+						<div class="row">
+							<div class="col-4 mb-2">
+								<input class="form-control" type="file" name="questionImgFile" accept=".jpg,.jpeg,.png,.gif" required>
+							</div>
+						</div>
+								
+						<!-- 回答コンテンツ -->
+						<div class="row">
+							<span class="h6">回答コンテンツ</span>
+						</div>
+						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat:*{answerContentLst}"> -->
+						<div class="questionContent mb-2 ms-2 container" style="background-color:rgb(220,235,250);" >
+							<div class="row">
+								<div class="col-11 mt-2 mb-2 ">
+									<span class="h6">回答内容</span><br>
+									<input name="answer" class="form-control"/>
+								</div>
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end">
+									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
+								</div>
+							</div>
+							<div class="row" >
+								<div class="col-12 mt-2 mb-2">
+									<span class="h6">回答採点</span><br>
+									<div class="row mb-2 ms-2" >
+										<div class="col-2">
+											「身体の調査」ポイント
+										</div>
+										<div class="col-1">
+											<input name="point" class="form-control"/>
+										</div>
+									</div>
+									<div class="row mb-2 ms-2" >
+										<div class="col-2">
+											「心理の調査」ポイント
+										</div>
+										<div class="col-1">
+											<input name="point" class="form-control"/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="questionContentAdd mb-2 ms-2">
+							<button type="button" class="btn btn-secondary" style="background-color:rgb(220,235,250);">
+								<span class="h1"><i class="bi bi-plus-circle-fill"></i></span>
+							</button>
+						</div>
+
+						<div class="row mt-4 mb-4">
+							<div class="col d-flex justify-content-center">
+								<button type="submit" class="btn btn-sm btn-success me-5" data-target="submitFormId" style="width:150px;">登　録</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

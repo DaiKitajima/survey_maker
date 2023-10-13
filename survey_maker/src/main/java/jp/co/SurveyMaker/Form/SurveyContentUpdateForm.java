@@ -20,5 +20,7 @@ public class SurveyContentUpdateForm {
 	
 	private String surveyImage;
 	
+	private String surveyColor;
+	
 	private Integer surveyPatternId;
 }

@@ -88,6 +88,9 @@
 											コンテンツ画像
 										</th>
 										<th class="align-middle" style="white-space: nowrap;">
+											コンテンツカラー
+										</th>
+										<th class="align-middle" style="white-space: nowrap;">
 											コンテンツ削除
 										</th>
 									</tr>
@@ -112,7 +115,10 @@
 											</a>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<a href="#" class="btn btn-sm btn-danger" style="width:120px;">削除</a>
+											<span style="background:#198754;" >#198754</span>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<a th:href="@{/surveyContentList/contentDelete?id=1}" class="btn btn-sm btn-danger" style="width:120px;">削除</a>
 										</td>
 									</tr>
 									<tr>
@@ -133,7 +139,10 @@
 											</a>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<a href="#" class="btn btn-sm btn-danger" style="width:120px;">削除</a>
+											<span style="background:#198754;" >#198754</span>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<a th:href="@{/surveyContentList/contentDelete?id=1}" class="btn btn-sm btn-danger" style="width:120px;">削除</a>
 										</td>
 									</tr>
 								</tbody>

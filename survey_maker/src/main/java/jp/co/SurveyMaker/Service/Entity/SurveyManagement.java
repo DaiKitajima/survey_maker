@@ -32,6 +32,9 @@ public class SurveyManagement {
 	    @Column(name = "survey_image")
 	    private String surveyImage;
 	    
+	    @Column(name = "survey_color")
+	    private String surveyColor;
+	    
 	    @Column(name = "survey_pattern_id")
 	    private Integer surveyPatternId;
 	    

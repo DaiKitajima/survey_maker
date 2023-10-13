@@ -8,7 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jp.co.SurveyMaker.Form.SurveyCategoryUpdateForm;
 import jp.co.SurveyMaker.Form.SurveyContentUpdateForm;
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,35 +61,8 @@ public class SurveyContentController {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.addObject("surveyContentUpdateForm", new SurveyContentUpdateForm());
-		mav.setViewName("redirect:/surveyContentList");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
 		
 		return mav;
 	}
-	
-	@GetMapping("/surveyContentDetail/surveyCategoryRegist")
-	public ModelAndView surveyCategoryRegist(
-			HttpServletRequest request,
-			HttpSession session ,
-			@RequestParam(value="id", required = true, defaultValue="-1") Integer id) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		
-		mav.addObject("surveyCategoryUpdateForm", new SurveyCategoryUpdateForm());
-		mav.setViewName("/surveyCategoryRegist");
-		
-		return mav;
-	}
-	
-	@PostMapping("/surveyContentDetail/surveyCategoryRegist/exec")
-	public ModelAndView surveyCategoryRegistExec(
-			HttpServletRequest request,
-			HttpSession session ,
-			SurveyCategoryUpdateForm surveyCategoryUpdateForm) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		
-		mav.addObject("surveyCategoryUpdateForm", new SurveyCategoryUpdateForm());
-		mav.setViewName("redirect:/surveyContentList");
-		
-		return mav;
-	}
-	
 }

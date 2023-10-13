@@ -32,6 +32,7 @@ create table IF NOT EXISTS `survey_management` (
 `user_id` int COMMENT 'ユーザID',
 `survey_name` varchar(256) COMMENT 'コンテンツ名',
 `survey_image` varchar(256) COMMENT 'コンテンツ画像',
+`survey_color` varchar(256) COMMENT 'コンテンツカラー',
 `survey_pattern_id` int COMMENT 'パターンID',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)
@@ -59,6 +60,7 @@ PRIMARY KEY (`id`)
 
 create table IF NOT EXISTS `survey_question_link` (
 `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+`survey_management_id` int COMMENT '診断コンテンツID',
 `survey_question_id` int COMMENT '質問コンテンツID',
 `answer_no` varchar(50) COMMENT '回答項番',
 `link_type` int COMMENT 'リンク種別　',

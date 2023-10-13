@@ -58,4 +58,17 @@ public class SurveyContentListController {
 		
 		return mav;
 	}
+	
+	@GetMapping("/surveyContentList/contentDelete")
+	public ModelAndView surveyContentDelete(
+			HttpServletRequest request,
+			HttpSession session,
+			@RequestParam(value="id", required = true, defaultValue="-1") Integer id ) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("surveyContentDetailForm", new SurveyContentDetailForm());
+		mav.setViewName("redirect:/surveyContentList");
+		
+		return mav;
+	}
 }
