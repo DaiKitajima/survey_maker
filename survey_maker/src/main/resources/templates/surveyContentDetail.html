@@ -14,10 +14,16 @@
 
 		<div class="container-fluid mb-5">
 			<!-- タイトル -->
-			<div class="d-flex justify-content-start mt-3 mb-2">
-				<span class="h5" th:text="「高齢者健康調査」コンテンツ詳細"> 「高齢者健康調査」コンテンツ詳細</span>
+			<div class="row d-flex justify-content-start mt-3 mb-2">
+				<div class="col-9">
+					<span class="h5" th:text="「高齢者健康調査」コンテンツ詳細"> 「高齢者健康調査」コンテンツ詳細</span>
+				</div>
+				<div class="col">
+					<a th:href="@{/surveyContentDetail/surveySimulation?id=1}" class="btn btn-sm btn-success me-5" target="_blank">診断シミュレーション</a>
+					<a th:href="@{/surveyContentDetail/surveyScriptCreate?id=1}" class="btn btn-sm btn-success" target="_blank">埋め込みコード生成</a>
+				</div>
+				
 			</div>
-
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
 					<th:block th:object="${surveyContentDetailForm}" >
@@ -55,16 +61,16 @@
 						<!-- カテゴリーコンテンツ -->
 						<div class="row">
 							<div class="col-2 mt-2 mb-2">
-								<span class="h6">診断結果カテゴリーコンテンツ</span>
+								<span class="h6">診断軸コンテンツ</span>
 							</div>
-							<div class="col-2 d-flex justify-content-center mt-2 mb-2 ">
+							<div class="col-2 d-flex justify-content-start mt-2 mb-2 ">
 								<a th:href="@{/surveyContentDetail/surveyCategoryRegist?id=1}" class="btn btn-sm btn-success">新規登録</a>
 							</div>
 						</div>
 						<!-- <div class="row" th:each="category,stat: *{surveyCategoryLst}"> -->
 						<div class="row container mb-2" style="background-color:rgb(225,240,215)">
 							<div class="col-2 mt-2 mb-2">
-								<span class="h6">カテゴリー名</span><br>
+								<span class="h6">診断軸名</span><br>
 								<span th:text="身体の調査">身体の調査</span>
 							</div>
 							<div class="col-2 mt-2 mb-2">
@@ -95,7 +101,7 @@
 
 						<div class="row container mb-2" style="background-color:rgb(225,240,215)">
 							<div class="col-2 mt-2 mb-2">
-								<span class="h6">カテゴリー名</span><br>
+								<span class="h6">診断軸名</span><br>
 								<span th:text="心理の調査">心理の調査</span>
 							</div>
 							<div class="col-2 mt-2 mb-2">
@@ -139,7 +145,7 @@
 								<div class="col-2">
 									<span class="h6">診断質問一覧</span>
 								</div>
-								<div class="col-6 d-flex justify-content-center ">
+								<div class="col-6 d-flex justify-content-start ">
 									<div>
 										<a th:href="@{/surveyContentDetail/questionContentRegist?id=1}" class="btn btn-sm btn-success me-1">質問登録</a>
 										<a th:href="@{/surveyContentDetail/questionContentDelete?id=1}" class="btn btn-sm btn-danger me-1">質問削除</a>
@@ -277,6 +283,107 @@
 										<td class="align-middle text-left" style="white-space: nowrap;">
 											<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active">
 												<img id="contentImg" src="../img/test.png" height="40" width="50" th:alt="テスト画像" class="img-thumbnail">
+											</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</th:block>
+				</div>
+			</div>
+			
+			<!-- 総合評価結果コンテンツ -->
+			<div class="card shadow-lg mb-2">
+				<div class="card-body">
+					<th:block th:object="${surveyContentDetailForm}" >
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{userId}">
+						
+						<div style="overflow-x: auto; width:90%;">
+							<div class="row">
+								<div class="col-2">
+									<span class="h6">診断総合評価結果一覧</span>
+								</div>
+								<div class="col-6 d-flex justify-content-start ">
+									<div>
+										<a th:href="@{/surveyContentDetail/summaryResultRegist?id=1}" class="btn btn-sm btn-success me-1">結果登録</a>
+										<a th:href="@{/surveyContentDetail/summaryResultDelete?id=1}" class="btn btn-sm btn-danger me-1">結果削除</a>
+									</div>
+								</div>
+							</div>
+							<!-- コンテンツ一覧 -->
+							<table class="table table-bordered table-hover mt-2 mb-4">
+								<thead class="table-secondary">
+									<tr>
+										<th class="align-middle" style="width:30px;" onclick="getElementById('checkAll').click();">
+											<input type="checkbox" class="checkboxesStyle ml-2" id="checkAll" name="checkAll" value="1" onclick="this.click()">
+										</th>
+										<th class="align-middle" style="white-space: nowrap;">
+											編集
+										</th>
+										<th class="align-middle" style="white-space: nowrap;">
+											総合評価タイトル
+										</th>
+										<th class="align-middle" style="white-space: nowrap;">
+											総合評価テキスト
+										</th>
+										<th class="align-middle" style="white-space: nowrap;">
+											ポイント範囲
+										</th>
+										<th class="align-middle" style="white-space: nowrap;">
+											総合評価画像
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- <tr th:each="survey,stat: *{surveyContentList}"> -->
+									<tr>
+										<td class="align-middle" th:onclick="getElementById('recordData02').click();">
+											<input type="checkbox" class="checkboxesStyle ml-2 checkItems" id="recordData02" value="1" onclick="this.click()">
+										</td>
+										<td class="align-middle text-center" style="white-space: nowrap;">
+											<a th:href="@{/surveyContentDetail/summaryResultUpdate?id=1}">
+												<span class="text-secondary h5"><i class="bi bi-pencil-square"></i></span>
+											</a>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<span th:text="愛され自由人型"></span>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<span th:text="フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。"></span>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<span>300　～　400</span>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<a onclick="showimage('summaryResultImg1')" class="btn btn-default btn-xs active">
+												<img id="summaryResultImg1" src="../img/test.png" height="40" width="50" th:alt="テスト画像" class="img-thumbnail">
+											</a>
+										</td>
+									</tr>
+									
+									<tr>
+										<td class="align-middle" th:onclick="getElementById('recordData01').click();">
+											<input type="checkbox" class="checkboxesStyle ml-2 checkItems" id="recordData01" value="1" onclick="this.click()">
+										</td>
+										<td class="align-middle text-center" style="white-space: nowrap;">
+											<a th:href="@{/surveyContentDetail/questionContentUpdate?questionId=1}">
+												<span class="text-secondary h5"><i class="bi bi-pencil-square"></i></span>
+											</a>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<span th:text="リーダーシップ堪能"></span>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<span th:text="コミュニケーション能力上手の「リーダータイプ」です。"></span>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<span>200　～　300</span>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<a onclick="showimage('summaryResultImg2')" class="btn btn-default btn-xs active">
+												<img id="summaryResultImg2" src="../img/test.png" height="40" width="50" th:alt="テスト画像" class="img-thumbnail">
 											</a>
 										</td>
 									</tr>

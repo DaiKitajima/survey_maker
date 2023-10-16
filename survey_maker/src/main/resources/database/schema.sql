@@ -41,11 +41,23 @@ PRIMARY KEY (`id`)
 create table IF NOT EXISTS `survey_category` (
 `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
 `survey_management_id` int COMMENT '診断コンテンツID',
-`survey_category_name` varchar(256) COMMENT 'カテゴリ名',
-`survey_category_content` json COMMENT 'カテゴリコンテンツ',
+`survey_category_name` varchar(256) COMMENT '診断軸名',
+`survey_category_content` json COMMENT '診断軸コンテンツ',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='診断結果カテゴリーコンテンツテーブル';
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='診断軸コンテンツテーブル';
+
+create table IF NOT EXISTS `survey_summary_result` (
+`id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
+`survey_management_id` int COMMENT '診断コンテンツID',
+`survey_summary_title` varchar(256) COMMENT '総合評価タイトル',
+`survey_summary_text` text COMMENT '総合評価テキスト',
+`survey_summary_image` varchar(256) COMMENT '総合評価画像',
+`survey_summary_from` varchar(50) COMMENT '総合評価範囲From',
+`survey_summary_to` varchar(50) COMMENT '総合評価範囲To',
+`delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
+PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='総合評価結果コンテンツテーブル';
 
 create table IF NOT EXISTS `survey_question` (
 `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',

@@ -1,0 +1,47 @@
+ .ymtr--progress-bar {
+    display: flex!important;
+    position: relative!important;
+    z-index: 10!important
+}
+
+ .ymtr--progress-bar .ymtr--progress-bar__item {
+    height: 100%!important;
+    opacity: .2!important;
+/*     width: 100%!important */
+}
+
+@media print,screen and (min-width: 768px) {
+     .ymtr--progress-bar .ymtr--progress-bar__item {
+        height:10px!important
+    }
+}
+
+@media screen and (max-width: 767px) {
+     .ymtr--progress-bar .ymtr--progress-bar__item {
+        height:2.6666666667vw!important
+    }
+}
+
+@media print,screen and (min-width: 768px) {
+     .ymtr--progress-bar .ymtr--progress-bar__item:nth-of-type(n+2) {
+        margin-left:4px!important
+    }
+}
+
+@media screen and (max-width: 767px) {
+     .ymtr--progress-bar .ymtr--progress-bar__item:nth-of-type(n+2) {
+        margin-left:.5333333333vw!important
+    }
+}
+
+ .ymtr--progress-bar .ymtr--progress-bar__item.--current {
+    opacity: 1!important
+}
+
+ .ymtr--progress-bar .ymtr--progress-bar__item.--completed {
+    opacity: .5!important
+}
+
+ .ymtr--progress-bar.ymtr--is-invisible {
+    display: none!important
+}

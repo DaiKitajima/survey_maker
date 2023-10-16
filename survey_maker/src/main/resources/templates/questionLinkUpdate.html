@@ -4,7 +4,7 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<title>診断質問リンクコンテンツ登録画面</title>
+		<title>診断質問リンクコンテンツ更新画面</title>
 	</head>
 
 	<body style="background: #EEEEEE;">
@@ -14,7 +14,7 @@
 		<div class="container-fluid mb-5">
 			<!-- タイトル -->
 			<div class="d-flex justify-content-start mt-3 mb-2">
-				<span class="h5" th:text="「高齢者健康調査」質問リンクコンテンツ登録"> 「高齢者健康調査」質問リンクコンテンツ登録</span>
+				<span class="h5" th:text="「高齢者健康調査」質問リンクコンテンツ登録"> 「高齢者健康調査」質問リンクコンテンツ更新</span>
 			</div>
 
 			<div class="card shadow-lg">
@@ -71,7 +71,7 @@
 													<span th:text="回答1"></span>
 													<select class="form-control" name="linkType" required>
 														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
+														<option	value="1" selected>質問へ</option>
 														<option	value="2">結果へ</option>
 													</select>
 												</li>
@@ -79,7 +79,7 @@
 													<span th:text="回答2"></span>
 													<select class="form-control" name="linkType">
 														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
+														<option	value="1" selected>質問へ</option>
 														<option	value="2">結果へ</option>
 													</select>
 												</li>
@@ -87,7 +87,7 @@
 													<span th:text="回答3"></span>
 													<select class="form-control" name="linkType">
 														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
+														<option	value="1" selected>質問へ</option>
 														<option	value="2">結果へ</option>
 													</select>
 												</li>
@@ -99,7 +99,7 @@
 													<span th:text="回答1"></span>
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
-														<option	value="1">質問1</option>
+														<option	value="1" selected>質問1</option>
 														<option	value="2">質問2</option>
 													</select>
 												</li>
@@ -108,14 +108,14 @@
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
 														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
+														<option	value="2" selected>質問2</option>
 													</select>
 												</li>
 												<li>
 													<span th:text="回答3"></span>
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
-														<option	value="レベルA">評価結果レベルA</option>
+														<option	value="レベルA" selected>評価結果レベルA</option>
 														<option	value="レベルB">評価結果レベルB</option>
 													</select>
 												</li>
@@ -142,7 +142,7 @@
 													<span th:text="回答1"></span>
 													<select class="form-control" name="linkType">
 														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
+														<option	value="1" selected>質問へ</option>
 														<option	value="2">結果へ</option>
 													</select>
 												</li>
@@ -151,7 +151,7 @@
 													<select class="form-control" name="linkType">
 														<option value="">未選択</option>
 														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
+														<option	value="2" selected>結果へ</option>
 													</select>
 												</li>
 												<li>
@@ -159,7 +159,7 @@
 													<select class="form-control" name="linkType">
 														<option value="">未選択</option>
 														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
+														<option	value="2" selected>結果へ</option>
 													</select>
 												</li>
 											</ul>
@@ -170,7 +170,7 @@
 													<span th:text="回答1"></span>
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
-														<option	value="1">質問1</option>
+														<option	value="1" selected>質問1</option>
 														<option	value="2">質問2</option>
 													</select>
 												</li>
@@ -179,7 +179,7 @@
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
 														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
+														<option	value="2" selected>質問2</option>
 													</select>
 												</li>
 												<li>
@@ -187,7 +187,7 @@
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
 														<option	value="レベルA">評価結果レベルA</option>
-														<option	value="レベルB">評価結果レベルB</option>
+														<option	value="レベルB" selected>評価結果レベルB</option>
 													</select>
 												</li>
 											</ul>
@@ -213,7 +213,7 @@
 													<span th:text="回答1"></span>
 													<select class="form-control" name="linkType">
 														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
+														<option	value="1" selected>質問へ</option>
 														<option	value="2">結果へ</option>
 													</select>
 												</li>
@@ -222,7 +222,7 @@
 													<select class="form-control" name="linkType">
 														<option value="">未選択</option>
 														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
+														<option	value="2" selected>結果へ</option>
 													</select>
 												</li>
 												<li>
@@ -230,7 +230,7 @@
 													<select class="form-control" name="linkType">
 														<option value="">未選択</option>
 														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
+														<option	value="2" selected>結果へ</option>
 													</select>
 												</li>
 											</ul>
@@ -242,7 +242,7 @@
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
 														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
+														<option	value="2" selected>質問2</option>
 													</select>
 												</li>
 												<li>
@@ -250,14 +250,14 @@
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
 														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
+														<option	value="2" selected>質問2</option>
 													</select>
 												</li>
 												<li>
 													<span th:text="回答3"></span>
 													<select class="form-control" name="linkTo">
 														<option value="">未選択</option>
-														<option	value="レベルA">評価結果レベルA</option>
+														<option	value="レベルA" selected>評価結果レベルA</option>
 														<option	value="レベルB">評価結果レベルB</option>
 													</select>
 												</li>
@@ -269,7 +269,7 @@
 						</div>
 						<div class="row">
 							<div class="col d-flex justify-content-center mt-2 mb-2 ">
-								<button type="submit" class="btn btn-sm btn-success me-5" style="width:150px;">登録</button>
+								<button type="submit" class="btn btn-sm btn-primary me-5" style="width:150px;">更新</button>
 								<button type="reset" class="btn btn-sm btn-secondary" style="width:150px;">クリア</button>
 							</div>
 						</div>

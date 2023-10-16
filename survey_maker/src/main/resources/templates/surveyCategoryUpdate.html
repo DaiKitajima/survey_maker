@@ -4,9 +4,8 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/displaySwitching.js}"></script>
 		<script th:src="@{/js/surveyContentList.js}"></script>
-		<title>診断結果カテゴリーコンテンツ登録画面</title>
+		<title>診断軸コンテンツ編集画面</title>
 	</head>
 
 	<body style="background: #EEEEEE;">
@@ -16,7 +15,7 @@
 		<div class="container-fluid mb-5">
 			<!-- タイトル -->
 			<div class="d-flex justify-content-start mt-3 mb-2">
-				<span class="h5" th:text="「高齢者健康調査」カテゴリーコンテンツ更新"> 「高齢者健康調査」カテゴリーコンテンツ更新</span>
+				<span class="h5" th:text="「高齢者健康調査」診断軸コンテンツ更新"> 「高齢者健康調査」診断軸コンテンツ更新</span>
 			</div>
 
 			<div class="card shadow-lg">
@@ -27,7 +26,7 @@
 
 						<!-- カテゴリー名 -->
 						<div class="row">
-							<span class="h6">カテゴリー名</span>
+							<span class="h6">診断軸名</span>
 						</div>
 						<div class="row">
 							<div class="col-4 mt-2 mb-2">
@@ -37,7 +36,7 @@
 						
 						<!-- カテゴリーコンテンツ -->
 						<div class="row">
-							<span class="h6">カテゴリーコンテンツ</span>
+							<span class="h6">診断軸コンテンツ</span>
 						</div>
 						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat::{categoryContentLst}"> -->
 						<div class="categoryContent mb-2 ms-2 container" style="background-color:rgb(220,235,250);" >

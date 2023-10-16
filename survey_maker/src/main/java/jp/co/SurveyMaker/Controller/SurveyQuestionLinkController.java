@@ -49,7 +49,7 @@ public class SurveyQuestionLinkController {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.addObject("questionLinkUpdateForm", new QuestionLinkUpdateForm());
-		mav.setViewName("/questionContentUpdate");
+		mav.setViewName("/questionLinkUpdate");
 		
 		return mav;
 	}

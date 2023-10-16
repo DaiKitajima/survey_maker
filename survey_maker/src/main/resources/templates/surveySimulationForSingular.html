@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+
+		<script th:src="@{/js/surveyContentList.js}"></script>
+		<title th:text="高齢者健康調査画面">高齢者健康調査画面</title>
+		<!-- progress bar -->
+		<link rel="stylesheet" th:href="@{/css/progressBar.css}"/>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="surveyNav.html" />
+
+		<div class="container-fluid mb-5">
+			<!-- タイトル -->
+
+				<div class="ymtr--progress-bar mb-2">
+					<div class="ymtr--progress-bar__item --completed" style="background-color: rgb(255, 0, 0) !important;width:10%;" >　　</div>
+					<div class="ymtr--progress-bar__item --current" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+					<div class="ymtr--progress-bar__item" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+					<div class="ymtr--progress-bar__item" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+					<div class="ymtr--progress-bar__item" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+					<div class="ymtr--progress-bar__item" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+					<div class="ymtr--progress-bar__item" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+					<div class="ymtr--progress-bar__item" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+					<div class="ymtr--progress-bar__item" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+					<div class="ymtr--progress-bar__item" style="background-color: rgb(255, 0, 0) !important;width:10%;">　　</div>
+				</div>
+
+			<div class="card shadow-lg mb-2">
+				<div class="card-body">
+					<th:block th:object="${surveySimulationForm}" >
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{userId}">
+						
+						<div class="row mb-2">
+							<div class="col d-flex justify-content-center">
+								<span th:text="質問２、普通に何KM走れるか？"></span><br>
+							</div>
+						</div>
+
+						<div class="row mb-2">
+							<div class="col d-flex justify-content-center">
+								<img id="questionImg" src="../img/test.png" height="100" width="120" th:alt="テスト画像" class="img-thumbnail">
+							</div>
+						</div>
+
+						<div class="row mb-2">
+							<div class="col d-flex justify-content-center ">
+								<div class="answerContent">
+									<div class="form-check">
+									  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+									  <label class="form-check-label" for="flexRadioDefault1">
+									    A：１KM
+									  </label>
+									</div>
+									<div class="form-check">
+									  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+									  <label class="form-check-label" for="flexRadioDefault2">
+									    B：２KM
+									  </label>
+									</div>
+									<div class="form-check">
+									  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+									  <label class="form-check-label" for="flexRadioDefault3">
+									    C：５KM
+									  </label>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row mt-4 mb-2">
+							<div class="col d-flex justify-content-center">
+								<button class="btn btn-sm btn-success" style="width:150px;" id="nextQuestion">次へ</button>
+							</div>
+						</div>
+					</th:block>
+				</div>
+			</div>
+			
+		</div>
+
+	</body>
+</html>
