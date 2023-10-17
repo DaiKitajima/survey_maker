@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class SurveySimulationForm {
 	
-	private Integer id;
+	private Integer surveyManagementId;
 	
 	private Integer userId;
 	
@@ -29,7 +29,10 @@ public class SurveySimulationForm {
 	// 診断質問リスト
 	private List<SurveyQuestion> surveyQuestionLst;
 	
-	// 回答リスト
+	// 回答結果Map(質問ID,回答ID)
+	private Map<Integer, Integer> answerResultMap;
+	
+	// 回答Map(質問ID,回答コンテンツ)
 	private Map<Integer, List<AnswerContentDto>> answerMap;
 	
 	public Map<Integer, List<AnswerContentDto>> getAnswerMap(){

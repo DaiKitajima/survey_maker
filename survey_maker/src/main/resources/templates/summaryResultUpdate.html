@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+
+		<script th:src="@{/js/surveyContentList.js}"></script>
+		<title>総合評価結果コンテンツ編集画面</title>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="commonNav.html" />
+
+		<div class="container-fluid mb-5">
+			<!-- タイトル -->
+			<div class="d-flex justify-content-start mt-3 mb-2">
+				<span class="h5" th:text="「高齢者健康調査」総合評価結果コンテンツ更新">「高齢者健康調査」総合評価結果コンテンツ更新</span>
+			</div>
+
+			<div class="card shadow-lg">
+				<div class="card-body">
+					<form action="/surveyContentDetail/summaryResultRegist/exec" method="post" th:object="${surveyResultUpdateForm}" id="submitFormId" enctype="multipart/form-data">
+						<input type="hidden" th:field="*{id}">
+						<input type="hidden" th:field="*{surveyManagementId}">
+
+						<div class="row">
+							<div class="col-5 mt-2 mb-2">
+								<span class="h6">総合評価タイトル</span><br>
+								<input name="surveySummaryTitle" class="form-control" th:value="愛され自由人型" required/>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-5 mt-2 mb-2 ">
+								<span class="h6">ポイント評価範囲</span><br>
+								<div class="row">
+									<div class="col-2">
+										<input name="surveySummaryFrom" class="form-control" th:value="300" required />
+									</div>
+									<div class="col-1" style="text-align:center">
+										<span  class="h6">～</span>
+									</div>
+									<div class="col-2">
+										<input name="surveySummaryTo" class="form-control" th:value="400" required />
+									</div>
+								</div>
+							</div>
+						</div>
+								
+						<div class="row">
+							<div class="col-5 mt-2 mb-2">
+								<span class="h6">総合評価画像</span><br>
+								<div class="input-group mb-3 previewresultImg1">
+									<input name="surveySummaryImage" class="form-control" th:value="愛され自由人型.jpg" readonly />
+									<div class="input-group-append">
+										<button class="btn btn-primary" type="button" id="previewresultImg1" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
+										<button class="btn btn-danger" type="button" id="changeresultImg1">変更</button>  
+									</div>
+								</div>
+								<div class="input-group mb-3 fileChangeresultImg1" style="display:none;">
+									<input class="form-control" type="file" name="surveySummaryImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+									<div class="input-group-append">  
+										<button class="btn btn-primary" type="button" id="modoruresultImg1">戻る</button>  
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row" >
+							<div class="col mt-2 mb-2">
+								<span class="h6">総合評価詳細</span><br>
+								<textarea class="form-control" rows="5" name="surveySummaryText" th:text="フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。" required></textarea>
+							</div>
+						</div>
+
+						<div class="row mt-4 mb-4">
+							<div class="col d-flex justify-content-center">
+								<button type="submit" class="btn btn-sm btn-primary me-5" data-target="submitFormId" style="width:150px;">更新</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

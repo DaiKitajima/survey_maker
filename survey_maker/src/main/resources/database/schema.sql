@@ -85,6 +85,7 @@ create table IF NOT EXISTS `survey_result` (
 `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
 `key` varchar(50) COMMENT '独自キー',
 `survey_management_id` int COMMENT '診断コンテンツID',
+`survey_summary_result_id` int COMMENT '総合評価結果コンテンツID',
 `result_content` json COMMENT '結果コンテンツ',
 `expire_date` datetime COMMENT '有効期限',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',

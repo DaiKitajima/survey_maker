@@ -21,3 +21,13 @@
 	background-color: white;
 }
 
+/** 折り畳み Up */
+.parent-nav:after{
+	content:"\F147";
+	font-family:FontAwesome;
+}
+/** 折り畳み Down */
+.parent-nav.collapsed:after{
+	content:"\F196";
+	font-family:FontAwesome;
+}
