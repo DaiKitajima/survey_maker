@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+
+		<script th:src="@{/js/surveySimulation.js}"></script>
+		<title th:text="ツアー調査">ツアー調査画面</title>
+		<!-- progress bar -->
+		<link rel="stylesheet" th:href="@{/css/progressBar.css}"/>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="surveyNav.html" />
+
+		<div class="container-fluid mb-5">
+			<div class="card shadow-lg mb-2">
+				<div class="card-body">
+					<th:block th:object="${surveySimulationForm}" id="submitFormId">
+						<input type="hidden" th:field="*{surveyManagementId}">
+						<input type="hidden" th:field="*{userId}">
+						
+						<div class="row mb-2">
+							<div class="col d-flex justify-content-center">
+								<span th:text="質問1、旅行にいくなら？"></span><br>
+							</div>
+						</div>
+
+						<div class="row mb-2">
+							<div class="col d-flex justify-content-center">
+								<img id="questionImg" src="../img/result.png" height="200" width="250" th:alt="テスト画像" class="img-thumbnail">
+							</div>
+						</div>
+
+						<div class="row mb-2">
+							<div class="col d-flex justify-content-center ">
+								<div class="answerContent">
+									<div class="form-check mb-2">
+										<label class="form-check-label">
+											<a th:href="@{/internalApi/getSurveyQuestionContent?toQuestionId=1}" class="btn btn-sm btn-primary" style="width:150px;" id="nextQuestion" >広い海</a>
+										</label>
+									</div>
+									<div class="form-check mb-2">
+										<label class="form-check-label">
+									  		<a th:href="@{/surveyContentDetail/surveySimulationForFlow/result?id=1}" class="btn btn-sm btn-primary" style="width:150px;">高い山</a>
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</th:block>
+				</div>
+			</div>
+			
+		</div>
+
+	</body>
+</html>

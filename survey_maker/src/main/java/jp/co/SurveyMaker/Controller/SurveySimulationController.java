@@ -52,4 +52,32 @@ public class SurveySimulationController {
 		
 		return mav;
 	}
+	
+	@PostMapping("/surveyContentDetail/surveySimulationForComplex/result")
+	public ModelAndView surveySimulationForComplexResult(
+			HttpServletRequest request,
+			HttpSession session ,
+			SurveySimulationForm surveySimulationForm) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("surveyResultForm", new SurveyResultForm());
+		
+		mav.setViewName("/surveySimulationResultForComplex");
+		
+		return mav;
+	}
+	
+	@GetMapping("/surveyContentDetail/surveySimulationForFlow/result")
+	public ModelAndView surveySimulationForFlowResult(
+			HttpServletRequest request,
+			HttpSession session ,
+			@RequestParam(value="id", required = true, defaultValue="-1") Integer id) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("surveyResultForm", new SurveyResultForm());
+		
+		mav.setViewName("/surveySimulationResultForFlow");
+		
+		return mav;
+	}
 }

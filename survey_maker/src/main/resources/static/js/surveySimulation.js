@@ -34,4 +34,10 @@ $(function(){
 		alert("クリップボードにコピーしました。");
 	});
 
+	/* フローパタンの場合、回答リンク押下時*/
+	$("#nextQuestion").click(function(e){
+		e.preventDefault();
+		alert("ajaxで次質問取得して設定");
+	});
+
 })
