@@ -38,7 +38,7 @@ public class User {
 	    @Column(name = "mail")
 	    private String mail;
 	    
-	    @Column(name = "delete_flag")
+	    @Column(name = "delete_flg")
 	    private boolean deleteFlg;
 	
 }

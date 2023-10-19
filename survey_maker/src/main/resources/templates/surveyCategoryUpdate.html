@@ -4,7 +4,7 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveyContentList.js}"></script>
+		<script th:src="@{/js/surveyContentDetail.js}"></script>
 		<title>診断軸コンテンツ編集画面</title>
 	</head>
 
@@ -76,7 +76,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-1 mt-2 mb-2 d-flex justify-content-end">
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'categoryContent')">
 									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
 								</div>
 							</div>
@@ -110,7 +110,7 @@
 									<input name="surveyResult" class="form-control" th:value="レベルB"/>
 								</div>
 								<div class="col-3 mt-2 mb-2">
-									<span class="h6">コンテンツ画像</span>
+									<span class="h6">コンテンツ画像</span><br>
 									<div class="input-group mb-3 previewResultImg2">
 										<input name="surveyImage" class="form-control" th:value="レベルB.jpg" readonly />
 										<div class="input-group-append">
@@ -119,13 +119,13 @@
 										</div>
 									</div>
 									<div class="input-group mb-3 fileChangeResultImg2" style="display:none;">
-										<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+										<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" disabled>
 										<div class="input-group-append">  
 											<button class="btn btn-primary" type="button" id="modoruResultImg2">戻る</button>  
 										</div>
 									</div>
 								</div>
-								<div class="col-1 mt-2 mb-2 d-flex justify-content-end">
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'categoryContent')">
 									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
 								</div>
 							</div>
@@ -137,7 +137,7 @@
 							</div>
 						</div>
 						
-						<div class="categoryContentAdd mb-2 ms-2">
+						<div class="mb-2 ms-2" onclick="contentAdd(this,'categoryContent')">
 							<button type="button" class="btn btn-secondary" style="background-color:rgb(220,235,250);">
 								<span class="h1"><i class="bi bi-plus-circle-fill"></i></span>
 							</button>

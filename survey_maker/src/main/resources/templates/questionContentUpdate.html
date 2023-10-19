@@ -4,7 +4,7 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveyContentList.js}"></script>
+		<script th:src="@{/js/surveyContentDetail.js}"></script>
 		<title>診断質問コンテンツ更新画面</title>
 	</head>
 
@@ -65,7 +65,7 @@
 									<span class="h6">回答内容</span><br>
 									<input name="answer" class="form-control" th:value="A、1KM "/>
 								</div>
-								<div class="col-1 mt-2 mb-2 d-flex justify-content-end">
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'questionContent')">
 									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
 								</div>
 							</div>
@@ -97,7 +97,7 @@
 									<span class="h6">回答内容</span><br>
 									<input name="answer" class="form-control" th:value="B、3KM "/>
 								</div>
-								<div class="col-1 mt-2 mb-2 d-flex justify-content-end">
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'questionContent')">
 									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
 								</div>
 							</div>
@@ -124,7 +124,7 @@
 							</div>
 						</div>
 						
-						<div class="questionContentAdd mb-2 ms-2">
+						<div class="mb-2 ms-2" onclick="contentAdd(this,'questionContent')">
 							<button type="button" class="btn btn-secondary" style="background-color:rgb(220,235,250);">
 								<span class="h1"><i class="bi bi-plus-circle-fill"></i></span>
 							</button>
