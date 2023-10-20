@@ -37,16 +37,13 @@
 						<div class="row">
 							<div class="col-4 mt-1">
 								<span class="h6" >コンテンツ名</span>
-								<input name="surveyName" class="form-control searchSubject" />
+								<input th:filed="*{surveyNameForSearch}" class="form-control" />
 							</div>
 							<div class="col-4 mt-1">
 								<span class="h6" >コンテンツパターン</span>
-								<select class="form-control" name="surveyPatternId" >
-									<option	value="">未選択</option>
-									<option	value="1">単数</option>
-									<option	value="2">複数（ポイント型）</option>
-									<option	value="3">複数（結果加算型）</option>
-									<option	value="4">フロー</option>
+								<select class="form-control" th:field="*{surveyPatternIdForSearch}" >
+									<option	value="-1">未選択</option>
+									<option	th:value="${pattern.id}" th:each="pattern,stat: ${patternLst}" >[[${pattern.surveyPatternName}]]</option>
 								</select>
 							</div>
 						</div>
@@ -98,7 +95,7 @@
 									<!-- <tr th:each="survey,stat: *{surveyContentList}"> -->
 									<tr>
 										<td class="align-middle text-center" style="white-space: nowrap;">
-											<a th:href="@{/surveyContentList/contentDetail?id=1}">
+											<a th:href="@{/surveyContentList/contentDetail?contentId=1}">
 												<span class="text-secondary h5"><i class="fa-solid fa-magnifying-glass"></i></span>
 											</a>
 										</td>
