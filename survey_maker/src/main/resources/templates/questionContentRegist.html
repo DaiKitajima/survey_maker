@@ -23,13 +23,14 @@
 					<form action="/surveyContentDetail/questionContentRegist/exec" method="post" th:object="${questionContentUpdateForm}" id="submitFormId" enctype="multipart/form-data">
 						<input type="hidden" th:field="*{id}">
 						<input type="hidden" th:field="*{surveyManagementId}">
-
+						<input type="hidden" th:field="*{questionOrderNo}">
+						
 						<div class="row">
 							<span class="h6">質問内容</span>
 						</div>
 						<div class="row">
 							<div class="col-4 mb-2">
-								<input name="questionTitle" class="form-control" required/>
+								<input th:field="*{questionTitle}" class="form-control" required/>
 							</div>
 						</div>
 						
@@ -38,7 +39,7 @@
 						</div>
 						<div class="row">
 							<div class="col-4 mb-2">
-								<input class="form-control" type="file" name="questionImgFile" accept=".jpg,.jpeg,.png,.gif" required>
+								<input class="form-control" type="file" th:field="*{questionImgFile}" accept=".jpg,.jpeg,.png,.gif" required>
 							</div>
 						</div>
 								
@@ -51,7 +52,7 @@
 							<div class="row">
 								<div class="col-11 mt-2 mb-2 ">
 									<span class="h6">回答内容</span><br>
-									<input name="answer" class="form-control"/>
+									<input name="questionContentUpdateForm.answerContentLst[0].answer" class="form-control"/>
 								</div>
 								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'questionContent')">
 									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
@@ -65,7 +66,8 @@
 											「身体の調査」ポイント
 										</div>
 										<div class="col-1">
-											<input name="point" class="form-control"/>
+											<input type="hidden" name="questionContentUpdateForm.answerContentLst[0].answerPointLst[0].categoryId" class="form-control"/>
+											<input name="questionContentUpdateForm.answerContentLst[0].answerPointLst[0].point" class="form-control"/>
 										</div>
 									</div>
 									<div class="row mb-2 ms-2" >

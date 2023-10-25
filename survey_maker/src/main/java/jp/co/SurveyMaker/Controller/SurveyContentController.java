@@ -1,8 +1,13 @@
 package jp.co.SurveyMaker.Controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +23,8 @@ import jp.co.SurveyMaker.Service.SurveyPatternService;
 import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import jp.co.SurveyMaker.Service.Entity.SurveyPattern;
 import jp.co.SurveyMaker.Service.Entity.User;
+import jp.co.SurveyMaker.Util.FileUtil;
+import jp.co.SurveyMaker.Util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -29,7 +36,10 @@ public class SurveyContentController {
 	
 	@Autowired
 	private SurveyPatternService surveyPatternService;
-	
+	 
+	 @Value("${server.image.save.path}")
+	 private String imgSavePath;
+	 
 	@GetMapping("/surveyContentDetail/surveyContentRegist")
 	public ModelAndView surveyContentRegistl(
 			HttpServletRequest request,
@@ -59,7 +69,10 @@ public class SurveyContentController {
 		
 		SurveyManagement surveyContent = new SurveyManagement ();
 		this.convertSurveyContentFormToEnt(surveyContentUpdateForm, surveyContent);
-		surveyContentService.surveyContentRegist(surveyContent);
+		
+		Integer contentId = surveyContentService.surveyContentRegist(surveyContent);
+		String savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + contentId;
+		FileUtil.registTargetFile(savePath, surveyContentUpdateForm.getSurveyName(), surveyContentUpdateForm.getSurveyImgFile());
 		
 		mav.setViewName("redirect:/surveyContentList");
 		
@@ -71,8 +84,14 @@ public class SurveyContentController {
 		surveyContent.setId(surveyContentUpdateForm.getId());
 		surveyContent.setUserId(surveyContentUpdateForm.getUserId());
 		surveyContent.setSurveyColor(surveyContentUpdateForm.getSurveyColor());
-		// TODO 画像保存仕様待ち
-		surveyContent.setSurveyImage(null);
+		// アップロードファイル名取得
+		if(surveyContentUpdateForm.getSurveyImgFile() != null && StringUtil.isNotEmpty(surveyContentUpdateForm.getSurveyImgFile().getOriginalFilename()) ) {
+			String uploadFileName = surveyContentUpdateForm.getSurveyImgFile().getOriginalFilename();
+			String externalKey = uploadFileName.substring(uploadFileName.lastIndexOf("."));
+			surveyContent.setSurveyImage(surveyContentUpdateForm.getSurveyName() + externalKey);
+		}else {
+			surveyContent.setSurveyImage(surveyContentUpdateForm.getSurveyImage());
+		}
 		surveyContent.setSurveyName(surveyContentUpdateForm.getSurveyName());
 		surveyContent.setSurveyPatternId(surveyContentUpdateForm.getSurveyPatternId());
 		}
@@ -83,8 +102,10 @@ public class SurveyContentController {
 			HttpSession session ,
 			@RequestParam(value="contentId", required = true, defaultValue="-1") Integer contentId) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
 		
-		SurveyManagement surveyContent = surveyContentService.getSurveyContentById(contentId);
+		SurveyManagement surveyContent = surveyContentService.getSurveyContentById(contentId, user.getId());
 		SurveyContentUpdateForm surveyContentUpdateForm = new SurveyContentUpdateForm();
 		this.convertSurveyContentEntityToForm(surveyContent, surveyContentUpdateForm);
 		mav.addObject("surveyContentUpdateForm", surveyContentUpdateForm);
@@ -98,8 +119,19 @@ public class SurveyContentController {
 		surveyContentUpdateForm.setId(surveyContent.getId());
 		surveyContentUpdateForm.setUserId(surveyContent.getUserId());
 		surveyContentUpdateForm.setSurveyColor(surveyContent.getSurveyColor());
-		// TODO 画像保存仕様待ち
-		surveyContentUpdateForm.setSurveyImage(null);
+
+		try {
+			String imgFileName = surveyContent.getSurveyImage();
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContent.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+					+ Base64.getEncoder().encodeToString(imgByte);
+			surveyContentUpdateForm.setSurveyImageBase64(encodedImage);
+		} catch (IOException e) {
+			log.error("コンテンツ画像ファイル取得にエラーが発生しました。",e);
+		}
+		
+		surveyContentUpdateForm.setSurveyImage(surveyContent.getSurveyImage());
 		surveyContentUpdateForm.setSurveyName(surveyContent.getSurveyName());
 		surveyContentUpdateForm.setSurveyPatternId(surveyContent.getSurveyPatternId());
 	}
@@ -111,8 +143,16 @@ public class SurveyContentController {
 			SurveyContentUpdateForm surveyContentUpdateForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
-		mav.addObject("surveyContentUpdateForm", new SurveyContentUpdateForm());
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		SurveyManagement surveyContent = new SurveyManagement ();
+		this.convertSurveyContentFormToEnt(surveyContentUpdateForm, surveyContent);
+		
+		surveyContentService.surveyContentUpdate(surveyContent);
+		if(surveyContentUpdateForm.getSurveyImgFile() != null ) {
+			String savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContentUpdateForm.getId();
+			FileUtil.registTargetFile(savePath, surveyContentUpdateForm.getSurveyName(), surveyContentUpdateForm.getSurveyImgFile());
+		}
+		
+		mav.setViewName("redirect:/surveyContentList/contentDetail?id=" + surveyContentUpdateForm.getId() );
 		
 		return mav;
 	}

@@ -17,7 +17,7 @@ public class QuestionContentUpdateForm {
 
     private Integer surveyManagementId;
     
-    private String questionOrderNo;
+    private Integer questionOrderNo;
     
     private String questionTitle;
     

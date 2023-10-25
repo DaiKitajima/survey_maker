@@ -42,6 +42,13 @@ create table IF NOT EXISTS `survey_category` (
 `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
 `survey_management_id` int COMMENT '診断コンテンツID',
 `survey_category_name` varchar(256) COMMENT '診断軸名',
+`survey_summary_decide_point` varchar(50) COMMENT '総合評価判定点数',
+`survey_summary_title_above` varchar(256) COMMENT '総合評価タイトル（判定点数以上）',
+`survey_summary_image_above` varchar(50) COMMENT '総合評価画像（判定点数以上）',
+`survey_summary_detail_above` text COMMENT '総合評価詳細（判定点数以上）',
+`survey_summary_title_below` varchar(256) COMMENT '総合評価タイトル（判定点数以下）',
+`survey_summary_image_below` varchar(50) COMMENT '総合評価画像（判定点数以下）',
+`survey_summary_detail_below` text COMMENT '総合評価詳細（判定点数以下）',
 `survey_category_content` json COMMENT '診断軸コンテンツ',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)
@@ -62,7 +69,7 @@ PRIMARY KEY (`id`)
 create table IF NOT EXISTS `survey_question` (
 `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
 `survey_management_id` int COMMENT '診断コンテンツID',
-`question_order_no` varchar(50) COMMENT '質問順番',
+`question_order_no` int COMMENT '質問順番',
 `question_title` varchar(256) COMMENT '質問内容',
 `question_image` varchar(256) COMMENT '質問画像 ',
 `answer_content` json COMMENT '回答コンテンツ',

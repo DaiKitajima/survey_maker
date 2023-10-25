@@ -34,6 +34,94 @@
 							</div>
 						</div>
 						
+						<!-- 総合評価判定 -->
+						<div class="row">
+							<span class="h6">総合評価判定</span>
+						</div>
+						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat::{categoryContentLst}"> -->
+						<div class="summaryResultContent mb-2 ms-2 container" style="background-color:rgb(242,242,242);" >
+							<div class="row">
+								<div class="col-2 mt-2 mb-2 ">
+									<span class="h6">判定基準点数</span><br>
+									<input name="decidePoint" class="form-control" value="50" />
+								</div>
+							</div>
+							<div class="row" >
+								<div class="col-6 mt-2 mb-2">
+									<span class="h6">判定点数以上の場合</span><br>
+									<div class="row">
+										<span class="small">総合評価タイトル</span>
+									</div>
+									<div class="row mb-1">
+										<div class="col"><input type="text" name="title" class="form-control" value="愛され自由人型" /></div>
+									</div>
+									<div class="row">
+										<span class="small">総合評価画像</span>
+									</div>
+									<div class="row mb-1">
+										<div class="col">
+											<div class="input-group mb-3 previewSummaryResultImg1">
+												<input name="image" class="form-control" th:value="愛され自由人型.jpg" readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary" type="button" id="previewSummaryResultImg1" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
+													<button class="btn btn-danger" type="button" id="changeSummaryResultImg1">変更</button>  
+												</div>
+											</div>
+											<div class="input-group mb-3 fileChangeSummaryResultImg1" style="display:none;">
+												<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+												<div class="input-group-append">  
+													<button class="btn btn-primary" type="button" id="modoruSummaryResultImg1">戻る</button>  
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<span class="small">総合評価詳細</span>
+									</div>
+									<div class="row mb-1">
+										<div class="col"><textarea class="form-control" rows="3" name="surveyResultDetail">フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。
+										</textarea></div>
+									</div>
+								</div>
+								<div class="col-6 mt-2 mb-2">
+									<span class="h6">判定点数以下の場合</span><br>
+									<div class="row">
+										<span class="small">総合評価タイトル</span>
+									</div>
+									<div class="row mb-1">
+										<div class="col"><input type="text" name="title" class="form-control" value="リーダーシップ堪能"/></div>
+									</div>
+									<div class="row">
+										<span class="small">総合評価画像</span>
+									</div>
+									<div class="row mb-1">
+										<div class="col">
+											<div class="input-group mb-3 previewSummaryResultImg2">
+												<input name="image" class="form-control" th:value="リーダーシップ堪能.jpg" readonly />
+												<div class="input-group-append">
+													<button class="btn btn-primary" type="button" id="previewSummaryResultImg2" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
+													<button class="btn btn-danger" type="button" id="changeSummaryResultImg2">変更</button>  
+												</div>
+											</div>
+											<div class="input-group mb-3 fileChangeSummaryResultImg2" style="display:none;">
+												<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+												<div class="input-group-append">  
+													<button class="btn btn-primary" type="button" id="modoruSummaryResultImg2">戻る</button>  
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<span class="small">総合評価詳細</span>
+									</div>
+									<div class="row mb-1">
+										<div class="col"><textarea class="form-control" rows="3" name="surveyResultDetail">コミュニケーション能力上手の「リーダータイプ」です。
+										</textarea></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						<!-- カテゴリーコンテンツ -->
 						<div class="row">
 							<span class="h6">診断軸コンテンツ</span>
@@ -83,7 +171,7 @@
 							<div class="row" >
 								<div class="col-12 mt-2 mb-2">
 									<span class="h6">診断結果詳細</span><br>
-									<textarea class="form-control" rows="5" name="surveyResultDetail" th:text="身体は結構いい。"></textarea>
+									<textarea class="form-control" rows="3" name="surveyResultDetail" th:text="身体は結構いい。"></textarea>
 								</div>
 							</div>
 						</div>
@@ -132,7 +220,7 @@
 							<div class="row" >
 								<div class="col-12 mt-2 mb-2">
 									<span class="h6">診断結果詳細</span><br>
-									<textarea class="form-control" rows="5" name="surveyResultDetail" th:text="毎週3回の身体訓練が必要。"></textarea>
+									<textarea class="form-control" rows="3" name="surveyResultDetail" th:text="毎週3回の身体訓練が必要。"></textarea>
 								</div>
 							</div>
 						</div>

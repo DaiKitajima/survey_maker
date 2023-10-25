@@ -59,8 +59,9 @@ $(function(){
 /*
 	addBtn:追加ボタン
 	copyContentEle：コピー元のコンテンツ要素
+	formDataEle:　フォーム要素
 */
-function contentAdd(addBtn, copyContentEle){
+function contentAdd(addBtn, copyContentEle,formDataEle){
 	var copyHtml = $('.' + copyContentEle).prop("outerHTML");
 	$(addBtn).before(copyHtml);
 	var addedHtml = $(addBtn).prev();
@@ -81,15 +82,36 @@ function contentAdd(addBtn, copyContentEle){
 		$(this).remove();
 		fileChange.remove();
 	});
+	// フォームデータ調整
+	formDataReplace(copyContentEle, formDataEle);
 }
 
 /*
 	delBtn:削除ボタン
 	delContentEle：削除コンテンツ要素
+	formDataEle:　フォーム要素
 */
-function contentDel(delBtn,delContentEle){
+function contentDel(delBtn,delContentEle,formDataEle){
 	var removeContent = $(delBtn).parent().parent();
 	if($('.'+delContentEle).length != 1 ){
 		removeContent.remove();
+		// フォームデータ調整
+		formDataReplace(delContentEle, formDataEle);
 	}
+}
+
+/*
+	contentEle:追加・削除ブロック要素
+	formDataEle：サブミート対象データの要素文字
+*/
+function formDataReplace(contentEle,formDataEle){
+
+	$('.' + contentEle).each(function(index){
+		var regex = new RegExp(formDataEle + "\[[0-9]+\]","g");
+		var target = formDataEle + "[" + index + "]";
+		$(this).find("[name^='"+ formDataEle +"']").each(function(){
+			var name = $(this).prop("name");
+			$(this).prop("name", name.replace(regex, target))
+		});
+	});
 }

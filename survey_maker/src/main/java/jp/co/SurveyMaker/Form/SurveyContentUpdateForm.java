@@ -20,6 +20,9 @@ public class SurveyContentUpdateForm {
 	
 	private String surveyImage;
 	
+	// base64の画像表示
+	private String surveyImageBase64;
+	
 	private String surveyColor;
 	
 	private Integer surveyPatternId;

@@ -31,3 +31,12 @@
 	content:"\F196";
 	font-family:FontAwesome;
 }
+
+/** 文字省略 */
+.dd {     
+	overflow: hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+}

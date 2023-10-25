@@ -23,24 +23,25 @@
 					<form action="/surveyContentDetail/surveyContentUpdate/exec" method="post" th:object="${surveyContentUpdateForm}" id="submitFormId" enctype="multipart/form-data">
 						<input type="hidden" th:field="*{id}">
 						<input type="hidden" th:field="*{userId}">
-
+						<input type="hidden" th:field="*{surveyPatternId}">
+						
 						<div class="row">
 							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ名</span>
-								<input name="surveyName" class="form-control" th:value="高齢者健康調査" required/>
+								<input th:field="*{surveyName}" class="form-control" th:value="高齢者健康調査" required/>
 								<span class="h6 text-danger">※コンテンツパターン変更不可</span>
 							</div>
 							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ画像</span>
 								<div class="input-group mb-3 previewContentImg">
-									<input name="surveyImage" class="form-control" th:value="高齢者健康調査.jpg" readonly />
+									<input th:field="*{surveyImage}"  class="form-control" th:value="高齢者健康調査.jpg" readonly />
 									<div class="input-group-append">
-										<button class="btn btn-primary" type="button" id="previewContentImg" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
+										<button class="btn btn-primary" type="button" id="previewContentImg" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='__*{surveyImageBase64}__' height='150' width='200'>|" >プレビュー</button> 
 										<button class="btn btn-danger" type="button" id="changeContentImg">変更</button>  
 									</div>
 								</div>
 								<div class="input-group mb-3 fileChangeContentImg" style="display:none;">
-									<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+									<input class="form-control" type="file" th:field="*{surveyImgFile}" accept=".jpg,.jpeg,.png,.gif" required disabled>
 									<div class="input-group-append">  
 										<button class="btn btn-primary" type="button" id="modoruContentImg">戻る</button>  
 									</div>
@@ -48,7 +49,7 @@
 							</div>
 							<div class="col-2 mt-2 mb-2">
 								<span class="h6">コンテンツカラー</span>
-								<input type="color" name="surveyColor" class="form-control" value="#198754" style="height:40px;" required/>
+								<input type="color" th:field="*{surveyColor}" class="form-control form-control-color" value="#198754" required/>
 							</div>
 						</div>
 						

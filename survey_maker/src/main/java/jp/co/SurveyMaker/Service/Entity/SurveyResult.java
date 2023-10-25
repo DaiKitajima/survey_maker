@@ -1,5 +1,7 @@
 package jp.co.SurveyMaker.Service.Entity;
 
+import java.time.LocalTime;
+
 import org.hibernate.annotations.SQLDelete;
 
 import jakarta.persistence.Column;
@@ -15,9 +17,9 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
-@SQLDelete(sql="update survey_question set delete_flg=1 where id= ?")
-@Table(name = "survey_question")
-public class SurveyQuestion {
+@SQLDelete(sql="update survey_result set delete_flg=1 where id= ?")
+@Table(name = "survey_result")
+public class SurveyResult {
 	
 	   @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +28,17 @@ public class SurveyQuestion {
 	    @Column(name = "survey_management_id")
 	    private Integer surveyManagementId;
 	    
-	    @Column(name = "question_order_no")
-	    private Integer questionOrderNo;
+	    @Column(name = "key")
+	    private String key;
 	    
-	    @Column(name = "question_title")
-	    private String questionTitle;
+	    @Column(name = "survey_summary_result_id")
+	    private Integer surveySummaryResultId;
 	    
-	    @Column(name = "question_image")
-	    private String questionImage;
+	    @Column(name = "result_content")
+	    private String resultContent;
 	    
-	    @Column(name = "answer_content")
-	    private String answerContent;
+	    @Column(name = "expire_date")
+	    private LocalTime  expireDate;
 	    
 	    @Column(name = "delete_flg")
 	    private boolean deleteFlg;

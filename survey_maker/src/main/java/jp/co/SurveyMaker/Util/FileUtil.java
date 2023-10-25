@@ -182,13 +182,18 @@ public class FileUtil {
 	 * ①保存ディレクトリチェック
 	 * ②保存ディレクトリを削除
 	 *
-	 * @param targetDirStr
+	 * @param targetDirStr 保存先ファイルパス
+	 * 	@param targetFileName	保存ファイル名（拡張子不要）
+	 * 	@param uploadFile	保存元ファイル
 	 * @throws Exception
 	 */
-	public static void registTargetFile(String targetDirStr, MultipartFile uploadFile) throws Exception {
+	public static void registTargetFile(String targetDirStr, String targetFileName, MultipartFile uploadFile) throws Exception {
 
 		if(StringUtil.isNotEmpty(uploadFile.getOriginalFilename())) {
-
+			String fileName = uploadFile.getOriginalFilename();
+			String externalKey = fileName.substring(fileName.lastIndexOf("."));
+			targetFileName = targetFileName + externalKey;
+			
 			File fileSaveDir = new File(targetDirStr);
 
 			// ①保存ディレクトリ存在チェック
@@ -196,14 +201,9 @@ public class FileUtil {
 			if(fileSaveDir.exists()) {
 				// ディレクトリが存在する場合
 				try {
-					// 保存されているファイルを削除
-					if(fileSaveDir.listFiles().length != 0) {
-
-						for(File file : fileSaveDir.listFiles()) {
-							file.delete();
-						}
-					}
-
+					// 保存先ファイルが既に存在している場合、削除
+					File targetFile = new File(targetDirStr + FILE_DIRECTORY_DELIMITER + targetFileName );
+					targetFile.deleteOnExit();
 				} catch(Exception e) {
 					logger.error("ファイル削除処理でエラーが発生しました。", e);
 					throw e;
@@ -226,7 +226,7 @@ public class FileUtil {
 			File uploadFileDest = null;
 
 			try {
-				uploadFileDest = new File(targetDirStr + FILE_DIRECTORY_DELIMITER + uploadFile.getOriginalFilename());
+				uploadFileDest = new File(targetDirStr + FILE_DIRECTORY_DELIMITER + targetFileName);
 
 				uploadFile.transferTo(uploadFileDest);
 
@@ -234,13 +234,10 @@ public class FileUtil {
 				uploadFileDest.setReadable(true, false);
 				uploadFileDest.setWritable(true, false);
 				uploadFileDest.setExecutable(true, false);
-
-
 			} catch (Exception e) {
 				logger.error("ファイルアップロード処理でエラーが発生しました。", e);
 				throw e;
 			}
-
 		}
 
 	}

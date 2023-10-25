@@ -32,6 +32,27 @@ public class SurveyCategory {
 	    @Column(name = "survey_category_content")
 	    private String surveyCategoryContent;
 	    
+	    @Column(name = "survey_summary_decide_point")
+	    private String surveySummaryDecidePoint;
+	    
+	    @Column(name = "survey_summary_title_above")
+	    private String surveySummaryTitleAbove;
+	    
+	    @Column(name = "survey_summary_image_above")
+	    private String surveySummaryImageAbove;
+	    
+	    @Column(name = "survey_summary_detail_above")
+	    private String surveySummaryDetailAbove;
+	    
+	    @Column(name = "survey_summary_title_below")
+	    private String surveySummaryTitleBelow;
+	    
+	    @Column(name = "survey_summary_image_below")
+	    private String surveySummaryImageBelow;
+	    
+	    @Column(name = "survey_summary_detail_below")
+	    private String surveySummaryDetailBelow;
+	    
 	    @Column(name = "delete_flg")
 	    private boolean deleteFlg;
 	

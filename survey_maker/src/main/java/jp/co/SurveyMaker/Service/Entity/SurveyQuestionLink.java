@@ -15,9 +15,9 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter @Setter
-@SQLDelete(sql="update survey_question set delete_flg=1 where id= ?")
-@Table(name = "survey_question")
-public class SurveyQuestion {
+@SQLDelete(sql="update survey_question_link set delete_flg=1 where id= ?")
+@Table(name = "survey_question_link")
+public class SurveyQuestionLink {
 	
 	   @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +26,17 @@ public class SurveyQuestion {
 	    @Column(name = "survey_management_id")
 	    private Integer surveyManagementId;
 	    
-	    @Column(name = "question_order_no")
-	    private Integer questionOrderNo;
+	    @Column(name = "survey_question_id")
+	    private Integer surveyQuestionId;
 	    
-	    @Column(name = "question_title")
-	    private String questionTitle;
+	    @Column(name = "answer_no")
+	    private String answerNo;
 	    
-	    @Column(name = "question_image")
-	    private String questionImage;
+	    @Column(name = "link_type")
+	    private Integer linkType;
 	    
-	    @Column(name = "answer_content")
-	    private String answerContent;
+	    @Column(name = "link_to")
+	    private String  linkTo;
 	    
 	    @Column(name = "delete_flg")
 	    private boolean deleteFlg;

@@ -27,25 +27,22 @@
 						<div class="row">
 							<div class="col-3 mt-2 mb-2">
 								<span class="h6">コンテンツ名</span>
-								<input name="surveyName" class="form-control" required/>
+								<input th:field="*{surveyName}" class="form-control" required/>
 							</div>
 							<div class="col-3 mt-2 mb-2">
 								<span class="h6">コンテンツパターン</span>
-								<select class="form-control" name="surveyPatternId" required>
-									<option value="">未選択</option>
-									<option	value="1">単数</option>
-									<option	value="2">複数（ポイント型）</option>
-									<option	value="3">複数（結果加算型）</option>
-									<option	value="4">フロー</option>
+								<select class="form-control" th:field="*{surveyPatternId}" required>
+									<option value="-1">未選択</option>
+									<option	th:value="${pattern.id}" th:each="pattern,stat: ${patternLst}" >[[${pattern.surveyPatternName}]]</option>
 								</select>
 							</div>
 							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ画像</span>
-								<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required>
+								<input class="form-control" type="file" th:field="*{surveyImgFile}" accept=".jpg,.jpeg,.png,.gif" required>
 							</div>
 							<div class="col-2 mt-2 mb-2">
 								<span class="h6">コンテンツカラー</span>
-								<input type="color" name="surveyColor" class="form-control" style="height:40px;" required/>
+								<input type="color" th:field="*{surveyColor}" class="form-control form-control-color" required/>
 							</div>
 						</div>
 						

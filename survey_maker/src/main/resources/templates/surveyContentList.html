@@ -37,7 +37,7 @@
 						<div class="row">
 							<div class="col-4 mt-1">
 								<span class="h6" >コンテンツ名</span>
-								<input th:filed="*{surveyNameForSearch}" class="form-control" />
+								<input type="text" th:field="*{surveyNameForSearch}" class="form-control" />
 							</div>
 							<div class="col-4 mt-1">
 								<span class="h6" >コンテンツパターン</span>
@@ -92,53 +92,30 @@
 									</tr>
 								</thead>
 								<tbody>
-									<!-- <tr th:each="survey,stat: *{surveyContentList}"> -->
-									<tr>
+									<tr th:each="survey,stat: *{surveyContentList}">
 										<td class="align-middle text-center" style="white-space: nowrap;">
-											<a th:href="@{/surveyContentList/contentDetail?contentId=1}">
+											<a th:href="@{/surveyContentList/contentDetail?contentId=__${survey.id}__}">
 												<span class="text-secondary h5"><i class="fa-solid fa-magnifying-glass"></i></span>
 											</a>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span th:text="高齢者健康調査"></span>
+											<span th:text="${survey.surveyName}"></span>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span th:text="単数"></span>
+											<th:block th:each="pattern,stat: ${patternLst}">
+												<span th:if="${pattern.id == survey.surveyPatternId}" th:text="${pattern.surveyPatternName}"></span>
+											</th:block> 
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active">
-												<img id="contentImg" src="../img/test.png" height="40" width="50" th:alt="テスト画像" class="img-thumbnail">
+											<a th:onclick="|showimage('contentImg${stat.index}')|" class="btn btn-default btn-xs active">
+												<img th:id="contentImg__${stat.index}__" th:src="${survey.surveyImageBase64}" height="40" width="50" th:alt="${survey.surveyImage}" class="img-thumbnail">
 											</a>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span style="background:#198754;" >#198754</span>
+											<span th:style="|background:${survey.surveyColor};|" th:text="${survey.surveyColor}">#198754</span>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<a th:href="@{/surveyContentList/contentDelete?id=1}" class="btn btn-sm btn-danger" style="width:120px;">削除</a>
-										</td>
-									</tr>
-									<tr>
-										<td class="align-middle text-center" style="white-space: nowrap;">
-											<a th:href="@{/surveyContentList/contentDetail?id=1}">
-												<span class="text-secondary h5"><i class="fa-solid fa-magnifying-glass"></i></span>
-											</a>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span th:text="旅行目的地調査"></span>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span th:text="フロー"></span>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active">
-												<img id="contentImg" src="../img/test.png" height="40" width="50" th:alt="テスト画像" class="img-thumbnail">
-											</a>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span style="background:#198754;" >#198754</span>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<a th:href="@{/surveyContentList/contentDelete?id=1}" class="btn btn-sm btn-danger" style="width:120px;">削除</a>
+											<a th:href="@{/surveyContentList/contentDelete?contentId=__${survey.id}__}" class="btn btn-sm btn-danger" id="contentDelBtn" style="width:120px;">削除</a>
 										</td>
 									</tr>
 								</tbody>
@@ -150,8 +127,7 @@
 		</div>
 
 		<!-- ダイアログのインクルード -->
-<!-- 		<th:block th:replace="/dataDeleteConfirmDialog.html" />
-		<th:block th:replace="/dataListUpdateConfirmDialog.html" /> -->
-		<th:block th:replace="/showImgModal.html" />
+		<th:block th:replace="dataDeleteConfirmDialog.html" />
+		<th:block th:replace="showImgModal.html" />
 	</body>
 </html>

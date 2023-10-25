@@ -2,7 +2,6 @@ package jp.co.SurveyMaker.Form;
 
 import java.util.List;
 
-import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,5 +16,5 @@ public class SurveyContentListForm {
 	
 	private Integer surveyPatternIdForSearch;
 	
-	private List<SurveyManagement> surveyContentList;
+	private List<SurveyContentUpdateForm> surveyContentList;
 }

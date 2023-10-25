@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<div class="modal fade" id="dataDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="dataDeleteConfirmDialogTitle" aria-hidden="false">
+	    <div class="modal-dialog modal-dialog-centered" role="document">
+	        <div class="modal-content">
+	        	<div class="modal-header border-0" style="background-color:#56b9b3;">
+					<h6 class="modal-title" id="dataDeleteConfirmDialogTitle" style="color:#ffffff;">削除確認</h6>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+	            <div class="modal-body">
+					<div class="text-left">
+						<div class="h6 pt-3">
+							<input type="hidden" id="deleteDataURL" />
+							選択したレコードを削除します、よろしいですか？
+						</div>
+					</div>
+	            </div>
+
+	            <div class="modal-footer justify-content-center border-0">
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+	                <button type="button" class="btn btn-primary" style="width:100px;" id="dataDeleteConfirmDialogSubmit">OK</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</html>
