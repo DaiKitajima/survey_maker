@@ -23,4 +23,20 @@ public class SurveyCategoryService {
 	public List<SurveyCategory> getSurveyCategoryByContentId(Integer contentId) throws Exception {
 		return surveyCategoryRepository.findBySurveyManagementIdAndDeleteFlgFalse(contentId);
 	}
+	
+	// コンテンツIDより、各軸を取得
+	public SurveyCategory getSurveyCategoryById(Integer id) throws Exception {
+		return surveyCategoryRepository.findByIdAndDeleteFlgFalse(id).orElseThrow();
+	}
+	
+	// カテゴリー登録
+	public Integer surveyCategoryRegist(SurveyCategory category) throws Exception {
+		surveyCategoryRepository.save(category);
+		return surveyCategoryRepository.getLastInsertId();
+	}
+	
+	// カテゴリー更新
+	public void surveyCategoryUpdate(SurveyCategory category) throws Exception {
+		surveyCategoryRepository.save(category);
+	}
 }

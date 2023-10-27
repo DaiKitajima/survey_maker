@@ -67,4 +67,12 @@ public class CommonConstants {
 	public static final String SEMICOLON_SEPARATOR = ";";
 	/** コンロ区切り */
 	public static final String COLON_SEPARATOR = ":";
+	
+	//==========================================================
+	// 総合評価画像保存パス使用変数
+	//==========================================================
+	/** 判定点数以上の場合、画像保存使用 */
+	public static final String SAVA_IMG_PATH_SUMMARY_ABOVE = "summary_result_above";
+	/** 判定点数以下の場合、画像保存使用 */
+	public static final String SAVA_IMG_PATH_SUMMARY_BELOW = "summary_result_below";
 }

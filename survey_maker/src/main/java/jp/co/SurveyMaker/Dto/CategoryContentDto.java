@@ -22,5 +22,7 @@ public class CategoryContentDto {
     
     private String surveyResultImage;
     
+    private String surveyResultImgBase64;
+    
     private MultipartFile surveyResultImageFile;
 }

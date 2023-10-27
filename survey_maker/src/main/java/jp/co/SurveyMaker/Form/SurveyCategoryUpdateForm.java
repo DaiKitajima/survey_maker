@@ -25,6 +25,8 @@ public class SurveyCategoryUpdateForm {
     
     private String surveySummaryImageAbove;
     
+    private String surveySummaryImageAboveBase64;
+    
     private MultipartFile surveySummaryImageAboveFile;
     
     private String surveySummaryDetailAbove;
@@ -32,6 +34,8 @@ public class SurveyCategoryUpdateForm {
     private String surveySummaryTitleBelow;
     
     private String surveySummaryImageBelow;
+    
+    private String surveySummaryImageBelowBase64;
     
     private MultipartFile surveySummaryImageBelowFile;
     

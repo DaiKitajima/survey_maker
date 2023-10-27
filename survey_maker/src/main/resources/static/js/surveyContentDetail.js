@@ -92,9 +92,14 @@ function contentAdd(addBtn, copyContentEle,formDataEle){
 	formDataEle:　フォーム要素
 */
 function contentDel(delBtn,delContentEle,formDataEle){
-	var removeContent = $(delBtn).parent().parent();
+	var delBtnName = $(delBtn).prop("name");
 	if($('.'+delContentEle).length != 1 ){
-		removeContent.remove();
+		$('.'+delContentEle).each(function(){
+			if($(this).find("[name='"+delBtnName+"']").length > 0 ){
+				$(this).remove();
+			}
+		});
+
 		// フォームデータ調整
 		formDataReplace(delContentEle, formDataEle);
 	}

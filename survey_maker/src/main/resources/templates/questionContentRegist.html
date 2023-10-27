@@ -52,10 +52,14 @@
 							<div class="row">
 								<div class="col-11 mt-2 mb-2 ">
 									<span class="h6">回答内容</span><br>
-									<input name="questionContentUpdateForm.answerContentLst[0].answer" class="form-control"/>
+									<input name="answerContentLst[0].answer" class="form-control"/>
 								</div>
-								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'questionContent')">
-									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" >
+									<div>
+										<a href="#" name="answerContentLst[0].delete" onclick="contentDel(this,'questionContent','answerContentLst')" >
+											<span class="h6"><i class="bi bi-trash3-fill"></i></span>
+										</a>
+									</div>
 								</div>
 							</div>
 							<div class="row" >
@@ -66,8 +70,8 @@
 											「身体の調査」ポイント
 										</div>
 										<div class="col-1">
-											<input type="hidden" name="questionContentUpdateForm.answerContentLst[0].answerPointLst[0].categoryId" class="form-control"/>
-											<input name="questionContentUpdateForm.answerContentLst[0].answerPointLst[0].point" class="form-control"/>
+											<input type="hidden" name="answerContentLst[0].answerPointLst[0].categoryId" class="form-control"/>
+											<input name="answerContentLst[0].answerPointLst[0].point" class="form-control"/>
 										</div>
 									</div>
 									<div class="row mb-2 ms-2" >
@@ -81,7 +85,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="btn btn-secondary mb-2 ms-2" style="background-color:rgb(220,235,250);" onclick="contentAdd(this,'questionContent')">
+						<div class="btn btn-secondary mb-2 ms-2" style="background-color:rgb(220,235,250);" onclick="contentAdd(this,'questionContent','answerContentLst')">
 							<span class="h1"><i class="bi bi-plus-circle-fill"></i></span>
 						</div>
 

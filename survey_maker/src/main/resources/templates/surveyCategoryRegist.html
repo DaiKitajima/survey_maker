@@ -38,7 +38,7 @@
 						<div class="row">
 							<span class="h6">総合評価判定</span>
 						</div>
-						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat:*{categoryContentLst}"> -->
+						
 						<div class="summaryResultContent mb-2 ms-2 container" style="background-color:rgb(242,242,242);" >
 							<div class="row">
 								<div class="col-2 mt-2 mb-2 ">
@@ -96,7 +96,6 @@
 						<div class="row">
 							<span class="h6">診断軸コンテンツ</span>
 						</div>
-						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat::{categoryContentLst}"> -->
 						<div class="categoryContent mb-2 ms-2 container" style="background-color:rgb(220,235,250);" >
 							<div class="row">
 								<div class="col-5 mt-2 mb-2 ">
@@ -106,7 +105,7 @@
 											<input name="categoryContentLst[0].pointFrom" class="form-control" />
 										</div>
 										<div class="col-2" style="text-align:center">
-											<span  class="h6">～</span>
+											<span class="h6">～</span>
 										</div>
 										<div class="col-4">
 											<input name="categoryContentLst[0].pointTo" class="form-control" />
@@ -122,8 +121,12 @@
 									<span class="h6">診断結果画像</span><br>
 									<input class="form-control" type="file" name="categoryContentLst[0].surveyResultImageFile" accept=".jpg,.jpeg,.png,.gif">
 								</div>
-								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'categoryContent','categoryContentLst')">
-									<a href="#" ><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end">
+									<div>
+										<a href="#" name="categoryContentLst[0].delete" onclick="contentDel(this,'categoryContent','categoryContentLst')">
+											<span class="h6"><i class="bi bi-trash3-fill"></i></span>
+										</a>
+									</div>
 								</div>
 							</div>
 							<div class="row" >

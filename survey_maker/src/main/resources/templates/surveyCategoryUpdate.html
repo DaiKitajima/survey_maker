@@ -15,12 +15,12 @@
 		<div class="container-fluid mb-5">
 			<!-- タイトル -->
 			<div class="d-flex justify-content-start mt-3 mb-2">
-				<span class="h5" th:text="「高齢者健康調査」診断軸コンテンツ更新"> 「高齢者健康調査」診断軸コンテンツ更新</span>
+				<span class="h5" th:text="|「${survey.surveyName}」診断軸コンテンツ更新|"> 「高齢者健康調査」診断軸コンテンツ更新</span>
 			</div>
 
 			<div class="card shadow-lg">
 				<div class="card-body">
-					<form action="/surveyContentDetail/surveyCategoryRegist/exec" method="post" th:object="${surveyCategoryUpdateForm}" id="submitFormId" enctype="multipart/form-data">
+					<form action="/surveyContentDetail/surveyCategoryUpdate/exec" method="post" th:object="${surveyCategoryUpdateForm}" id="submitFormId" enctype="multipart/form-data">
 						<input type="hidden" th:field="*{id}">
 						<input type="hidden" th:field="*{surveyManagementId}">
 
@@ -30,7 +30,7 @@
 						</div>
 						<div class="row">
 							<div class="col-4 mt-2 mb-2">
-								<input name="surveyCategoryName" class="form-control" th:value="身体の調査" required/>
+								<input th:field="*{surveyCategoryName}" class="form-control" required/>
 							</div>
 						</div>
 						
@@ -38,12 +38,12 @@
 						<div class="row">
 							<span class="h6">総合評価判定</span>
 						</div>
-						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat::{categoryContentLst}"> -->
+						
 						<div class="summaryResultContent mb-2 ms-2 container" style="background-color:rgb(242,242,242);" >
 							<div class="row">
 								<div class="col-2 mt-2 mb-2 ">
 									<span class="h6">判定基準点数</span><br>
-									<input name="decidePoint" class="form-control" value="50" />
+									<input th:field="*{surveySummaryDecidePoint}" class="form-control" />
 								</div>
 							</div>
 							<div class="row" >
@@ -53,7 +53,7 @@
 										<span class="small">総合評価タイトル</span>
 									</div>
 									<div class="row mb-1">
-										<div class="col"><input type="text" name="title" class="form-control" value="愛され自由人型" /></div>
+										<div class="col"><input type="text" th:field="*{surveySummaryTitleAbove}" class="form-control" value="愛され自由人型" /></div>
 									</div>
 									<div class="row">
 										<span class="small">総合評価画像</span>
@@ -61,14 +61,14 @@
 									<div class="row mb-1">
 										<div class="col">
 											<div class="input-group mb-3 previewSummaryResultImg1">
-												<input name="image" class="form-control" th:value="愛され自由人型.jpg" readonly />
+												<input th:field="*{surveySummaryImageAbove}" class="form-control" readonly />
 												<div class="input-group-append">
-													<button class="btn btn-primary" type="button" id="previewSummaryResultImg1" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
+													<button class="btn btn-primary" type="button" id="previewSummaryResultImg1" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='__*{surveySummaryImageAboveBase64}__' height='150' width='200'>|" >プレビュー</button> 
 													<button class="btn btn-danger" type="button" id="changeSummaryResultImg1">変更</button>  
 												</div>
 											</div>
 											<div class="input-group mb-3 fileChangeSummaryResultImg1" style="display:none;">
-												<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+												<input class="form-control" type="file" th:field="*{surveySummaryImageAboveFile}" accept=".jpg,.jpeg,.png,.gif" required disabled>
 												<div class="input-group-append">  
 													<button class="btn btn-primary" type="button" id="modoruSummaryResultImg1">戻る</button>  
 												</div>
@@ -79,7 +79,7 @@
 										<span class="small">総合評価詳細</span>
 									</div>
 									<div class="row mb-1">
-										<div class="col"><textarea class="form-control" rows="3" name="surveyResultDetail">フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。
+										<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailAbove}">フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。
 										</textarea></div>
 									</div>
 								</div>
@@ -89,7 +89,7 @@
 										<span class="small">総合評価タイトル</span>
 									</div>
 									<div class="row mb-1">
-										<div class="col"><input type="text" name="title" class="form-control" value="リーダーシップ堪能"/></div>
+										<div class="col"><input type="text" th:field="*{surveySummaryTitleBelow}" class="form-control"/></div>
 									</div>
 									<div class="row">
 										<span class="small">総合評価画像</span>
@@ -97,14 +97,14 @@
 									<div class="row mb-1">
 										<div class="col">
 											<div class="input-group mb-3 previewSummaryResultImg2">
-												<input name="image" class="form-control" th:value="リーダーシップ堪能.jpg" readonly />
+												<input th:field="*{surveySummaryImageBelow}" class="form-control" readonly />
 												<div class="input-group-append">
-													<button class="btn btn-primary" type="button" id="previewSummaryResultImg2" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
+													<button class="btn btn-primary" type="button" id="previewSummaryResultImg2" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='__*{surveySummaryImageBelowBase64}__' height='150' width='200'>|" >プレビュー</button> 
 													<button class="btn btn-danger" type="button" id="changeSummaryResultImg2">変更</button>  
 												</div>
 											</div>
 											<div class="input-group mb-3 fileChangeSummaryResultImg2" style="display:none;">
-												<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+												<input class="form-control" type="file" th:field="*{surveySummaryImageBelowFile}" accept=".jpg,.jpeg,.png,.gif" required disabled>
 												<div class="input-group-append">  
 													<button class="btn btn-primary" type="button" id="modoruSummaryResultImg2">戻る</button>  
 												</div>
@@ -115,7 +115,7 @@
 										<span class="small">総合評価詳細</span>
 									</div>
 									<div class="row mb-1">
-										<div class="col"><textarea class="form-control" rows="3" name="surveyResultDetail">コミュニケーション能力上手の「リーダータイプ」です。
+										<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailBelow}">コミュニケーション能力上手の「リーダータイプ」です。
 										</textarea></div>
 									</div>
 								</div>
@@ -126,105 +126,61 @@
 						<div class="row">
 							<span class="h6">診断軸コンテンツ</span>
 						</div>
-						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat::{categoryContentLst}"> -->
-						<div class="categoryContent mb-2 ms-2 container" style="background-color:rgb(220,235,250);" >
+						<div class="categoryContent mb-2 ms-2 container" style="background-color:rgb(220,235,250)" th:each="category,stat:*{categoryContentLst}">
+							<input type="hidden" th:name="|categoryContentLst[${stat.index}].id|" class="form-control" th:value="${category.id}"/>
 							<div class="row">
 								<div class="col-5 mt-2 mb-2 ">
 									<span class="h6">ポイント評価範囲</span><br>
 									<div class="row">
 										<div class="col-4">
-											<input name="pointFrom" class="form-control" th:value="80"/>
+											<input th:name="|categoryContentLst[${stat.index}].pointFrom|" class="form-control" th:value="${category.pointFrom}"/>
 										</div>
 										<div class="col-2" style="text-align:center">
 											<span  class="h6">～</span>
 										</div>
 										<div class="col-4">
-											<input name="pointTo" class="form-control" th:value="100"/>
+											<input th:name="|categoryContentLst[${stat.index}].pointTo|" class="form-control" th:value="${category.pointTo}"/>
 										</div>
 									</div>
 								</div>
 								
 								<div class="col-3 mt-2 mb-2">
 									<span class="h6">ポイント評価結果</span><br>
-									<input name="surveyResult" class="form-control" th:value="レベルA"/>
+									<input th:name="|categoryContentLst[${stat.index}].surveyResult|" class="form-control" th:value="${category.surveyResult}"/>
 								</div>
 								<div class="col-3 mt-2 mb-2">
 									<span class="h6">コンテンツ画像</span>
-									<div class="input-group mb-3 previewResultImg1">
-										<input name="surveyImage" class="form-control" th:value="レベルA.jpg" readonly />
+									<div class="input-group mb-3" th:classappend="|previewResultImg${stat.index}|">
+										<input th:name="|categoryContentLst[${stat.index}].surveyResultImage|" class="form-control" th:value="${category.surveyResultImage}" readonly />
 										<div class="input-group-append">
-											<button class="btn btn-primary" type="button" id="previewResultImg1" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
-											<button class="btn btn-danger" type="button" id="changeResultImg1">変更</button>  
+											<button class="btn btn-primary" type="button" th:id="|previewResultImg${stat.index}|" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='__${category.surveyResultImgBase64}__' height='150' width='200'>|" >プレビュー</button> 
+											<button class="btn btn-danger" type="button" th:id="|changeResultImg${stat.index}|">変更</button>  
 										</div>
 									</div>
-									<div class="input-group mb-3 fileChangeResultImg1" style="display:none;">
-										<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" required disabled>
+									<div class="input-group mb-3" th:classappend="|fileChangeResultImg${stat.index}|" style="display:none;">
+										<input class="form-control" type="file" th:name="|categoryContentLst[${stat.index}].surveyResultImageFile|" accept=".jpg,.jpeg,.png,.gif" required disabled>
 										<div class="input-group-append">  
-											<button class="btn btn-primary" type="button" id="modoruResultImg1">戻る</button>  
+											<button class="btn btn-primary" type="button" th:id="|modoruResultImg${stat.index}|">戻る</button>  
 										</div>
 									</div>
 								</div>
-								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'categoryContent')">
-									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
+								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" >
+									<div>
+										<a href="#" th:name="|categoryContentLst[${stat.index}].delete|" onclick="contentDel(this,'categoryContent','categoryContentLst')">
+											<span class="h6" ><i class="bi bi-trash3-fill"></i></span>
+										</a>
+									</div>
 								</div>
 							</div>
 							<div class="row" >
 								<div class="col-12 mt-2 mb-2">
 									<span class="h6">診断結果詳細</span><br>
-									<textarea class="form-control" rows="3" name="surveyResultDetail" th:text="身体は結構いい。"></textarea>
+									<textarea class="form-control" rows="3" th:name="|categoryContentLst[${stat.index}].surveyResultDetail|" th:text="${category.surveyResultDetail}"></textarea>
 								</div>
 							</div>
 						</div>
 						
-						<div class="categoryContent mb-2 ms-2 container" style="background-color:rgb(220,235,250);" >
-							<div class="row">
-								<div class="col-5 mt-2 mb-2 ">
-									<span class="h6">ポイント評価範囲</span><br>
-									<div class="row">
-										<div class="col-4">
-											<input name="pointFrom" class="form-control" th:value="60"/>
-										</div>
-										<div class="col-2" style="text-align:center">
-											<span  class="h6">～</span>
-										</div>
-										<div class="col-4">
-											<input name="pointTo" class="form-control" th:value="80"/>
-										</div>
-									</div>
-								</div>
-								
-								<div class="col-3 mt-2 mb-2">
-									<span class="h6">ポイント評価結果</span><br>
-									<input name="surveyResult" class="form-control" th:value="レベルB"/>
-								</div>
-								<div class="col-3 mt-2 mb-2">
-									<span class="h6">コンテンツ画像</span><br>
-									<div class="input-group mb-3 previewResultImg2">
-										<input name="surveyImage" class="form-control" th:value="レベルB.jpg" readonly />
-										<div class="input-group-append">
-											<button class="btn btn-primary" type="button" id="previewResultImg2" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='../img/test.png' height='150' width='200'>|" >プレビュー</button> 
-											<button class="btn btn-danger" type="button" id="changeResultImg2">変更</button>  
-										</div>
-									</div>
-									<div class="input-group mb-3 fileChangeResultImg2" style="display:none;">
-										<input class="form-control" type="file" name="surveyImgFile" accept=".jpg,.jpeg,.png,.gif" disabled>
-										<div class="input-group-append">  
-											<button class="btn btn-primary" type="button" id="modoruResultImg2">戻る</button>  
-										</div>
-									</div>
-								</div>
-								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" onclick="contentDel(this,'categoryContent')">
-									<a href="#"><span class="h6"><i class="bi bi-trash3-fill"></i></span></a>
-								</div>
-							</div>
-							<div class="row" >
-								<div class="col-12 mt-2 mb-2">
-									<span class="h6">診断結果詳細</span><br>
-									<textarea class="form-control" rows="3" name="surveyResultDetail" th:text="毎週3回の身体訓練が必要。"></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="btn btn-secondary mb-2 ms-2" style="background-color:rgb(220,235,250);" onclick="contentAdd(this,'categoryContent')">
+						<div class="btn btn-secondary mb-2 ms-2" style="background-color:rgb(220,235,250);" onclick="contentAdd(this,'categoryContent','categoryContentLst')">
 							<span class="h1"><i class="bi bi-plus-circle-fill"></i></span>
 						</div>
 

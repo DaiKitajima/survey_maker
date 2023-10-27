@@ -211,7 +211,7 @@ public class FileUtil {
 
 			} else {
 				// 存在しない場合はディレクトリ作成
-				if (!fileSaveDir.mkdir()) {
+				if (!fileSaveDir.mkdirs()) {
 					throw new Exception("ファイルの保存ディレクトリの作成に失敗しました。");
 				}
 			}
@@ -346,7 +346,7 @@ public class FileUtil {
 
 			} else {
 				// 存在しない場合はディレクトリ作成
-				if (!fileSaveDir.mkdir()) {
+				if (!fileSaveDir.mkdirs()) {
 					throw new Exception("ファイルの保存ディレクトリの作成に失敗しました。");
 				}
 			}
