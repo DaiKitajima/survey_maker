@@ -56,7 +56,7 @@ public class SurveyCategoryController {
 		// セッションからユーザ情報取得
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
 		
-		SurveyManagement survey = surveyContentService.getSurveyContentById(contentId, user.getId());
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
 		mav.addObject("survey", survey);
 		
 		SurveyCategoryUpdateForm surveyCategoryUpdateForm = new SurveyCategoryUpdateForm();
@@ -94,13 +94,13 @@ public class SurveyCategoryController {
 			SurveyCategory category) throws Exception{
 		String savePath = "";
 		// 総合評価画像(判定点数以上)保存
-		savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyCategoryUpdateForm.getSurveyManagementId() 
+		savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyCategoryUpdateForm.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY
 						+ FileUtil.FILE_DIRECTORY_DELIMITER + categoryId + FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_ABOVE + FileUtil.FILE_DIRECTORY_DELIMITER;
 		if(surveyCategoryUpdateForm.getSurveySummaryImageAboveFile() != null ) {
 			FileUtil.registTargetFile(savePath, surveyCategoryUpdateForm.getSurveySummaryTitleAbove(), surveyCategoryUpdateForm.getSurveySummaryImageAboveFile());
 		}
 		// 総合評価画像(判定点数以下)保存
-		savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyCategoryUpdateForm.getSurveyManagementId() 
+		savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyCategoryUpdateForm.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY
 						+ FileUtil.FILE_DIRECTORY_DELIMITER + categoryId + FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_BELOW + FileUtil.FILE_DIRECTORY_DELIMITER;
 		if(surveyCategoryUpdateForm.getSurveySummaryImageBelowFile() != null ) {
 			FileUtil.registTargetFile(savePath, surveyCategoryUpdateForm.getSurveySummaryTitleBelow(), surveyCategoryUpdateForm.getSurveySummaryImageBelowFile());
@@ -114,7 +114,7 @@ public class SurveyCategoryController {
 				String surveyResultImgPath = "";
 				Integer surveyResultId = contentLst.stream().filter(d -> d.getSurveyResult().equals(content.getSurveyResult())).toList().get(0).getId();
 				if(content.getSurveyResultImageFile() != null) {
-					surveyResultImgPath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyCategoryUpdateForm.getSurveyManagementId() 
+					surveyResultImgPath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyCategoryUpdateForm.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY
 					+ FileUtil.FILE_DIRECTORY_DELIMITER + categoryId + FileUtil.FILE_DIRECTORY_DELIMITER + surveyResultId + FileUtil.FILE_DIRECTORY_DELIMITER;
 					FileUtil.registTargetFile(surveyResultImgPath, content.getSurveyResult(), content.getSurveyResultImageFile());
 				}
@@ -123,7 +123,7 @@ public class SurveyCategoryController {
 	}
 
 	// FormデータをEntityへ変換
-	private void convertCategoryFormToEntity(SurveyCategoryUpdateForm surveyCategoryUpdateForm, SurveyCategory category) {
+	private void convertCategoryFormToEntity(SurveyCategoryUpdateForm surveyCategoryUpdateForm, SurveyCategory category) throws Exception {
 		category.setId(surveyCategoryUpdateForm.getId());
 		category.setSurveyManagementId(surveyCategoryUpdateForm.getSurveyManagementId());
 		category.setSurveyCategoryName(surveyCategoryUpdateForm.getSurveyCategoryName());
@@ -153,35 +153,43 @@ public class SurveyCategoryController {
 		List<CategoryContentDto> categoryContentLst = new ArrayList<CategoryContentDto>();
 		if(surveyCategoryUpdateForm.getCategoryContentLst() != null && surveyCategoryUpdateForm.getCategoryContentLst().size() != 0  ) {
 			// 評価結果ID取得
-			Integer categoryContentId ;
-			Optional<CategoryContentDto> maxOptional = surveyCategoryUpdateForm.getCategoryContentLst()
-																			.stream()
-																			.max(Comparator.comparing(CategoryContentDto::getId, Comparator.nullsFirst(Integer::compareTo)));
-			if (maxOptional.isPresent()) {
-				categoryContentId = maxOptional.orElseThrow().getId() != null ? maxOptional.orElseThrow().getId() +1: 1 ;
-			} else {
-				categoryContentId = 1;
+			Integer resultContentId ;
+			// 新規登録の場合
+			if(surveyCategoryUpdateForm.getId() == null) {
+				resultContentId = 1;
+			}else { // 更新の場合
+				SurveyCategory existedCategory = surveyCategoryService.getSurveyCategoryById(surveyCategoryUpdateForm.getId() );
+				Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
+				List<CategoryContentDto> existedContentLst = (new Gson()).fromJson(existedCategory.getSurveyCategoryContent(), listType);
+				
+				Optional<CategoryContentDto> maxOptional = existedContentLst.stream()
+																									.max(Comparator.comparing(CategoryContentDto::getId, Comparator.nullsFirst(Integer::compareTo)));
+				if (maxOptional.isPresent()) {
+					resultContentId = maxOptional.get().getId() != null ? maxOptional.get().getId() +1: 1 ;
+				} else {
+					resultContentId = 1;
+				}
 			}
-
+			
 			for(CategoryContentDto content : surveyCategoryUpdateForm.getCategoryContentLst()) {
 				CategoryContentDto contentDto = new CategoryContentDto();
 				// 評価コンテンツID設定
 				if(content.getId() != null) {
 					contentDto.setId(content.getId());
 				}else {
-					contentDto.setId(categoryContentId);
-					categoryContentId++;
+					contentDto.setId(resultContentId);
+					resultContentId++;
 				}
-				contentDto.setPointFrom(content.getPointFrom());
-				contentDto.setPointTo(content.getPointTo());
-				contentDto.setSurveyResult(content.getSurveyResult());
-				contentDto.setSurveyResultDetail(content.getSurveyResultDetail());
+				contentDto.setPointFrom(content.getPointFrom() != null ? content.getPointFrom() : 0);
+				contentDto.setPointTo(content.getPointTo()!= null ? content.getPointTo() : 0);
+				contentDto.setSurveyResult(content.getSurveyResult() != null ? content.getSurveyResult() : "");
+				contentDto.setSurveyResultDetail(content.getSurveyResultDetail() != null ? content.getSurveyResultDetail() : "");
 				if(content.getSurveyResultImageFile() != null && StringUtil.isNotEmpty(content.getSurveyResultImageFile().getOriginalFilename()) ) {
 					String uploadFileName = content.getSurveyResultImageFile().getOriginalFilename();
 					String externalKey = uploadFileName.substring(uploadFileName.lastIndexOf("."));
 					contentDto.setSurveyResultImage(content.getSurveyResult() + externalKey);
 				}else {
-					contentDto.setSurveyResultImage(content.getSurveyResultImage());
+					contentDto.setSurveyResultImage(content.getSurveyResultImage()!= null ? content.getSurveyResultImage() : "");
 				}
 				categoryContentLst.add(contentDto);
 			}
@@ -203,7 +211,7 @@ public class SurveyCategoryController {
 		
 		SurveyCategory category = surveyCategoryService.getSurveyCategoryById(categoryId);
 		
-		SurveyManagement survey = surveyContentService.getSurveyContentById(category.getSurveyManagementId(), user.getId());
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(category.getSurveyManagementId(), user.getId());
 		mav.addObject("survey", survey);
 		
 		SurveyCategoryUpdateForm surveyCategoryUpdateForm = new SurveyCategoryUpdateForm();
@@ -230,7 +238,7 @@ public class SurveyCategoryController {
 		// 総合評価画像(Above)
 		try {
 			String imgFileName = category.getSurveySummaryImageAbove();
-			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER 
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
 									+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_ABOVE + FileUtil.FILE_DIRECTORY_DELIMITER 
 									+ imgFileName;
 			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
@@ -243,7 +251,7 @@ public class SurveyCategoryController {
 		// 総合評価画像(Below)
 		try {
 			String imgFileName = category.getSurveySummaryImageBelow();
-			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER 
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
 									+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_BELOW + FileUtil.FILE_DIRECTORY_DELIMITER 
 									+ imgFileName;
 			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
@@ -271,7 +279,7 @@ public class SurveyCategoryController {
 				// 評価結果画像
 				try {
 					String imgFileName = content.getSurveyResultImage();
-					String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER 
+					String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
 											+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + content.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
 					byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
 					String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
@@ -295,6 +303,10 @@ public class SurveyCategoryController {
 			SurveyCategoryUpdateForm surveyCategoryUpdateForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
+		// セッションからユーザ情報取得して、ユーザIDと診断コンテンツIDで情報検証
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		surveyContentService.getSurveyContentByIdAndUserId(surveyCategoryUpdateForm.getSurveyManagementId(), user.getId());
+		
 		// カテゴリーデータ更新
 		SurveyCategory category = new SurveyCategory();
 		this.convertCategoryFormToEntity(surveyCategoryUpdateForm, category);
@@ -313,10 +325,15 @@ public class SurveyCategoryController {
 	public ModelAndView surveyCategoryDelete(
 			HttpServletRequest request,
 			HttpSession session ,
-			@RequestParam(value="id", required = true, defaultValue="-1") Integer id) throws Exception {
+			@RequestParam(value="categoryId", required = true, defaultValue="-1") Integer categoryId) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		// セッションからユーザ情報取得し、ユーザ削除可能の対象か検証
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		SurveyCategory category = surveyCategoryService.getSurveyCategoryById(categoryId);
+		surveyContentService.getSurveyContentByIdAndUserId(category.getSurveyManagementId(), user.getId());
 		
-		mav.addObject("surveyCategoryUpdateForm", new SurveyCategoryUpdateForm());
+		surveyCategoryService.surveyCategoryDelete(categoryId);
+		
 		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
 		
 		return mav;

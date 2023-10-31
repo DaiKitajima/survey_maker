@@ -105,7 +105,7 @@ public class SurveyContentController {
 		// セッションからユーザ情報取得
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
 		
-		SurveyManagement surveyContent = surveyContentService.getSurveyContentById(contentId, user.getId());
+		SurveyManagement surveyContent = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
 		SurveyContentUpdateForm surveyContentUpdateForm = new SurveyContentUpdateForm();
 		this.convertSurveyContentEntityToForm(surveyContent, surveyContentUpdateForm);
 		mav.addObject("surveyContentUpdateForm", surveyContentUpdateForm);

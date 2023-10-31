@@ -29,8 +29,8 @@ public class SurveyQuestionLink {
 	    @Column(name = "survey_question_id")
 	    private Integer surveyQuestionId;
 	    
-	    @Column(name = "answer_no")
-	    private String answerNo;
+	    @Column(name = "answer_id")
+	    private String answerId;
 	    
 	    @Column(name = "link_type")
 	    private Integer linkType;

@@ -66,14 +66,11 @@ function contentAdd(addBtn, copyContentEle,formDataEle){
 	$(addBtn).before(copyHtml);
 	var addedHtml = $(addBtn).prev();
 	// コピー先の各要素の値をクリア
-	$(addedHtml).find('input').each(function(){
+	$(addedHtml).find('.' + formDataEle).each(function(){
 		$(this).val('');
 	});
 	
-	$(addedHtml).find('textarea').each(function(){
-		$(this).val('');
-	});
-	
+	// 画像項目の特殊処理
 	$(addedHtml).find("[class*='preview']").each(function(){
 		var fileChange = $(this).next();
 		var input = fileChange.children("input[type='file']").prop("outerHTML");
@@ -115,8 +112,8 @@ function formDataReplace(contentEle,formDataEle){
 		var regex = new RegExp(formDataEle + "\[[0-9]+\]","g");
 		var target = formDataEle + "[" + index + "]";
 		$(this).find("[name^='"+ formDataEle +"']").each(function(){
-			var name = $(this).prop("name");
-			$(this).prop("name", name.replace(regex, target))
+			var name = $(this).attr("name");
+			$(this).attr("name", name.replace(regex, target));
 		});
 	});
 }

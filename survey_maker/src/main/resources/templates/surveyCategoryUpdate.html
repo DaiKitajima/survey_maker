@@ -133,20 +133,20 @@
 									<span class="h6">ポイント評価範囲</span><br>
 									<div class="row">
 										<div class="col-4">
-											<input th:name="|categoryContentLst[${stat.index}].pointFrom|" class="form-control" th:value="${category.pointFrom}"/>
+											<input th:name="|categoryContentLst[${stat.index}].pointFrom|" class="form-control categoryContentLst" th:value="${category.pointFrom}"/>
 										</div>
 										<div class="col-2" style="text-align:center">
 											<span  class="h6">～</span>
 										</div>
 										<div class="col-4">
-											<input th:name="|categoryContentLst[${stat.index}].pointTo|" class="form-control" th:value="${category.pointTo}"/>
+											<input th:name="|categoryContentLst[${stat.index}].pointTo|" class="form-control categoryContentLst" th:value="${category.pointTo}"/>
 										</div>
 									</div>
 								</div>
 								
 								<div class="col-3 mt-2 mb-2">
 									<span class="h6">ポイント評価結果</span><br>
-									<input th:name="|categoryContentLst[${stat.index}].surveyResult|" class="form-control" th:value="${category.surveyResult}"/>
+									<input th:name="|categoryContentLst[${stat.index}].surveyResult|" class="form-control categoryContentLst" th:value="${category.surveyResult}"/>
 								</div>
 								<div class="col-3 mt-2 mb-2">
 									<span class="h6">コンテンツ画像</span>
@@ -175,7 +175,7 @@
 							<div class="row" >
 								<div class="col-12 mt-2 mb-2">
 									<span class="h6">診断結果詳細</span><br>
-									<textarea class="form-control" rows="3" th:name="|categoryContentLst[${stat.index}].surveyResultDetail|" th:text="${category.surveyResultDetail}"></textarea>
+									<textarea class="form-control categoryContentLst" rows="3" th:name="|categoryContentLst[${stat.index}].surveyResultDetail|" th:text="${category.surveyResultDetail}"></textarea>
 								</div>
 							</div>
 						</div>

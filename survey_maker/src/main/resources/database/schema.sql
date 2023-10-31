@@ -81,7 +81,7 @@ create table IF NOT EXISTS `survey_question_link` (
 `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
 `survey_management_id` int COMMENT '診断コンテンツID',
 `survey_question_id` int COMMENT '質問コンテンツID',
-`answer_no` varchar(50) COMMENT '回答項番',
+`answer_id` int COMMENT '回答ID',
 `link_type` int COMMENT 'リンク種別　',
 `link_to` varchar(50) COMMENT 'リンク先',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',

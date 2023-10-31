@@ -1,4 +1,4 @@
-package jp.co.SurveyMaker.Dto;
+package jp.co.SurveyMaker.Form;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @Getter @Setter
 @ToString
-public class QuestionLinkDto {
+public class QuestionLinkForm {
 	
 	private Integer id;
 	

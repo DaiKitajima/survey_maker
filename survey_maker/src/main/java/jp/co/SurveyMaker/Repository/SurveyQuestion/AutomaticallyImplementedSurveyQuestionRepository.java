@@ -19,8 +19,10 @@ public interface AutomaticallyImplementedSurveyQuestionRepository extends Reposi
 	List<SurveyQuestion> findAll();
 	//全取得(未削除)
 	List<SurveyQuestion> findByDeleteFlgFalse();
-	//診断コンテンツIDより、当該コンテンツのカテゴリー全取得(未削除)
+	//診断コンテンツIDより、当該コンテンツの質問全取得(未削除)
 	List<SurveyQuestion> findBySurveyManagementIdAndDeleteFlgFalse(Integer contentId);
+	//診断コンテンツIDより、当該コンテンツの質問全取得(昇順ソート)
+	List<SurveyQuestion> findBySurveyManagementIdAndDeleteFlgFalseOrderByQuestionOrderNoAsc(Integer contentId);
 	//登録・更新
 	<S extends SurveyQuestion> S save(S entity);
 	//削除

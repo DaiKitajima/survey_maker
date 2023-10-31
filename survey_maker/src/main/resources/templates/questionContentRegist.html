@@ -15,7 +15,7 @@
 		<div class="container-fluid mb-5">
 			<!-- タイトル -->
 			<div class="d-flex justify-content-start mt-3 mb-2">
-				<span class="h5" th:text="「高齢者健康調査」質問コンテンツ登録"> 「高齢者健康調査」質問コンテンツ登録</span>
+				<span class="h5" th:text="|「${survey.surveyName}」診断軸コンテンツ登録|"> 「高齢者健康調査」質問コンテンツ登録</span>
 			</div>
 
 			<div class="card shadow-lg">
@@ -47,12 +47,12 @@
 						<div class="row">
 							<span class="h6">回答コンテンツ</span>
 						</div>
-						<!-- <div class="categoryContent mb-2" style="background-color:rgb(220,235,250)" th:each="category,stat:*{answerContentLst}"> -->
+						
 						<div class="questionContent mb-2 ms-2 container" style="background-color:rgb(220,235,250);" >
 							<div class="row">
 								<div class="col-11 mt-2 mb-2 ">
 									<span class="h6">回答内容</span><br>
-									<input name="answerContentLst[0].answer" class="form-control"/>
+									<input name="answerContentLst[0].answer" class="form-control answerContentLst"/>
 								</div>
 								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" >
 									<div>
@@ -65,21 +65,13 @@
 							<div class="row" >
 								<div class="col-12 mt-2 mb-2">
 									<span class="h6">回答採点</span><br>
-									<div class="row mb-2 ms-2" >
+									<div class="row mb-2 ms-2" th:each="category,stat:${categoryLst}">
 										<div class="col-2">
-											「身体の調査」ポイント
+											<input type="hidden" th:name="answerContentLst[0].answerPointLst[__${stat.index}__].categoryId" th:value="${category.id}" />
+											「[[${category.surveyCategoryName}]]」ポイント
 										</div>
 										<div class="col-1">
-											<input type="hidden" name="answerContentLst[0].answerPointLst[0].categoryId" class="form-control"/>
-											<input name="answerContentLst[0].answerPointLst[0].point" class="form-control"/>
-										</div>
-									</div>
-									<div class="row mb-2 ms-2" >
-										<div class="col-2">
-											「心理の調査」ポイント
-										</div>
-										<div class="col-1">
-											<input name="point" class="form-control"/>
+											<input th:name="answerContentLst[0].answerPointLst[__${stat.index}__].point" class="form-control answerContentLst"/>
 										</div>
 									</div>
 								</div>

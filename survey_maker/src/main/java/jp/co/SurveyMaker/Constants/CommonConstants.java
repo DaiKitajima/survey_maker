@@ -69,10 +69,18 @@ public class CommonConstants {
 	public static final String COLON_SEPARATOR = ":";
 	
 	//==========================================================
-	// 総合評価画像保存パス使用変数
+	// 画像保存パス使用変数
 	//==========================================================
+	/** カテゴリーコンテンツ関連画像保存使用 */
+	public static final String SAVA_IMG_PATH_CATEGORY = "category";
+	/** 質問コンテンツ関連画像保存使用 */
+	public static final String SAVA_IMG_PATH_QUESTION = "question";
+	/** 質問画像名使用 */
+	public static final String SAVA_IMG_NAME_QUESTION = "Question";
 	/** 判定点数以上の場合、画像保存使用 */
 	public static final String SAVA_IMG_PATH_SUMMARY_ABOVE = "summary_result_above";
 	/** 判定点数以下の場合、画像保存使用 */
 	public static final String SAVA_IMG_PATH_SUMMARY_BELOW = "summary_result_below";
+	/** 質問順番使用 */
+	public static final String ORDER_NO_QUESTION = "Question";
 }

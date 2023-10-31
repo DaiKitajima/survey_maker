@@ -23,6 +23,8 @@ public class QuestionContentUpdateForm {
     
     private String questionImage;
     
+    private String questionImageBase64;
+    
     private MultipartFile questionImgFile;
     
     private List<AnswerContentDto> answerContentLst;

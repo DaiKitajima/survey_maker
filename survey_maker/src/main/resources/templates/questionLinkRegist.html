@@ -3,7 +3,8 @@
 	<head>
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
-
+		
+		<script th:src="@{/js/questionLink.js}"></script>
 		<title>診断質問リンクコンテンツ登録画面</title>
 	</head>
 
@@ -14,15 +15,25 @@
 		<div class="container-fluid mb-5">
 			<!-- タイトル -->
 			<div class="d-flex justify-content-start mt-3 mb-2">
-				<span class="h5" th:text="「高齢者健康調査」質問リンクコンテンツ登録"> 「高齢者健康調査」質問リンクコンテンツ登録</span>
+				<span class="h5" th:text="|「${survey.surveyName}」質問リンクコンテンツ登録|"> 「高齢者健康調査」質問リンクコンテンツ登録</span>
 			</div>
 
 			<div class="card shadow-lg">
-				<div class="card-body">
-					<form action="/surveyContentDetail/questionLinkRegist/exec" method="post" th:object="${questionLinkUpdateForm}" id="submitFormId" enctype="multipart/form-data">
+				<div class="card-body" th:with="questionHead=${T(jp.co.SurveyMaker.Constants.CommonConstants).ORDER_NO_QUESTION}">
+					<form action="/surveyContentDetail/questionLinkRegist/exec" method="post" th:object="${questionLinkUpdateForm}" id="submitFormId">
 						<input type="hidden" th:field="*{id}">
 						<input type="hidden" th:field="*{surveyManagementId}">
-
+						<div class="hidden">
+							<select id="toQuestionLst">
+								<option value="-1">未選択</option>
+								<option	th:each="toQuestion: *{questionFormLst}" th:value="${toQuestion.id}">[[${questionHead + toQuestion.questionOrderNo}]]</option>
+							</select>
+							<select id="toResultLst">
+								<option value="-1">未選択</option>
+								<option	th:each="result: ${surveyResultLst}" th:value="${result.id}">[[${result.surveyResult}]]</option>
+							</select>
+						</div>
+													
 						<div style="overflow-x: auto; width:100%;">
 							<div class="row">
 								<span class="h6">診断質問一覧</span>
@@ -50,215 +61,40 @@
 									</tr>
 								</thead>
 								<tbody>
-									<!-- <tr th:each="question,stat: *{questionLst}"> -->
-									<tr>
+									<tr th:each="question,stat: *{questionFormLst}">
 										<td class="align-middle text-center" style="white-space: nowrap;">
-											<span th:text="質問１"></span>
+											<span th:text="${questionHead + question.questionOrderNo}"></span>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span th:text="普通に何KM走れるか？"></span>
+											<span th:text="${question.questionTitle}"></span>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
 											<ul>
-												<li><span th:text="A：１KM"></span></li>
-												<li><span th:text="B：２KM"></span></li>
-												<li><span th:text="C：５KM"></span></li>
+												<li th:each="answer,stat1:${question.answerContentLst}">
+													<input type="hidden" th:name="|questionLinkLst[${stat1.index}].questionId|" th:value="${question.id}" >
+													<input type="hidden" th:name="|questionLinkLst[${stat1.index}].answerId|" th:value="${answer.answerId}" >
+													<span th:text="${answer.answer}"></span>
+												</li>
 											</ul>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
 											<ul>
-												<li>
-													<span th:text="回答1"></span>
-													<select class="form-control" name="linkType" required>
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答2"></span>
-													<select class="form-control" name="linkType">
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答3"></span>
-													<select class="form-control" name="linkType">
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
+												<li th:each="answer,stat2:${question.answerContentLst}">
+													<span th:text="|回答${stat2.count}|"></span>
+													<select class="form-control" th:id="|linkType${stat.index}_${stat2.index}|" th:name="|questionLinkLst[${stat2.index}].linkType|" required>
+														<option value="-1">未選択</option>
+														<option	th:each="linkType:${linkTypeMap}" th:value="${linkType.key}">[[${linkType.value}]]</option>
 													</select>
 												</li>
 											</ul>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
 											<ul>
-												<li>
-													<span th:text="回答1"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答2"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答3"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="レベルA">評価結果レベルA</option>
-														<option	value="レベルB">評価結果レベルB</option>
-													</select>
-												</li>
-											</ul>
-										</td>
-									</tr>
-									<tr>
-										<td class="align-middle text-center" style="white-space: nowrap;">
-											<span th:text="質問２"></span>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span th:text="お酒好きですか？"></span>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<ul>
-												<li><span th:text="A：好きではない"></span></li>
-												<li><span th:text="B：普通"></span></li>
-												<li><span th:text="C：好き"></span></li>
-											</ul>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<ul>
-												<li>
-													<span th:text="回答1"></span>
-													<select class="form-control" name="linkType">
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答2"></span>
-													<select class="form-control" name="linkType">
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答3"></span>
-													<select class="form-control" name="linkType">
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
-													</select>
-												</li>
-											</ul>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<ul>
-												<li>
-													<span th:text="回答1"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答2"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答3"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="レベルA">評価結果レベルA</option>
-														<option	value="レベルB">評価結果レベルB</option>
-													</select>
-												</li>
-											</ul>
-										</td>
-									</tr>
-									<tr>
-										<td class="align-middle text-center" style="white-space: nowrap;">
-											<span th:text="質問３"></span>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span th:text="店AとBがどっちにするか？"></span>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<ul>
-												<li><span th:text="A：店A"></span></li>
-												<li><span th:text="B：店B"></span></li>
-												<li><span th:text="C：どっちでも選べない"></span></li>
-											</ul>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<ul>
-												<li>
-													<span th:text="回答1"></span>
-													<select class="form-control" name="linkType">
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答2"></span>
-													<select class="form-control" name="linkType">
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答3"></span>
-													<select class="form-control" name="linkType">
-														<option value="">未選択</option>
-														<option	value="1">質問へ</option>
-														<option	value="2">結果へ</option>
-													</select>
-												</li>
-											</ul>
-										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
-											<ul>
-												<li>
-													<span th:text="回答1"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答2"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="1">質問1</option>
-														<option	value="2">質問2</option>
-													</select>
-												</li>
-												<li>
-													<span th:text="回答3"></span>
-													<select class="form-control" name="linkTo">
-														<option value="">未選択</option>
-														<option	value="レベルA">評価結果レベルA</option>
-														<option	value="レベルB">評価結果レベルB</option>
+												<li th:each="answer,stat3:${question.answerContentLst}">
+													<span th:text="|回答${stat3.count}|"></span>
+													<select class="form-control" th:id="|linkTo${stat.index}_${stat3.index}|" th:name="|questionLinkLst[${stat3.index}].linkTo|">
+														<option value="-1">未選択</option>
+														<option	th:each="toQuestion: *{questionFormLst}" th:if="${question.id != toQuestion.id}" th:value="${toQuestion.id}">[[${questionHead + toQuestion.questionOrderNo}]]</option>
 													</select>
 												</li>
 											</ul>

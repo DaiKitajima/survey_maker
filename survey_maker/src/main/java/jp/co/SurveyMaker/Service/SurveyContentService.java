@@ -29,7 +29,7 @@ public class SurveyContentService {
 	}
 	
 	// IDより、診断コンテンツ取得
-	public SurveyManagement getSurveyContentById(Integer id, Integer userId) throws Exception {
+	public SurveyManagement getSurveyContentByIdAndUserId(Integer id, Integer userId) throws Exception {
 		return surveyManagementRepository.findByIdAndUserIdAndDeleteFlgFalse(id, userId).orElseThrow();
 	}
 }

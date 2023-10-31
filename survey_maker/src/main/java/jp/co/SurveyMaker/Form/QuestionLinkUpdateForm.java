@@ -2,7 +2,6 @@ package jp.co.SurveyMaker.Form;
 
 import java.util.List;
 
-import jp.co.SurveyMaker.Dto.QuestionLinkDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,8 +14,8 @@ public class QuestionLinkUpdateForm {
 
     private Integer surveyManagementId;
     
-    private List<QuestionContentUpdateForm> questionLst;
+    private List<QuestionContentUpdateForm> questionFormLst;
     
-    private List<QuestionLinkDto> questionLinkLst;
+    private List<QuestionLinkForm> questionLinkLst;
     
 }

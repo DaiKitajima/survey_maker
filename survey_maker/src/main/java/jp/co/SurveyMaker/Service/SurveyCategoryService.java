@@ -24,7 +24,7 @@ public class SurveyCategoryService {
 		return surveyCategoryRepository.findBySurveyManagementIdAndDeleteFlgFalse(contentId);
 	}
 	
-	// コンテンツIDより、各軸を取得
+	// IDより、データを取得
 	public SurveyCategory getSurveyCategoryById(Integer id) throws Exception {
 		return surveyCategoryRepository.findByIdAndDeleteFlgFalse(id).orElseThrow();
 	}
@@ -38,5 +38,10 @@ public class SurveyCategoryService {
 	// カテゴリー更新
 	public void surveyCategoryUpdate(SurveyCategory category) throws Exception {
 		surveyCategoryRepository.save(category);
+	}
+	
+	// カテゴリー削除
+	public void surveyCategoryDelete(Integer id) throws Exception {
+		surveyCategoryRepository.deleteById(id);
 	}
 }
