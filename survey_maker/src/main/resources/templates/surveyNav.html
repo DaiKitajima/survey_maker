@@ -8,7 +8,17 @@
 
 				<div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
 					<div class="">
-
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle pe-4 pt-0 pb-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<span class="text-white"><i class="fa-solid fa-user h6 pe-2"></i>[[${session.loginUserKey.name}]]</span>
+	          					</a>
+	          					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+						            <!-- <li><hr class="dropdown-divider"></li> -->
+						            <li><a class="dropdown-item" th:href="@{/logout}">ログアウト</a></li>
+								</ul>
+							</li>
+						</ul>
 					</div>
 				</div>
 
