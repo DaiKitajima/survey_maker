@@ -30,13 +30,13 @@ public class SurveyQuestionLink {
 	    private Integer surveyQuestionId;
 	    
 	    @Column(name = "answer_id")
-	    private String answerId;
+	    private Integer answerId;
 	    
 	    @Column(name = "link_type")
 	    private Integer linkType;
 	    
 	    @Column(name = "link_to")
-	    private String  linkTo;
+	    private Integer  linkTo;
 	    
 	    @Column(name = "delete_flg")
 	    private boolean deleteFlg;

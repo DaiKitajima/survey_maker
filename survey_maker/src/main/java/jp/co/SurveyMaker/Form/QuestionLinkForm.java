@@ -10,6 +10,8 @@ public class QuestionLinkForm {
 	
 	private Integer id;
 	
+	private Integer surveyManagementId;
+	
     private Integer questionId;
     
     private Integer answerId;

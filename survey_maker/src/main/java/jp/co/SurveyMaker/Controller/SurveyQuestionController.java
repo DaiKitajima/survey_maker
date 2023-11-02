@@ -28,6 +28,7 @@ import jp.co.SurveyMaker.Dto.AnswerContentDto;
 import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
 import jp.co.SurveyMaker.Service.SurveyCategoryService;
 import jp.co.SurveyMaker.Service.SurveyContentService;
+import jp.co.SurveyMaker.Service.SurveyQuestionLinkService;
 import jp.co.SurveyMaker.Service.SurveyQuestionService;
 import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
@@ -44,6 +45,9 @@ public class SurveyQuestionController {
 	
 	@Autowired
 	private SurveyQuestionService surveyQuestionService;
+	
+	@Autowired
+	private SurveyQuestionLinkService surveyQuestionLinkService;
 	
 	@Autowired
 	private SurveyContentService surveyContentService;
@@ -248,6 +252,8 @@ public class SurveyQuestionController {
 					surveyContentService.getSurveyContentByIdAndUserId(question.getSurveyManagementId(), user.getId());
 					// 質問コンテンツ削除
 					surveyQuestionService.surveyQuestionDelete(questionId);
+					// 質問リンク削除
+					surveyQuestionLinkService.deleteQuestionLinkByContentIdAndQuestionId(question.getSurveyManagementId(), questionId);
 				} catch (Exception e) {
 					log.error("質問コンテンツ削除にエラーが発生しました。 ", e );
 					continue;

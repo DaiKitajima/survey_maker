@@ -19,6 +19,8 @@ public interface AutomaticallyImplementedSurveyQuestionLinkRepository extends Re
 	List<SurveyQuestionLink> findAll();
 	//全取得(未削除)
 	List<SurveyQuestionLink> findByDeleteFlgFalse();
+	//診断コンテンツ所属のリンク情報取得
+	List<SurveyQuestionLink> findBySurveyManagementIdAndDeleteFlgFalse(Integer contentId);
 	//登録・更新
 	<S extends SurveyQuestionLink> S save(S entity);
 	//削除
@@ -26,4 +28,6 @@ public interface AutomaticallyImplementedSurveyQuestionLinkRepository extends Re
 	
 	//診断コンテンツIDより削除
 	void deleteBySurveyManagementId(Integer contentId);
+	//診断コンテンツID、質問IDより削除
+	void deleteBySurveyManagementIdAndSurveyQuestionId(Integer contentId,Integer questionId);
 }

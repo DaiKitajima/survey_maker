@@ -20,16 +20,15 @@
 
 			<div class="card shadow-lg">
 				<div class="card-body" th:with="questionHead=${T(jp.co.SurveyMaker.Constants.CommonConstants).ORDER_NO_QUESTION}">
-					<form action="/surveyContentDetail/questionLinkRegist/exec" method="post" th:object="${questionLinkUpdateForm}" id="submitFormId">
-						<input type="hidden" th:field="*{id}">
+					<form action="/surveyContentDetail/questionLinkRegist/exec" method="post" th:object="${questionLinkUpdateForm}" id="questionLinkFormId">
 						<input type="hidden" th:field="*{surveyManagementId}">
-						<div class="hidden">
+						<div style="display:none">
 							<select id="toQuestionLst">
-								<option value="-1">未選択</option>
+								<option value="">未選択</option>
 								<option	th:each="toQuestion: *{questionFormLst}" th:value="${toQuestion.id}">[[${questionHead + toQuestion.questionOrderNo}]]</option>
 							</select>
 							<select id="toResultLst">
-								<option value="-1">未選択</option>
+								<option value="">未選択</option>
 								<option	th:each="result: ${surveyResultLst}" th:value="${result.id}">[[${result.surveyResult}]]</option>
 							</select>
 						</div>
@@ -63,6 +62,7 @@
 								<tbody>
 									<tr th:each="question,stat: *{questionFormLst}">
 										<td class="align-middle text-center" style="white-space: nowrap;">
+											<input type="hidden" th:id="questionId__${stat.index}__" th:value="${question.id}" >
 											<span th:text="${questionHead + question.questionOrderNo}"></span>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
@@ -71,29 +71,29 @@
 										<td class="align-middle text-left" style="white-space: nowrap;">
 											<ul>
 												<li th:each="answer,stat1:${question.answerContentLst}">
-													<input type="hidden" th:name="|questionLinkLst[${stat1.index}].questionId|" th:value="${question.id}" >
-													<input type="hidden" th:name="|questionLinkLst[${stat1.index}].answerId|" th:value="${answer.answerId}" >
 													<span th:text="${answer.answer}"></span>
 												</li>
 											</ul>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
 											<ul>
-												<li th:each="answer,stat2:${question.answerContentLst}">
+												<li class="questionLinkType" th:each="answer,stat2:${question.answerContentLst}">
+													<input type="hidden" th:name="|questionLinkLst[${stat2.index}].questionId|" th:value="${question.id}" >
+													<input type="hidden" th:name="|questionLinkLst[${stat2.index}].answerId|" th:value="${answer.answerId}" >
 													<span th:text="|回答${stat2.count}|"></span>
 													<select class="form-control" th:id="|linkType${stat.index}_${stat2.index}|" th:name="|questionLinkLst[${stat2.index}].linkType|" required>
-														<option value="-1">未選択</option>
+														<option value="">未選択</option>
 														<option	th:each="linkType:${linkTypeMap}" th:value="${linkType.key}">[[${linkType.value}]]</option>
 													</select>
 												</li>
 											</ul>
 										</td>
-										<td class="align-middle text-left" style="white-space: nowrap;">
+										<td class="questionLinkTo align-middle text-left" style="white-space: nowrap;">
 											<ul>
-												<li th:each="answer,stat3:${question.answerContentLst}">
+												<li class="questionLinkTo" th:each="answer,stat3:${question.answerContentLst}">
 													<span th:text="|回答${stat3.count}|"></span>
-													<select class="form-control" th:id="|linkTo${stat.index}_${stat3.index}|" th:name="|questionLinkLst[${stat3.index}].linkTo|">
-														<option value="-1">未選択</option>
+													<select class="form-control" th:id="|linkTo${stat.index}_${stat3.index}|" th:name="|questionLinkLst[${stat3.index}].linkTo|" required>
+														<option value="">未選択</option>
 														<option	th:each="toQuestion: *{questionFormLst}" th:if="${question.id != toQuestion.id}" th:value="${toQuestion.id}">[[${questionHead + toQuestion.questionOrderNo}]]</option>
 													</select>
 												</li>
@@ -105,7 +105,7 @@
 						</div>
 						<div class="row">
 							<div class="col d-flex justify-content-center mt-2 mb-2 ">
-								<button type="submit" class="btn btn-sm btn-success me-5" style="width:150px;">登録</button>
+								<button type="submit" class="btn btn-sm btn-success me-5" style="width:150px;" id="questionLinkBtn">登録</button>
 								<button type="reset" class="btn btn-sm btn-secondary" style="width:150px;">クリア</button>
 							</div>
 						</div>

@@ -9,8 +9,6 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 public class QuestionLinkUpdateForm {
-	
-    private Integer id;
 
     private Integer surveyManagementId;
     

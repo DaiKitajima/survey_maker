@@ -16,12 +16,12 @@
 			<!-- タイトル -->
 			<div class="row mt-3 mb-2">
 				<div class="col-8">
-					<span class="h5" th:text="「高齢者健康調査」コンテンツ詳細"> 「高齢者健康調査」コンテンツ詳細</span>
+					<span class="h5" th:text="|「${surveyContentDetailForm.surveyContent.surveyName}」コンテンツ詳細|"> 「高齢者健康調査」コンテンツ詳細</span>
 				</div>
 				<div class="col-4">
 					<div class="d-flex justify-content-end">
-						<a th:href="@{/surveyContentDetail/surveySimulation?id=1}" class="btn btn-sm btn-success me-5" target="_blank">診断シミュレーション</a>
-						<a th:href="@{/surveyContentDetail/surveyScriptCreate?id=1}" class="btn btn-sm btn-success" target="_blank">埋め込みコード生成</a>
+						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-5" target="_blank">診断シミュレーション</a>
+						<a th:href="@{/surveyContentDetail/surveyScriptCreate?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success" target="_blank">埋め込みコード生成</a>
 					</div>
 				</div>
 
@@ -36,7 +36,7 @@
 								<span class="h6">基本情報</span>
 							</div>
 							<div>
-								<a th:href="@{/surveyContentDetail/surveyContentUpdate?contentId=1}" >
+								<a th:href="@{/surveyContentDetail/surveyContentUpdate?contentId=__*{contentId}__}" >
 									<span class="h5 text-secondary"><i class="fa-solid fa-pen-to-square pe-2"></i></span>
 								</a>
 							</div>
@@ -45,28 +45,26 @@
 					</div>
 
 					<div class="card-body">
-
-						<input type="hidden" th:field="*{id}">
-						<input type="hidden" th:field="*{userId}">
-
 						<div class="row">
 							<div class="col-2">
 								<span class="h6">コンテンツ名</span><br>
-								<span th:text="高齢者健康調査">高齢者健康調査</span>
+								<span th:text="*{surveyContent.surveyName}">高齢者健康調査</span>
 							</div>
 							<div class="col-2">
 								<span class="h6">コンテンツパターン</span><br>
-								<span th:text="単数">単数</span>
+								<th:block th:each="pattern,stat: ${patternLst}" th:if="${pattern.id==__*{surveyContent.surveyPatternId}__}">
+									<span th:text="${pattern.surveyPatternName}">単数</span>
+								</th:block>
 							</div>
 							<div class="col-4">
 								<span class="h6">コンテンツ画像</span><br>
 								<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active">
-									<img id="contentImg" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail">
+									<img id="contentImg" th:src="*{surveyContent.surveyImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyImage}" class="img-thumbnail">
 								</a>
 							</div>
 							<div class="col-2">
 								<span class="h6">コンテンツカラー</span>
-								<input type="color" name="surveyColor" class="form-control form-control-color" value="#198754" disabled/>
+								<input type="color" name="surveyColor" class="form-control form-control-color" th:value="*{surveyContent.surveyColor}" disabled/>
 							</div>
 						</div>
 					</div>
@@ -77,12 +75,12 @@
 				<ul class="nav nav-tabs nav-pills">
 					<li class="nav-item bg-white fw-bold text-center" style="width:200px;">
 						<a href="#tabpanel1" class="nav-link active" data-bs-toggle="tab">
-							診&nbsp;断&nbsp;軸&nbsp;(2)
+							診&nbsp;断&nbsp;軸&nbsp;([[__*{#lists.size(categoryLst)}__]])
 						</a>
 					</li>
 					<li class="nav-item bg-white fw-bold text-center" style="width:200px;">
 						<a href="#tabpanel2" class="nav-link" data-bs-toggle="tab">
-							質問・回答&nbsp;(2)
+							質問・回答&nbsp;([[__*{#lists.size(questionFormLst)}__]])
 						</a>
 					</li>
 				</ul>
@@ -99,7 +97,7 @@
 								</div>
 								<div>
 									<div class="">
-										<a th:href="@{/surveyContentDetail/surveyCategoryRegist?contentId=1}" class="btn btn-sm btn-success">
+										<a th:href="@{/surveyContentDetail/surveyCategoryRegist?contentId=__*{contentId}__}" class="btn btn-sm btn-success">
 											診断軸を追加する
 										</a>
 									</div>
@@ -109,21 +107,21 @@
 						<div class="card-body bg-light">
 
 							<!-- 診断軸リスト START -->
-							<div class="card mb-2">
+							<div class="card mb-2" th:each="category,stat:*{categoryLst}">
 								<div class="card-header bg-white">
 									<div class="d-flex justify-content-between">
 										<div>
-											<span class="h6" th:text="身体の調査">身体の調査</span>
+											<span class="h6" th:text="${category.surveyCategoryName}">身体の調査</span>
 										</div>
 										<div>
 											<div class="d-flex justify-content-end">
 												<div>
-													<a th:href="@{/surveyContentDetail/surveyCategoryUpdate?categoryId=1}" class="btn btn-sm btn-primary me-3" style="width:100px;">
+													<a th:href="@{/surveyContentDetail/surveyCategoryUpdate?categoryId=__${category.id}__}" class="btn btn-sm btn-primary me-3" style="width:100px;">
 														編集
 													</a>
 												</div>
 												<div>
-													<a th:href="@{/surveyContentDetail/surveyCategoryDelete?categoryId=1}" class="btn btn-sm btn-danger" style="width:100px;">
+													<a th:href="@{/surveyContentDetail/surveyCategoryDelete?categoryId=__${category.id}__}" class="btn btn-sm btn-danger" style="width:100px;">
 														削除
 													</a>
 												</div>
@@ -140,7 +138,7 @@
 											<span class="h6">総合評価</span>
 										</div>
 										<div class="card-body">
-											<h6>基準点数：50点</h6>
+											<h6 th:text="|基準点数：${category.surveySummaryDecidePoint}点|">基準点数：50点</h6>
 
 											<div class="row mt-3">
 												<div class="col-6">
@@ -156,7 +154,7 @@
 																			<span class="h6">タイトル</span>
 																		</div>
 																		<div class="col-9">
-																			<span class="">愛され自由人型</span>
+																			<span class="" th:text="${category.surveySummaryTitleAbove}">愛され自由人型</span>
 																		</div>
 																	</div>
 																</div>
@@ -168,7 +166,7 @@
 																	</span>
 																</div>
 																<div class="col-9">
-																	<span class="">
+																	<span class="dd" th:text="${category.surveySummaryDetailAbove}">
 																		フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。 フレンドリーかつエネルギ・・・
 																	</span>
 																</div>
@@ -181,7 +179,7 @@
 																</div>
 																<div class="col-9">
 																	<span class="">
-																		<img id="contentImg3" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail">
+																		<img id="contentImg3" th:src="${category.surveySummaryImageAboveBase64}" height="30" width="40" th:alt="${category.surveySummaryImageAbove}" class="img-thumbnail">
 																	</span>
 																</div>
 															</div>
@@ -201,7 +199,7 @@
 																			<span class="h6">タイトル</span>
 																		</div>
 																		<div class="col-9">
-																			<span class="">愛され自由人型</span>
+																			<span class="" th:text="${category.surveySummaryTitleBelow}">愛され自由人型</span>
 																		</div>
 																	</div>
 																</div>
@@ -213,7 +211,7 @@
 																	</span>
 																</div>
 																<div class="col-9">
-																	<span class="">
+																	<span class="dd" th:text="${category.surveySummaryDetailBelow}">
 																		フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。 フレンドリーかつエネルギ・・・
 																	</span>
 																</div>
@@ -226,7 +224,7 @@
 																</div>
 																<div class="col-9">
 																	<span class="">
-																		<img id="contentImg3" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail">
+																		<img id="contentImg3" th:src="${category.surveySummaryImageBelowBase64}" height="30" width="40" th:alt="${category.surveySummaryImageBelow}" class="img-thumbnail">
 																	</span>
 																</div>
 															</div>
@@ -255,17 +253,17 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
+													<tr th:each="result,stat:${category.categoryContentLst}">
 														<td class="align-middle">
-															<span>
+															<span th:text="|${result.pointFrom} ～ ${result.pointTo}点|">
 																80～100点
 															</span>
 														</td>
 														<td class="align-middle">
-															<span>健康な身体を維持できています。</span>
+															<span th:text="${result.surveyResult}">健康な身体を維持できています。</span>
 														</td>
 														<td class="align-middle">
-															<span>
+															<span th:text="${result.surveyResultDetail}">
 																エネルギーバランスがとれています。<br>
 																エネルギーバランスがとれています。<br>
 																エネルギーバランスがとれています。<br>
@@ -274,53 +272,7 @@
 														</td>
 														<td class="align-middle">
 															<span>
-																<img id="contentImg1" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail"></span>
-															</span>
-														</td>
-													</tr>
-													<tr>
-														<td class="align-middle">
-															<span>
-																60～79点
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>毎週3回の身体訓練が必要。</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																身体に気を付けましょう。<br>
-																身体に気を付けましょう。<br>
-																身体に気を付けましょう。<br>
-																身体に気を付けましょう。
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																<img id="contentImg1" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail"></span>
-															</span>
-														</td>
-													</tr>
-													<tr>
-														<td class="align-middle">
-															<span>
-																0～59点
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>毎日の身体訓練をやりましょう！</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																定期的な運動が必要です。<br>
-																定期的な運動が必要です。<br>
-																定期的な運動が必要です。<br>
-																定期的な運動が必要です。
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																<img id="contentImg1" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail"></span>
+																<img id="contentImg1" th:src="${result.surveyResultImgBase64}" height="30" width="40" th:alt="${result.surveyResultImage}" class="img-thumbnail">
 															</span>
 														</td>
 													</tr>
@@ -332,405 +284,112 @@
 
 									<!-- 診断軸別診断結果 END -->
 								</div>
-
 							</div>
-
-							<!-- 診断軸リスト START -->
-							<div class="card mb-2">
-								<div class="card-header bg-white">
-									<div class="d-flex justify-content-between">
-										<div>
-											<span class="h6" th:text="心理の調査">心理の調査</span>
-										</div>
-										<div>
-											<div class="d-flex justify-content-end">
-												<div>
-													<a th:href="@{/surveyContentDetail/surveyCategoryUpdate?categoryId=1}" class="btn btn-sm btn-primary me-3" style="width:100px;">
-														編集
-													</a>
-												</div>
-												<div>
-													<a th:href="@{/surveyContentDetail/surveyCategoryDelete?categoryId=1}" class="btn btn-sm btn-danger" style="width:100px;">
-														削除
-													</a>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="card-body">
-
-									<!-- 総合評価 START -->
-									<div class="card mb-2">
-										<div class="card-header bg-white">
-											<span class="h6">総合評価</span>
-										</div>
-										<div class="card-body">
-											<h6>基準点数：50点</h6>
-
-											<div class="row mt-3">
-												<div class="col-6">
-													<div class="card">
-														<div class="card-header bg-white">
-															<span class="h6">基準点数以上の評価</span>
-														</div>
-														<div class="card-body">
-															<div class="row">
-																<div class="col-12">
-																	<div class="row">
-																		<div class="col-3">
-																			<span class="h6">タイトル</span>
-																		</div>
-																		<div class="col-9">
-																			<span class="">愛され自由人型</span>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<span class="h6">
-																		評価内容
-																	</span>
-																</div>
-																<div class="col-9">
-																	<span class="">
-																		フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。 フレンドリーかつエネルギ・・・
-																	</span>
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<span class="h6">
-																		画像
-																	</span>
-																</div>
-																<div class="col-9">
-																	<span class="">
-																		<img id="contentImg3" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail">
-																	</span>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												<div class="col-6">
-													<div class="card">
-														<div class="card-header bg-white">
-															<span class="h6">基準点数未満の評価</span>
-														</div>
-														<div class="card-body">
-															<div class="row">
-																<div class="col-12">
-																	<div class="row">
-																		<div class="col-3">
-																			<span class="h6">タイトル</span>
-																		</div>
-																		<div class="col-9">
-																			<span class="">愛され自由人型</span>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<span class="h6">
-																		評価内容
-																	</span>
-																</div>
-																<div class="col-9">
-																	<span class="">
-																		フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。 フレンドリーかつエネルギ・・・
-																	</span>
-																</div>
-															</div>
-															<div class="row">
-																<div class="col-3">
-																	<span class="h6">
-																		画像
-																	</span>
-																</div>
-																<div class="col-9">
-																	<span class="">
-																		<img id="contentImg3" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail">
-																	</span>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-										</div>
-									</div>
-									<!-- 総合評価 END -->
-
-									<!-- 軸別診断結果 START -->
-									<div class="card">
-										<div class="card-header bg-white">
-											<span class="h6">軸別診断結果</span>
-										</div>
-										<div class="card-body">
-											<table class="table">
-												<thead>
-													<tr>
-														<th>ポイント範囲</th>
-														<th>タイトル</th>
-														<th>評価内容</th>
-														<th>画像</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td class="align-middle">
-															<span>
-																80～100点
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>楽観主義者です！</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																エネルギーバランスがとれています。<br>
-																エネルギーバランスがとれています。<br>
-																エネルギーバランスがとれています。<br>
-																エネルギーバランスがとれています。
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																<img id="contentImg1" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail"></span>
-															</span>
-														</td>
-													</tr>
-													<tr>
-														<td class="align-middle">
-															<span>
-																60～79点
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>やや悲観主義者です！</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																身体に気を付けましょう。<br>
-																身体に気を付けましょう。<br>
-																身体に気を付けましょう。<br>
-																身体に気を付けましょう。
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																<img id="contentImg1" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail"></span>
-															</span>
-														</td>
-													</tr>
-													<tr>
-														<td class="align-middle">
-															<span>
-																0～59点
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>とても悲観主義者です！</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																定期的な運動が必要です。<br>
-																定期的な運動が必要です。<br>
-																定期的な運動が必要です。<br>
-																定期的な運動が必要です。
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																<img id="contentImg1" src="../img/test.png" height="30" width="40" th:alt="テスト画像" class="img-thumbnail"></span>
-															</span>
-														</td>
-													</tr>
-												</tbody>
-
-											</table>
-										</div>
-									</div>
-
-									<!-- 診断軸別診断結果 END -->
-								</div>
-
-							</div>
-							<!-- 診断軸リスト END -->
 						</div>
 					</div>
 					<div id="tabpanel2" class="card shadow-lg tab-pane">
 						<!-- 質問コンテンツ -->
 						<div class="card shadow-lg mb-2">
 							<div class="card-body">
-								<th:block th:object="${surveyContentDetailForm}" >
-									<input type="hidden" th:field="*{id}">
-									<input type="hidden" th:field="*{userId}">
-
-
-									<div class="row">
-										<div class="col-2">
-											<span class="h6">診断質問一覧</span>
-										</div>
-										<div class="col-6 d-flex justify-content-start ">
-											<div>
-												<a th:href="@{/surveyContentDetail/questionContentRegist?contentId=1}" class="btn btn-sm btn-success me-1">質問登録</a>
-												<a th:href="@{/surveyContentDetail/questionContentDelete?questionIdLst=1,2}" class="btn btn-sm btn-danger me-1">質問削除</a>
-												<a th:href="@{/surveyContentDetail/questionLinkRegist?contentId=1}" class="btn btn-sm btn-success me-1">リンク設定</a>
-												<a th:href="@{/surveyContentDetail/questionLinkUpdate?contentId=1}" class="btn btn-sm btn-primary me-1">リンク編集</a>
-											</div>
+								<div class="row">
+									<div class="col-2">
+										<span class="h6">診断質問一覧</span>
+									</div>
+									<div class="col-6 d-flex justify-content-start ">
+										<div>
+											<a th:href="@{/surveyContentDetail/questionContentRegist?contentId=__*{contentId}__}" class="btn btn-sm btn-success me-1">質問登録</a>
+											<a th:href="@{/surveyContentDetail/questionContentDelete?questionIdLst=1,2}" class="btn btn-sm btn-danger me-1">質問削除</a>
+											<a th:href="@{/surveyContentDetail/questionLinkRegist?contentId=__*{contentId}__}" class="btn btn-sm btn-success me-1">リンク設定</a>
+											<a th:href="@{/surveyContentDetail/questionLinkUpdate?contentId=__*{contentId}__}" class="btn btn-sm btn-primary me-1">リンク編集</a>
 										</div>
 									</div>
+								</div>
 
-									<div class="row container mb-2" style="border-bottom:1px dotted #000;padding:1px;">
-										<div class="col d-flex justify-content-end">
-											<a class="parent-nav" data-bs-toggle="collapse" href="#questionContent"></a>
-										</div>
+								<div class="row container mb-2" style="border-bottom:1px dotted #000;padding:1px;">
+									<div class="col d-flex justify-content-end">
+										<a class="parent-nav" data-bs-toggle="collapse" href="#questionContent"></a>
 									</div>
+								</div>
 
-									<!-- 質問コンテンツ一覧 -->
-									<div id="questionContent" class="collapse child-nav show" >
-										<table class="table table-bordered table-hover mt-2 mb-4">
-											<thead class="table-secondary">
-												<tr>
-													<th class="align-middle" style="width:30px;" onclick="getElementById('checkAll').click();">
-														<input type="checkbox" class="checkboxesStyle ml-2" id="checkAll" name="checkAll" value="1" onclick="this.click()">
-													</th>
-													<th class="align-middle" style="white-space: nowrap;">
-														編集
-													</th>
-													<th class="align-middle" style="white-space: nowrap;">
-														質問
-													</th>
-													<th class="align-middle" style="white-space: nowrap;">
-														回答
-													</th>
-													<th class="align-middle" style="white-space: nowrap;">
-														ポイント採点
-													</th>
-													<th class="align-middle" style="white-space: nowrap;">
-														リンク
-													</th>
-													<th class="align-middle" style="white-space: nowrap;">
-														質問画像
-													</th>
-												</tr>
-											</thead>
-											<tbody>
-												<!-- <tr th:each="survey,stat: *{surveyContentList}"> -->
-												<tr>
-													<td class="align-middle" th:onclick="getElementById('recordData01').click();">
-														<input type="checkbox" class="checkboxesStyle ml-2 checkItems" id="recordData01" value="1" onclick="this.click()">
-													</td>
-													<td class="align-middle text-center" style="white-space: nowrap;">
-														<a th:href="@{/surveyContentDetail/questionContentUpdate?questionId=1}">
-															<span class="text-secondary h5"><i class="bi bi-pencil-square"></i></span>
-														</a>
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														<span th:text="1、普通に何KM走れるか？"></span>
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														A：１KM<br>
-														B：２KM<br>
-														C：５KM
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														<div>
-															<span class="h6" th:text="回答A"></span>
-															<ul>
-																<li><span th:text="身体の調査：0"></span></li>
-																<li><span th:text="心理の調査：0"></span></li>
-															</ul>
-														</div>
-														<div>
-															<span class="h6" th:text="回答B"></span>
-															<ul>
-																<li><span th:text="身体の調査：5"></span></li>
-																<li><span th:text="心理の調査：5"></span></li>
-															</ul>
-														</div>
-														<div>
-															<span class="h6" th:text="回答C"></span>
-															<ul>
-																<li><span th:text="身体の調査：10"></span></li>
-																<li><span th:text="心理の調査：10"></span></li>
-															</ul>
-														</div>
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														<span th:text="回答A：なし"></span><br>
-														<span th:text="回答B：なし"></span><br>
-														<span th:text="回答C：質問2"></span><br>
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active">
-															<img id="contentImg" src="../img/test.png" height="40" width="50" th:alt="テスト画像" class="img-thumbnail">
-														</a>
-													</td>
-												</tr>
-
-												<tr>
-													<td class="align-middle" th:onclick="getElementById('recordData01').click();">
-														<input type="checkbox" class="checkboxesStyle ml-2 checkItems" id="recordData01" value="1" onclick="this.click()">
-													</td>
-													<td class="align-middle text-center" style="white-space: nowrap;">
-														<a th:href="@{/surveyContentDetail/questionContentUpdate?questionId=1}">
-															<span class="text-secondary h5"><i class="bi bi-pencil-square"></i></span>
-														</a>
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														<span th:text="２、お酒好きですか？"></span>
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														A：好きではない<br>
-														B：普通<br>
-														C：好き
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														<div>
-															<span class="h6" th:text="回答A"></span>
-															<ul>
-																<li><span th:text="身体の調査：10"></span></li>
-																<li><span th:text="心理の調査：10"></span></li>
-															</ul>
-														</div>
-														<div>
-															<span class="h6" th:text="回答B"></span>
-															<ul>
-																<li><span th:text="身体の調査：5"></span></li>
-																<li><span th:text="心理の調査：5"></span></li>
-															</ul>
-														</div>
-														<div>
-															<span class="h6" th:text="回答C"></span>
-															<ul>
-																<li><span th:text="身体の調査：0"></span></li>
-																<li><span th:text="心理の調査：0"></span></li>
-															</ul>
-														</div>
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														<span th:text="回答A：なし"></span><br>
-														<span th:text="回答B：なし"></span><br>
-														<span th:text="回答C：質問3"></span><br>
-													</td>
-													<td class="align-middle text-left" style="white-space: nowrap;">
-														<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active">
-															<img id="contentImg" src="../img/test.png" height="40" width="50" th:alt="テスト画像" class="img-thumbnail">
-														</a>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-
-								</th:block>
+								<!-- 質問コンテンツ一覧 -->
+								<div id="questionContent" class="collapse child-nav show" >
+									<table class="table table-bordered table-hover mt-2 mb-4">
+										<thead class="table-secondary">
+											<tr>
+												<th class="align-middle" style="width:30px;" onclick="getElementById('checkAll').click();">
+													<input type="checkbox" class="checkboxesStyle ml-2" id="checkAll" name="checkAll" value="1" onclick="this.click()">
+												</th>
+												<th class="align-middle" style="white-space: nowrap;">
+													編集
+												</th>
+												<th class="align-middle" style="white-space: nowrap;">
+													質問
+												</th>
+												<th class="align-middle" style="white-space: nowrap;">
+													回答
+												</th>
+												<th class="align-middle" style="white-space: nowrap;">
+													ポイント採点
+												</th>
+												<th class="align-middle" style="white-space: nowrap;">
+													リンク
+												</th>
+												<th class="align-middle" style="white-space: nowrap;">
+													質問画像
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="question,stat: *{questionFormLst}">
+												<td class="align-middle" th:onclick="getElementById('recordData01').click();">
+													<input type="checkbox" class="checkboxesStyle ml-2 checkItems" id="recordData01" th:value="${question.id}" onclick="this.click()">
+												</td>
+												<td class="align-middle text-center" style="white-space: nowrap;">
+													<a th:href="@{/surveyContentDetail/questionContentUpdate?questionId=__${question.id}__}">
+														<span class="text-secondary h5"><i class="bi bi-pencil-square"></i></span>
+													</a>
+												</td>
+												<td class="align-middle text-left" style="white-space: nowrap;">
+													<span th:text="|${stat.count}、${question.questionTitle}|"></span>
+												</td>
+												<td class="align-middle text-left" style="white-space: nowrap;">
+													<ul>
+														<li th:each="answer:${question.answerContentLst}">
+															<span th:text="${answer.answer}"></span>
+														</li>
+													</ul>
+												</td>
+												<td class="align-middle text-left" style="white-space: nowrap;">
+													<div th:each="answer,stat1:${question.answerContentLst}">
+														<span class="h6" th:text="|回答${stat1.count}|"></span>
+														<ul>
+															<li th:each="category:*{categoryLst}">
+																<th:block th:if="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																	<span th:text="|${category.surveyCategoryName}：${answer.answerPointLst.^[categoryId==__${category.id}__].point}|"></span>
+																</th:block>
+																<th:block th:unless="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																	<span th:text="|${category.surveyCategoryName}：設定なし|"></span>
+																</th:block>
+															</li>
+														</ul>
+													</div>
+												</td>
+												<td class="align-middle text-left" style="white-space: nowrap;">
+													<ul>
+														<li th:each="answer,stat2:${question.answerContentLst}">
+															<span th:text="|回答${stat2.count}|"></span>
+														</li>
+													</ul>
+												</td>
+												<td class="align-middle text-left" style="white-space: nowrap;">
+													<a th:onclick="|showimage('contentImg__${stat.index}__')|" class="btn btn-default btn-xs active">
+														<img th:id="contentImg__${stat.index}__" th:src="${question.questionImageBase64}" height="40" width="50" th:alt="${question.questionImage}" class="img-thumbnail">
+													</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>

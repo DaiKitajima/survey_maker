@@ -20,15 +20,16 @@ public class SurveySimulationController {
 	public ModelAndView surveySimulation(
 			HttpServletRequest request,
 			HttpSession session ,
-			@RequestParam(value="id", required = true, defaultValue="-1") Integer id) throws Exception {
+			@RequestParam(value="contentId", required = true, defaultValue="-1") Integer contentId) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.addObject("surveySimulationForm", new SurveySimulationForm());
 		
-		if(id==1) {
+		// TODO
+		if(contentId==1) {
 			// 単数
 			mav.setViewName("/surveySimulationForSingular");
-		}else if(id==2) {
+		}else if(contentId==2) {
 			// 複数
 			mav.setViewName("/surveySimulationForComplex");
 		}else {

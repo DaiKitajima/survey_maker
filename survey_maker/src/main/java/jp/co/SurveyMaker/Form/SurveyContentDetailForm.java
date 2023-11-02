@@ -2,8 +2,6 @@ package jp.co.SurveyMaker.Form;
 
 import java.util.List;
 
-import jp.co.SurveyMaker.Service.Entity.SurveyCategory;
-import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,20 +10,15 @@ import lombok.ToString;
 @ToString
 public class SurveyContentDetailForm {
 	
-	private Integer id;
+	private Integer contentId;
 	
-	private Integer userId;
+	private SurveyContentUpdateForm surveyContent;
 	
-	private String surveyName;
-	
-	private String surveyImage;
-	
-	private Integer surveyPatternId;
-	
-	// 診断結果カテゴリーリスト
-	private List<SurveyCategory> surveyCategoryLst;
-
+	// 診断軸リスト
+	private List<SurveyCategoryUpdateForm> categoryLst;
 	// 診断質問リスト
-	private List<SurveyQuestion> surveyQuestionLst;
-	
+    private List<QuestionContentUpdateForm> questionFormLst;
+    // 診断質問リンクリスト
+    private List<QuestionLinkForm> questionLinkLst;
+    
 }

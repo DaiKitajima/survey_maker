@@ -23,12 +23,15 @@ import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
 import jp.co.SurveyMaker.Dto.CategoryContentDto;
 import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
+import jp.co.SurveyMaker.Form.QuestionLinkForm;
 import jp.co.SurveyMaker.Form.QuestionLinkUpdateForm;
 import jp.co.SurveyMaker.Service.SurveyCategoryService;
 import jp.co.SurveyMaker.Service.SurveyContentService;
+import jp.co.SurveyMaker.Service.SurveyQuestionLinkService;
 import jp.co.SurveyMaker.Service.SurveyQuestionService;
 import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
+import jp.co.SurveyMaker.Service.Entity.SurveyQuestionLink;
 import jp.co.SurveyMaker.Service.Entity.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +47,9 @@ public class SurveyQuestionLinkController {
 	@Autowired
 	private SurveyCategoryService surveyCategoryService;
 	
+	@Autowired
+	private SurveyQuestionLinkService surveyQuestionLinkService;
+	
 	@GetMapping("/surveyContentDetail/questionLinkRegist")
 	public ModelAndView questionLinkRegist(
 			HttpServletRequest request,
@@ -58,23 +64,16 @@ public class SurveyQuestionLinkController {
 		QuestionLinkUpdateForm questionLinkUpdateForm = new QuestionLinkUpdateForm();
 		List<SurveyQuestion> questionLst = surveyQuestionService.getSurveyQuestionByContentIdOrderByOrderNo(contentId);
 		List<QuestionContentUpdateForm> formLst = new ArrayList<QuestionContentUpdateForm>();
-		Integer answerTotalCnt = 0;
 		if(questionLst != null && questionLst.size() != 0 ) {
 			for(SurveyQuestion question : questionLst) {
 				QuestionContentUpdateForm questionContentUpdateForm = new QuestionContentUpdateForm();
 				this.convertEntityToQuestionForm(question, questionContentUpdateForm);
-				
-				if(questionContentUpdateForm.getAnswerContentLst() != null ) {
-					answerTotalCnt = answerTotalCnt + questionContentUpdateForm.getAnswerContentLst().size();
-				}
 				formLst.add(questionContentUpdateForm);
 			}
 		}
 		questionLinkUpdateForm.setQuestionFormLst(formLst);
-		questionLinkUpdateForm.setId(null);
 		questionLinkUpdateForm.setSurveyManagementId(contentId);
 		mav.addObject("questionLinkUpdateForm", questionLinkUpdateForm);
-		mav.addObject("answerTotalCnt", answerTotalCnt);
 		
 		mav.addObject("linkTypeMap", Stream.of(LinkType.values()).collect(Collectors.toMap(t->t.getCode(),  t->t.getDisplay())));
 		
@@ -82,8 +81,6 @@ public class SurveyQuestionLinkController {
 		Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
 		List<CategoryContentDto> contentLst = (new Gson()).fromJson(surveyCategoryService.getSurveyCategoryByContentId(contentId).get(0).getSurveyCategoryContent(), listType);  
 		mav.addObject("surveyResultLst", contentLst);
-		
-		
 		
 		mav.setViewName("/questionLinkRegist");
 		
@@ -110,26 +107,98 @@ public class SurveyQuestionLinkController {
 			HttpSession session ,
 			QuestionLinkUpdateForm questionLinkUpdateForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		surveyContentService.getSurveyContentByIdAndUserId(questionLinkUpdateForm.getSurveyManagementId(), user.getId());
 		
-		mav.addObject("questionLinkUpdateForm", new QuestionLinkUpdateForm());
+		List<SurveyQuestionLink> questionLinkLst = new ArrayList<SurveyQuestionLink>();
+		if(questionLinkUpdateForm.getQuestionLinkLst() != null && questionLinkUpdateForm.getQuestionLinkLst().size() != 0 ) {
+			this.convertQuestionLinkFormToEntity(questionLinkUpdateForm.getQuestionLinkLst(), questionLinkLst,questionLinkUpdateForm.getSurveyManagementId());
+			surveyQuestionLinkService.surveyQuestionLinkLstUpdate(questionLinkLst);
+		}
+		
 		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
 		
 		return mav;
 	}
 	
+	private void convertQuestionLinkFormToEntity(List<QuestionLinkForm> questionLinkFormLst,
+			List<SurveyQuestionLink> questionLinkLst, Integer contentId) {
+		if(questionLinkFormLst != null && questionLinkFormLst.size() !=0 ) {
+			questionLinkFormLst.forEach( form ->{
+				SurveyQuestionLink questionLink = new SurveyQuestionLink();
+				questionLink.setId(form.getId());
+				questionLink.setSurveyManagementId(contentId);
+				questionLink.setSurveyQuestionId(form.getQuestionId());
+				questionLink.setAnswerId(form.getAnswerId());
+				questionLink.setLinkType(form.getLinkType());
+				questionLink.setLinkTo(form.getLinkTo());
+				questionLinkLst.add(questionLink);
+			});
+		}
+	}
+
 	@GetMapping("/surveyContentDetail/questionLinkUpdate")
 	public ModelAndView questionLinkUpdate(
 			HttpServletRequest request,
 			HttpSession session ,
-			@RequestParam(value="question", required = true, defaultValue="-1") Integer question) throws Exception {
+			@RequestParam(value="contentId", required = true, defaultValue="-1") Integer contentId) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
+		mav.addObject("survey", survey);
 		
-		mav.addObject("questionLinkUpdateForm", new QuestionLinkUpdateForm());
+		QuestionLinkUpdateForm questionLinkUpdateForm = new QuestionLinkUpdateForm();
+		List<SurveyQuestion> questionLst = surveyQuestionService.getSurveyQuestionByContentIdOrderByOrderNo(contentId);
+		List<QuestionContentUpdateForm> formLst = new ArrayList<QuestionContentUpdateForm>();
+		if(questionLst != null && questionLst.size() != 0 ) {
+			for(SurveyQuestion question : questionLst) {
+				QuestionContentUpdateForm questionContentUpdateForm = new QuestionContentUpdateForm();
+				this.convertEntityToQuestionForm(question, questionContentUpdateForm);
+				formLst.add(questionContentUpdateForm);
+			}
+		}
+		questionLinkUpdateForm.setQuestionFormLst(formLst);
+		
+		List<SurveyQuestionLink> questionLinkLst = surveyQuestionLinkService.getSurveyQuestionLinkLst(contentId);
+		List<QuestionLinkForm> linkFormLst = new ArrayList<QuestionLinkForm>();
+		if(questionLinkLst != null && questionLinkLst.size() != 0 ) {
+			for(SurveyQuestionLink link : questionLinkLst) {
+				QuestionLinkForm linkForm = new QuestionLinkForm();
+				this.convertEntityToQuestionLinkForm(link, linkForm);
+				linkFormLst.add(linkForm);
+			}
+		}
+		questionLinkUpdateForm.setQuestionLinkLst(linkFormLst);
+		
+		questionLinkUpdateForm.setSurveyManagementId(contentId);
+		mav.addObject("questionLinkUpdateForm", questionLinkUpdateForm);
+		
+		mav.addObject("linkTypeMap", Stream.of(LinkType.values()).collect(Collectors.toMap(t->t.getCode(),  t->t.getDisplay())));
+		
+		// カテゴリー評価結果コンテンツ
+		Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
+		List<CategoryContentDto> contentLst = (new Gson()).fromJson(surveyCategoryService.getSurveyCategoryByContentId(contentId).get(0).getSurveyCategoryContent(), listType);  
+		mav.addObject("surveyResultLst", contentLst);
+
+		mav.addObject(LinkType.NEXT_QUESTION.name(), LinkType.NEXT_QUESTION);
+		mav.addObject(LinkType.SURVEY_RESULT.name(), LinkType.SURVEY_RESULT);
+		
 		mav.setViewName("/questionLinkUpdate");
 		
 		return mav;
 	}
 	
+	private void convertEntityToQuestionLinkForm(SurveyQuestionLink link, QuestionLinkForm linkForm) {
+		linkForm.setId(link.getId());
+		linkForm.setSurveyManagementId(link.getSurveyManagementId());
+		linkForm.setAnswerId(link.getAnswerId());
+		linkForm.setQuestionId(link.getSurveyQuestionId());
+		linkForm.setLinkType(link.getLinkType());
+		linkForm.setLinkTo(link.getLinkTo());
+	}
+
 	@PostMapping("/surveyContentDetail/questionLinkUpdate/exec")
 	public ModelAndView questionLinkUpdateExec(
 			HttpServletRequest request,
@@ -137,7 +206,16 @@ public class SurveyQuestionLinkController {
 			QuestionLinkUpdateForm questionLinkUpdateForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
-		mav.addObject("questionLinkUpdateForm", new QuestionLinkUpdateForm());
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		surveyContentService.getSurveyContentByIdAndUserId(questionLinkUpdateForm.getSurveyManagementId(), user.getId());
+		
+		List<SurveyQuestionLink> questionLinkLst = new ArrayList<SurveyQuestionLink>();
+		if(questionLinkUpdateForm.getQuestionLinkLst() != null && questionLinkUpdateForm.getQuestionLinkLst().size() != 0 ) {
+			this.convertQuestionLinkFormToEntity(questionLinkUpdateForm.getQuestionLinkLst(), questionLinkLst,questionLinkUpdateForm.getSurveyManagementId());
+			surveyQuestionLinkService.surveyQuestionLinkLstUpdate(questionLinkLst);
+		}
+		
 		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
 		
 		return mav;
