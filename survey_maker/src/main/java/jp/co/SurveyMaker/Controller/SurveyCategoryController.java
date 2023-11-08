@@ -217,7 +217,7 @@ public class SurveyCategoryController {
 		mav.addObject("survey", survey);
 		
 		SurveyCategoryUpdateForm surveyCategoryUpdateForm = new SurveyCategoryUpdateForm();
-		this.convertEntityToCategoryForm(category, surveyCategoryUpdateForm);
+		this.convertEntityToCategoryForm(category, surveyCategoryUpdateForm, survey.getSurveyPatternId());
 		
 		mav.addObject("surveyCategoryUpdateForm", surveyCategoryUpdateForm);
 		mav.setViewName("/surveyCategoryUpdate");
@@ -226,42 +226,45 @@ public class SurveyCategoryController {
 	}
 	
 	// Entityからフォームへ変換
-	private void convertEntityToCategoryForm(SurveyCategory category, SurveyCategoryUpdateForm surveyCategoryUpdateForm) {
+	private void convertEntityToCategoryForm(SurveyCategory category, SurveyCategoryUpdateForm surveyCategoryUpdateForm, Integer patternId) {
 		surveyCategoryUpdateForm.setId(category.getId());
 		surveyCategoryUpdateForm.setSurveyManagementId(category.getSurveyManagementId());
 		surveyCategoryUpdateForm.setSurveyCategoryName(category.getSurveyCategoryName());
-		surveyCategoryUpdateForm.setSurveySummaryDecidePoint(category.getSurveySummaryDecidePoint());
-		surveyCategoryUpdateForm.setSurveySummaryTitleAbove(category.getSurveySummaryTitleAbove());
-		surveyCategoryUpdateForm.setSurveySummaryDetailAbove(category.getSurveySummaryDetailAbove());
-		surveyCategoryUpdateForm.setSurveySummaryImageAbove(category.getSurveySummaryImageAbove());
-		surveyCategoryUpdateForm.setSurveySummaryTitleBelow(category.getSurveySummaryTitleBelow());
-		surveyCategoryUpdateForm.setSurveySummaryDetailBelow(category.getSurveySummaryDetailBelow());
-		surveyCategoryUpdateForm.setSurveySummaryImageBelow(category.getSurveySummaryImageBelow());
-		// 総合評価画像(Above)
-		try {
-			String imgFileName = category.getSurveySummaryImageAbove();
-			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
-									+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_ABOVE + FileUtil.FILE_DIRECTORY_DELIMITER 
-									+ imgFileName;
-			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
-			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
-					+ Base64.getEncoder().encodeToString(imgByte);
-			surveyCategoryUpdateForm.setSurveySummaryImageAboveBase64(encodedImage);
-		} catch (IOException e) {
-			log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
-		}
-		// 総合評価画像(Below)
-		try {
-			String imgFileName = category.getSurveySummaryImageBelow();
-			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
-									+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_BELOW + FileUtil.FILE_DIRECTORY_DELIMITER 
-									+ imgFileName;
-			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
-			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
-					+ Base64.getEncoder().encodeToString(imgByte);
-			surveyCategoryUpdateForm.setSurveySummaryImageBelowBase64(encodedImage);
-		} catch (IOException e) {
-			log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
+		
+		if(patternId !=CommonConstants.PARTTERN_FLOW && patternId !=CommonConstants.PARTTERN_COMPLEX_TOTAL) {
+			surveyCategoryUpdateForm.setSurveySummaryDecidePoint(category.getSurveySummaryDecidePoint());
+			surveyCategoryUpdateForm.setSurveySummaryTitleAbove(category.getSurveySummaryTitleAbove());
+			surveyCategoryUpdateForm.setSurveySummaryDetailAbove(category.getSurveySummaryDetailAbove());
+			surveyCategoryUpdateForm.setSurveySummaryImageAbove(category.getSurveySummaryImageAbove());
+			surveyCategoryUpdateForm.setSurveySummaryTitleBelow(category.getSurveySummaryTitleBelow());
+			surveyCategoryUpdateForm.setSurveySummaryDetailBelow(category.getSurveySummaryDetailBelow());
+			surveyCategoryUpdateForm.setSurveySummaryImageBelow(category.getSurveySummaryImageBelow());
+			// 総合評価画像(Above)
+			try {
+				String imgFileName = category.getSurveySummaryImageAbove();
+				String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
+										+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_ABOVE + FileUtil.FILE_DIRECTORY_DELIMITER 
+										+ imgFileName;
+				byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+				String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+						+ Base64.getEncoder().encodeToString(imgByte);
+				surveyCategoryUpdateForm.setSurveySummaryImageAboveBase64(encodedImage);
+			} catch (IOException e) {
+				log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
+			}
+			// 総合評価画像(Below)
+			try {
+				String imgFileName = category.getSurveySummaryImageBelow();
+				String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
+										+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_BELOW + FileUtil.FILE_DIRECTORY_DELIMITER 
+										+ imgFileName;
+				byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+				String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+						+ Base64.getEncoder().encodeToString(imgByte);
+				surveyCategoryUpdateForm.setSurveySummaryImageBelowBase64(encodedImage);
+			} catch (IOException e) {
+				log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
+			}
 		}
 		
 		// カテゴリーコンテンツ
