@@ -117,7 +117,7 @@ public class SurveyQuestionLinkController {
 			surveyQuestionLinkService.surveyQuestionLinkLstUpdate(questionLinkLst);
 		}
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionLinkUpdateForm.getSurveyManagementId());
 		
 		return mav;
 	}
@@ -216,7 +216,7 @@ public class SurveyQuestionLinkController {
 			surveyQuestionLinkService.surveyQuestionLinkLstUpdate(questionLinkLst);
 		}
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionLinkUpdateForm.getSurveyManagementId());
 		
 		return mav;
 	}

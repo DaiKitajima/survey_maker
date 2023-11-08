@@ -25,6 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
+import jp.co.SurveyMaker.Dto.QuestionOrderDto;
 import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
 import jp.co.SurveyMaker.Service.SurveyCategoryService;
 import jp.co.SurveyMaker.Service.SurveyContentService;
@@ -108,7 +109,7 @@ public class SurveyQuestionController {
 										+ FileUtil.FILE_DIRECTORY_DELIMITER + questionId + FileUtil.FILE_DIRECTORY_DELIMITER;
 		FileUtil.registTargetFile(savePath, CommonConstants.SAVA_IMG_NAME_QUESTION + questionContentUpdateForm.getQuestionOrderNo() , questionContentUpdateForm.getQuestionImgFile());
 
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId());
 		
 		return mav;
 	}
@@ -232,7 +233,7 @@ public class SurveyQuestionController {
 			FileUtil.registTargetFile(savePath, CommonConstants.SAVA_IMG_NAME_QUESTION + questionContentUpdateForm.getQuestionOrderNo() , questionContentUpdateForm.getQuestionImgFile());
 		}
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId());
 		return mav;
 	}
 	
@@ -240,14 +241,16 @@ public class SurveyQuestionController {
 	public ModelAndView questionContentDelete(
 			HttpServletRequest request,
 			HttpSession session ,
-			@RequestParam(value="questionIdLst", required = true, defaultValue="-1") List<Integer> questionIdLst) throws Exception {
+			@RequestParam(value="questionIdLst", required = true) List<Integer> questionIdLst) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		Integer contentId=-1;
 		// セッションからユーザ情報取得
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
 		if(questionIdLst != null && questionIdLst.size() != 0 ) {
 			for(Integer questionId : questionIdLst) {
 				try {
 					SurveyQuestion question = surveyQuestionService.getSurveyQuestionById(questionId);
+					contentId = question.getSurveyManagementId();
 					// ユーザ所属のコンテンツか検証
 					surveyContentService.getSurveyContentByIdAndUserId(question.getSurveyManagementId(), user.getId());
 					// 質問コンテンツ削除
@@ -261,7 +264,30 @@ public class SurveyQuestionController {
 			}
 		}
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId="+ contentId);
+		return mav;
+	}
+	
+	@PostMapping("/surveyContentDetail/questionOrderUpdate")
+	public ModelAndView questionOrderUpdate(
+			HttpServletRequest request,
+			HttpSession session ,
+			Integer contentId,
+			String orderJson) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		// ユーザ所属のコンテンツか検証
+		surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
+		
+		Type listType = new TypeToken<ArrayList<QuestionOrderDto>>(){}.getType();
+		List<QuestionOrderDto> questionOrderLst = (new Gson()).fromJson(orderJson, listType);  
+		
+		// 質問順番更新
+		surveyQuestionService.questionOrderUpdate(questionOrderLst);
+		
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId="+ contentId);
 		return mav;
 	}
 }

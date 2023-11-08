@@ -152,7 +152,7 @@ public class SurveyContentController {
 			FileUtil.registTargetFile(savePath, surveyContentUpdateForm.getSurveyName(), surveyContentUpdateForm.getSurveyImgFile());
 		}
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=" + surveyContentUpdateForm.getId() );
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + surveyContentUpdateForm.getId() );
 		
 		return mav;
 	}

@@ -75,6 +75,9 @@ public class SurveyCategoryController {
 			SurveyCategoryUpdateForm surveyCategoryUpdateForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		surveyContentService.getSurveyContentByIdAndUserId(surveyCategoryUpdateForm.getSurveyManagementId(), user.getId());
+		
 		// カテゴリーデータ登録
 		SurveyCategory category = new SurveyCategory();
 		this.convertCategoryFormToEntity(surveyCategoryUpdateForm, category);
@@ -83,8 +86,7 @@ public class SurveyCategoryController {
 		// カテゴリー関連画像登録
 		this.surveyCategoryImageRegist(categoryId, surveyCategoryUpdateForm, category);
 		
-		mav.addObject("surveyCategoryUpdateForm", new SurveyCategoryUpdateForm());
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + surveyCategoryUpdateForm.getSurveyManagementId());
 		
 		return mav;
 	}
@@ -315,8 +317,7 @@ public class SurveyCategoryController {
 		// カテゴリー関連画像更新
 		this.surveyCategoryImageRegist(surveyCategoryUpdateForm.getId(), surveyCategoryUpdateForm, category);
 		
-		mav.addObject("surveyCategoryUpdateForm", new SurveyCategoryUpdateForm());
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + surveyCategoryUpdateForm.getSurveyManagementId() );
 		
 		return mav;
 	}
@@ -334,7 +335,7 @@ public class SurveyCategoryController {
 		
 		surveyCategoryService.surveyCategoryDelete(categoryId);
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + category.getSurveyManagementId());
 		
 		return mav;
 	}

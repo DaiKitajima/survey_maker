@@ -34,7 +34,33 @@ $(function(){
 		$('#deleteDataURL').val(url); 
 		$("#dataDeleteConfirmDialog").modal("show");
 	});
-
+	// 質問削除確認
+	$('#questionDelBtn').on('click', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		var questionIdLst = [];
+	    // チェックされているチェックボックスの値を取得
+		$(".checkItems:checked").each(function(){
+			questionIdLst.push($(this).val());
+		});
+		
+		// チェックボックスがひとつでも未チェックしたら、メッセージ出す
+	    if(questionIdLst.length == 0) {
+	    	alert("削除対象を選択してください。");
+	    }else{
+			url = url + "?questionIdLst=" + questionIdLst;
+			$('#deleteDataURL').val(url); 
+			$("#dataDeleteConfirmDialog").modal("show");
+		}
+	});
+	// 軸削除確認
+	$('#categoryDelBtn').on('click', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		$('#deleteDataURL').val(url); 
+		$("#dataDeleteConfirmDialog").modal("show");
+	});
+	
 	$('#dataDeleteConfirmDialogSubmit').on('click', function() {
 		location.href = $('#deleteDataURL').val();
 		$(this).prop("disabled", true);
@@ -73,6 +99,34 @@ $(function(){
 		$(filePreviewClass).show();
 		$(filePreviewClass).children("input").attr("disabled",false);
 	});
+	
+	$("#questionContentTable").tableDnD({
+		onDragClass: "reorder_rows_onDragClass"
+	});
+	
+	$("#questionOrderUpdateForm").on('submit', function(e) {
+		e.preventDefault();
+		var orderArray = [];
+		$("table#questionContentTable tbody tr").each(function(index){
+			var questionId = -1;
+			$(this).find(".checkItems").each(function(){
+				questionId = $(this).prop("value");
+			});
+			var orderNo = index + 1;
+			orderArray.push({"questionId": questionId,"orderNo": orderNo});
+		});
+		var newInput = $('<input>').attr({
+						type: 'hidden',
+						name: 'orderJson',
+						value: JSON.stringify(orderArray)
+						});
+		$(this).append(newInput);
+		$(this).unbind('submit').submit();
+		// ボタン非活性にする
+		$('#questionOrderUpdateBtn').prop("disabled",true);
+	});
+	
+	
 })
 
 // ページクリックイベント

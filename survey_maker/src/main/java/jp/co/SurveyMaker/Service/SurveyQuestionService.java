@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.co.SurveyMaker.Dto.QuestionOrderDto;
 import jp.co.SurveyMaker.Repository.SurveyQuestion.SurveyQuestionRepository;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,20 @@ public class SurveyQuestionService {
 	// 質問情報削除
 	public void surveyQuestionDelete(Integer questionId) throws Exception {
 		surveyQuestionRepository.deleteById(questionId);
+	}
+	
+	// 質問順番更新
+	public void questionOrderUpdate(List<QuestionOrderDto> questionOrderLst) throws Exception {
+		if(questionOrderLst != null && questionOrderLst.size() != 0) {
+			for(QuestionOrderDto question : questionOrderLst) {
+				try {
+					SurveyQuestion newQue = this.getSurveyQuestionById(question.getQuestionId());
+					newQue.setQuestionOrderNo(question.getOrderNo());
+					this.surveyQuestionUpdate(newQue);
+				} catch (Exception e) {
+					throw e;
+				}
+			}
+		}
 	}
 }

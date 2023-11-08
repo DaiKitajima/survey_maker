@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jp.co.SurveyMaker.Constants.CommonConstants;
+import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
 import jp.co.SurveyMaker.Dto.CategoryContentDto;
 import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
@@ -183,7 +186,7 @@ public class SurveyContentListController {
 		// 診断軸コンテンツフォーム設定
 		List<SurveyCategory> categoryLst =  surveyCategoryService.getSurveyCategoryByContentId(contentId);
 		List<SurveyCategoryUpdateForm> categoryFormLst = new ArrayList<SurveyCategoryUpdateForm>();
-		this.convertEntityToCategoryLstForm(categoryLst, categoryFormLst);
+		this.convertEntityToCategoryLstForm(categoryLst, categoryFormLst, survey.getSurveyPatternId());
 		surveyContentDetailForm.setCategoryLst(categoryFormLst);
 		
 		// 質問コンテンツフォーム設定
@@ -200,6 +203,11 @@ public class SurveyContentListController {
 		
 		List<SurveyPattern> patterns = surveyPatternService.getAllPattern();
 		mav.addObject("patternLst", patterns);
+		
+		mav.addObject("linkTypeLst", Stream.of(LinkType.values()).collect(Collectors.toMap(t->t.getCode(),  t->t.getDisplay())).entrySet().stream().toList());
+		
+		mav.addObject(LinkType.NEXT_QUESTION.name(), LinkType.NEXT_QUESTION);
+		mav.addObject(LinkType.SURVEY_RESULT.name(), LinkType.SURVEY_RESULT);
 		
 		mav.addObject("surveyContentDetailForm", surveyContentDetailForm );
 		mav.setViewName("/surveyContentDetail");
@@ -268,53 +276,57 @@ public class SurveyContentListController {
 	
 	// 診断軸コンテンツフォーム変換
 	private void convertEntityToCategoryLstForm(List<SurveyCategory> categoryLst,
-			List<SurveyCategoryUpdateForm> categoryFormLst) {
+			List<SurveyCategoryUpdateForm> categoryFormLst, Integer patternId) {
 		if( categoryLst!= null && categoryLst.size() != 0 ) {
 			 categoryLst.forEach(category ->{
 				 SurveyCategoryUpdateForm form = new SurveyCategoryUpdateForm();
-				 this.convertEntityToCategoryForm(category, form);
+				 this.convertEntityToCategoryForm(category, form, patternId);
 				 categoryFormLst.add(form);
 			 });
 		}
 	}
 
 	// 診断軸Entityからフォームへ変換
-	private void convertEntityToCategoryForm(SurveyCategory category, SurveyCategoryUpdateForm surveyCategoryUpdateForm) {
+	private void convertEntityToCategoryForm(SurveyCategory category, SurveyCategoryUpdateForm surveyCategoryUpdateForm, Integer patternId) {
 		surveyCategoryUpdateForm.setId(category.getId());
 		surveyCategoryUpdateForm.setSurveyManagementId(category.getSurveyManagementId());
 		surveyCategoryUpdateForm.setSurveyCategoryName(category.getSurveyCategoryName());
-		surveyCategoryUpdateForm.setSurveySummaryDecidePoint(category.getSurveySummaryDecidePoint());
-		surveyCategoryUpdateForm.setSurveySummaryTitleAbove(category.getSurveySummaryTitleAbove());
-		surveyCategoryUpdateForm.setSurveySummaryDetailAbove(category.getSurveySummaryDetailAbove());
-		surveyCategoryUpdateForm.setSurveySummaryImageAbove(category.getSurveySummaryImageAbove());
-		surveyCategoryUpdateForm.setSurveySummaryTitleBelow(category.getSurveySummaryTitleBelow());
-		surveyCategoryUpdateForm.setSurveySummaryDetailBelow(category.getSurveySummaryDetailBelow());
-		surveyCategoryUpdateForm.setSurveySummaryImageBelow(category.getSurveySummaryImageBelow());
-		// 総合評価画像(Above)
-		try {
-			String imgFileName = category.getSurveySummaryImageAbove();
-			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
-									+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_ABOVE + FileUtil.FILE_DIRECTORY_DELIMITER 
-									+ imgFileName;
-			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
-			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
-					+ Base64.getEncoder().encodeToString(imgByte);
-			surveyCategoryUpdateForm.setSurveySummaryImageAboveBase64(encodedImage);
-		} catch (IOException e) {
-			log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
-		}
-		// 総合評価画像(Below)
-		try {
-			String imgFileName = category.getSurveySummaryImageBelow();
-			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
-									+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_BELOW + FileUtil.FILE_DIRECTORY_DELIMITER 
-									+ imgFileName;
-			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
-			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
-					+ Base64.getEncoder().encodeToString(imgByte);
-			surveyCategoryUpdateForm.setSurveySummaryImageBelowBase64(encodedImage);
-		} catch (IOException e) {
-			log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
+		
+		// 総合評価部分
+		if(patternId !=CommonConstants.PARTTERN_FLOW && patternId !=CommonConstants.PARTTERN_COMPLEX_TOTAL) {
+			surveyCategoryUpdateForm.setSurveySummaryDecidePoint(category.getSurveySummaryDecidePoint());
+			surveyCategoryUpdateForm.setSurveySummaryTitleAbove(category.getSurveySummaryTitleAbove());
+			surveyCategoryUpdateForm.setSurveySummaryDetailAbove(category.getSurveySummaryDetailAbove());
+			surveyCategoryUpdateForm.setSurveySummaryImageAbove(category.getSurveySummaryImageAbove());
+			surveyCategoryUpdateForm.setSurveySummaryTitleBelow(category.getSurveySummaryTitleBelow());
+			surveyCategoryUpdateForm.setSurveySummaryDetailBelow(category.getSurveySummaryDetailBelow());
+			surveyCategoryUpdateForm.setSurveySummaryImageBelow(category.getSurveySummaryImageBelow());
+			// 総合評価画像(Above)
+			try {
+				String imgFileName = category.getSurveySummaryImageAbove();
+				String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
+										+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_ABOVE + FileUtil.FILE_DIRECTORY_DELIMITER 
+										+ imgFileName;
+				byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+				String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+						+ Base64.getEncoder().encodeToString(imgByte);
+				surveyCategoryUpdateForm.setSurveySummaryImageAboveBase64(encodedImage);
+			} catch (IOException e) {
+				log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
+			}
+			// 総合評価画像(Below)
+			try {
+				String imgFileName = category.getSurveySummaryImageBelow();
+				String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
+										+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_BELOW + FileUtil.FILE_DIRECTORY_DELIMITER 
+										+ imgFileName;
+				byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+				String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+						+ Base64.getEncoder().encodeToString(imgByte);
+				surveyCategoryUpdateForm.setSurveySummaryImageBelowBase64(encodedImage);
+			} catch (IOException e) {
+				log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
+			}
 		}
 		
 		// カテゴリーコンテンツ

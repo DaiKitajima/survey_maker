@@ -83,4 +83,16 @@ public class CommonConstants {
 	public static final String SAVA_IMG_PATH_SUMMARY_BELOW = "summary_result_below";
 	/** 質問順番使用 */
 	public static final String ORDER_NO_QUESTION = "Question";
+	
+	//==========================================================
+	// 診断軸パターン種別
+	//==========================================================
+	/** 単数 */
+	public static final Integer PARTTERN_SINGULAR = 1;
+	/** 複数(ポイント型) */
+	public static final Integer PARTTERN_COMPLEX_POINT = 2;
+	/** 複数(加算結果型) */
+	public static final Integer PARTTERN_COMPLEX_TOTAL = 3;
+	/** フロー */
+	public static final Integer PARTTERN_FLOW = 4;
 }

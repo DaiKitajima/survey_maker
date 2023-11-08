@@ -62,7 +62,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row" >
+							<div class="row" th:if="${survey.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW }">
 								<div class="col-12 mt-2 mb-2">
 									<span class="h6">回答採点</span><br>
 									<div class="row mb-2 ms-2" th:each="category,stat:${categoryLst}">

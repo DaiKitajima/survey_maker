@@ -5,6 +5,7 @@
 		<th:block th:replace="commonTop.html" />
 
 		<script th:src="@{/js/surveyContentList.js}"></script>
+    	
 		<title>診断コンテンツ詳細画面</title>
 	</head>
 
@@ -26,8 +27,8 @@
 				</div>
 
 			</div>
-			<th:block th:object="${surveyContentDetailForm}" >
-
+			<th:block th:object="${surveyContentDetailForm}" th:with="questionHead=${T(jp.co.SurveyMaker.Constants.CommonConstants).ORDER_NO_QUESTION}">
+				
 				<!-- コンテンツ基本情報 START -->
 				<div class="card shadow-lg mb-2">
 					<div class="card-header bg-white">
@@ -96,7 +97,7 @@
 									<span class="h6">診断軸</span>
 								</div>
 								<div>
-									<div class="">
+									<div class="" th:unless="*{(surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_SINGULAR || surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW) && !#lists.isEmpty(categoryLst) && #lists.size(categoryLst) >= 1}">
 										<a th:href="@{/surveyContentDetail/surveyCategoryRegist?contentId=__*{contentId}__}" class="btn btn-sm btn-success">
 											診断軸を追加する
 										</a>
@@ -121,7 +122,7 @@
 													</a>
 												</div>
 												<div>
-													<a th:href="@{/surveyContentDetail/surveyCategoryDelete?categoryId=__${category.id}__}" class="btn btn-sm btn-danger" style="width:100px;">
+													<a id="categoryDelBtn" th:href="@{/surveyContentDetail/surveyCategoryDelete?categoryId=__${category.id}__}" class="btn btn-sm btn-danger" style="width:100px;">
 														削除
 													</a>
 												</div>
@@ -133,7 +134,8 @@
 								<div class="card-body">
 
 									<!-- 総合評価 START -->
-									<div class="card mb-2">
+									<!-- 複数（加算結果型）、フローの場合、総合評価不要 -->
+									<div class="card mb-2" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW }">
 										<div class="card-header bg-white">
 											<span class="h6">総合評価</span>
 										</div>
@@ -178,9 +180,9 @@
 																	</span>
 																</div>
 																<div class="col-9">
-																	<span class="">
-																		<img id="contentImg3" th:src="${category.surveySummaryImageAboveBase64}" height="30" width="40" th:alt="${category.surveySummaryImageAbove}" class="img-thumbnail">
-																	</span>
+																	<a th:onclick="|showimage('contentImgAbove${stat.index}')|" class="btn btn-default btn-xs active">
+																		<img th:id="|contentImgAbove${stat.index}|" th:src="${category.surveySummaryImageAboveBase64}" height="30" width="40" th:alt="${category.surveySummaryImageAbove}" class="img-thumbnail">
+																	</a>
 																</div>
 															</div>
 														</div>
@@ -223,9 +225,9 @@
 																	</span>
 																</div>
 																<div class="col-9">
-																	<span class="">
-																		<img id="contentImg3" th:src="${category.surveySummaryImageBelowBase64}" height="30" width="40" th:alt="${category.surveySummaryImageBelow}" class="img-thumbnail">
-																	</span>
+																	<a th:onclick="|showimage('contentImgBelow${stat.index}')|" class="btn btn-default btn-xs active">
+																		<img th:id="|contentImgBelow${stat.index}|" th:src="${category.surveySummaryImageBelowBase64}" height="30" width="40" th:alt="${category.surveySummaryImageBelow}" class="img-thumbnail">
+																	</a>
 																</div>
 															</div>
 														</div>
@@ -243,42 +245,48 @@
 											<span class="h6">軸別診断結果</span>
 										</div>
 										<div class="card-body">
-											<table class="table">
-												<thead>
-													<tr>
-														<th>ポイント範囲</th>
-														<th>タイトル</th>
-														<th>評価内容</th>
-														<th>画像</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr th:each="result,stat:${category.categoryContentLst}">
-														<td class="align-middle">
-															<span th:text="|${result.pointFrom} ～ ${result.pointTo}点|">
-																80～100点
-															</span>
-														</td>
-														<td class="align-middle">
-															<span th:text="${result.surveyResult}">健康な身体を維持できています。</span>
-														</td>
-														<td class="align-middle">
-															<span th:text="${result.surveyResultDetail}">
-																エネルギーバランスがとれています。<br>
-																エネルギーバランスがとれています。<br>
-																エネルギーバランスがとれています。<br>
-																エネルギーバランスがとれています。
-															</span>
-														</td>
-														<td class="align-middle">
-															<span>
-																<img id="contentImg1" th:src="${result.surveyResultImgBase64}" height="30" width="40" th:alt="${result.surveyResultImage}" class="img-thumbnail">
-															</span>
-														</td>
-													</tr>
-												</tbody>
-
-											</table>
+											<!-- <div style="overflow-x: auto; width:100%;"> -->
+												<table class="table">
+													<thead>
+														<tr>
+															<th th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW }" style="width:10%;">ポイント範囲</th>
+															<th style="width:15%;">タイトル</th>
+															<th style="width:60%;">評価内容</th>
+															<th >画像</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="result,stat1:${category.categoryContentLst}">
+															<td class="align-middle" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
+																<span th:text="|${result.pointFrom} ～ ${result.pointTo}点|">
+																	80～100点
+																</span>
+															</td>
+															<td class="align-middle">
+																<span style="word-break: break-all;" th:text="${result.surveyResult}">
+																	健康な身体を維持できています。<br>
+																	健康な身体を維持できています。<br>
+																	健康な身体を維持できています。
+																</span>
+															</td>
+															<td class="align-middle">
+																<span style="word-break: break-all;" class="dd" th:text="${result.surveyResultDetail}">
+																	エネルギーバランスがとれています。<br>
+																	エネルギーバランスがとれています。<br>
+																	エネルギーバランスがとれています。<br>
+																	エネルギーバランスがとれています。
+																</span>
+															</td>
+															<td class="align-middle">
+																<a th:onclick="|showimage('contentResultImg${stat.index}_${stat1.index}')|" class="btn btn-default btn-xs active">
+																	<img th:id="|contentResultImg${stat.index}_${stat1.index}|" th:src="${result.surveyResultImgBase64}" height="30" width="40" th:alt="${result.surveyResultImage}" class="img-thumbnail">
+																</a>
+															</td>
+														</tr>
+													</tbody>
+	
+												</table>
+											<!-- </div> -->
 										</div>
 									</div>
 
@@ -298,10 +306,24 @@
 									<div class="col-6 d-flex justify-content-start ">
 										<div>
 											<a th:href="@{/surveyContentDetail/questionContentRegist?contentId=__*{contentId}__}" class="btn btn-sm btn-success me-1">質問登録</a>
-											<a th:href="@{/surveyContentDetail/questionContentDelete?questionIdLst=1,2}" class="btn btn-sm btn-danger me-1">質問削除</a>
-											<a th:href="@{/surveyContentDetail/questionLinkRegist?contentId=__*{contentId}__}" class="btn btn-sm btn-success me-1">リンク設定</a>
-											<a th:href="@{/surveyContentDetail/questionLinkUpdate?contentId=__*{contentId}__}" class="btn btn-sm btn-primary me-1">リンク編集</a>
+											<a id="questionDelBtn" th:href="@{/surveyContentDetail/questionContentDelete}" class="btn btn-sm btn-danger me-1">質問削除</a>
+											<!-- フローの場合のみ、リンク設定 -->
+											<th:block th:if="*{surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
+												<th:block th:if="*{#lists.size(questionLinkLst) > 0 }">
+													<a th:href="@{/surveyContentDetail/questionLinkUpdate?contentId=__*{contentId}__}" class="btn btn-sm btn-primary me-1">リンク編集</a>
+												</th:block>
+												<th:block th:unless="*{#lists.size(questionLinkLst) > 0 }">
+													<a th:href="@{/surveyContentDetail/questionLinkRegist?contentId=__*{contentId}__}" class="btn btn-sm btn-success me-1">リンク設定</a>
+												</th:block>
+											</th:block>
 										</div>
+									</div>
+									<!-- 質問2件以上の場合のみ、順番更新可能 -->
+									<div class="col-4 d-flex justify-content-start " th:if="*{#lists.size(questionFormLst) >= 2}">
+										<form action="/surveyContentDetail/questionOrderUpdate" method="post" id="questionOrderUpdateForm">
+											<input type="hidden" th:value="*{contentId}" name="contentId">
+											<button type="submit" class="btn btn-sm btn-success me-1" id="questionOrderUpdateBtn" style="width:150px;">今の質問順番で更新</button>
+										</form>
 									</div>
 								</div>
 
@@ -313,11 +335,11 @@
 
 								<!-- 質問コンテンツ一覧 -->
 								<div id="questionContent" class="collapse child-nav show" >
-									<table class="table table-bordered table-hover mt-2 mb-4">
+									<table class="table table-bordered table-hover mt-2 mb-4" id="questionContentTable" data-use-row-attr-func="true" data-reorderable-rows="true">
 										<thead class="table-secondary">
 											<tr>
 												<th class="align-middle" style="width:30px;" onclick="getElementById('checkAll').click();">
-													<input type="checkbox" class="checkboxesStyle ml-2" id="checkAll" name="checkAll" value="1" onclick="this.click()">
+													<input type="checkbox" class="checkboxesStyle ml-2" id="checkAll" name="checkAll" value="-1" onclick="this.click()">
 												</th>
 												<th class="align-middle" style="white-space: nowrap;">
 													編集
@@ -328,10 +350,10 @@
 												<th class="align-middle" style="white-space: nowrap;">
 													回答
 												</th>
-												<th class="align-middle" style="white-space: nowrap;">
+												<th class="align-middle" style="white-space: nowrap;" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
 													ポイント採点
 												</th>
-												<th class="align-middle" style="white-space: nowrap;">
+												<th class="align-middle" style="white-space: nowrap;" th:if="*{surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
 													リンク
 												</th>
 												<th class="align-middle" style="white-space: nowrap;">
@@ -341,8 +363,8 @@
 										</thead>
 										<tbody>
 											<tr th:each="question,stat: *{questionFormLst}">
-												<td class="align-middle" th:onclick="getElementById('recordData01').click();">
-													<input type="checkbox" class="checkboxesStyle ml-2 checkItems" id="recordData01" th:value="${question.id}" onclick="this.click()">
+												<td class="align-middle" th:onclick="|getElementById('recordData${question.id}').click();|">
+													<input type="checkbox" class="checkboxesStyle ml-2 checkItems" th:id="recordData__${question.id}__" th:value="${question.id}" onclick="this.click()">
 												</td>
 												<td class="align-middle text-center" style="white-space: nowrap;">
 													<a th:href="@{/surveyContentDetail/questionContentUpdate?questionId=__${question.id}__}">
@@ -350,6 +372,7 @@
 													</a>
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;">
+													<input type="hidden" th:value="${question.questionOrderNo}" id="questionOrderNo">
 													<span th:text="|${stat.count}、${question.questionTitle}|"></span>
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;">
@@ -359,7 +382,7 @@
 														</li>
 													</ul>
 												</td>
-												<td class="align-middle text-left" style="white-space: nowrap;">
+												<td class="align-middle text-left" style="white-space: nowrap;" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
 													<div th:each="answer,stat1:${question.answerContentLst}">
 														<span class="h6" th:text="|回答${stat1.count}|"></span>
 														<ul>
@@ -368,22 +391,49 @@
 																	<span th:text="|${category.surveyCategoryName}：${answer.answerPointLst.^[categoryId==__${category.id}__].point}|"></span>
 																</th:block>
 																<th:block th:unless="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
-																	<span th:text="|${category.surveyCategoryName}：設定なし|"></span>
+																	<span class="text-danger" th:text="|${category.surveyCategoryName}：-|"></span>
 																</th:block>
 															</li>
 														</ul>
 													</div>
 												</td>
-												<td class="align-middle text-left" style="white-space: nowrap;">
-													<ul>
-														<li th:each="answer,stat2:${question.answerContentLst}">
-															<span th:text="|回答${stat2.count}|"></span>
-														</li>
-													</ul>
+												<td class="align-middle text-left" style="white-space: nowrap;" th:if="*{surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
+													<div th:each="answer,stat1:${question.answerContentLst}">
+														<span class="h6" th:text="|回答${stat1.count}|"></span>
+														<ul>
+															<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}" th:with="answerLinkType=*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType},answerLinkTo=*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkTo}">
+																<li>
+																	<span th:text="|リンク種別：${linkTypeLst.^[key == __${answerLinkType}__].value}|"></span>
+																</li>
+																<li>
+																	<th:block th:if="${NEXT_QUESTION.code == answerLinkType }">
+																		<th:block th:if="*{questionFormLst.^[id == __${answerLinkTo}__]}">
+																			<span th:text="|リンク先：${questionHead}*{questionFormLst.^[id == __${answerLinkTo}__].questionOrderNo}|"></span>
+																		</th:block>
+																		<th:block th:unless="*{questionFormLst.^[id == __${answerLinkTo}__]}">
+																			<span class="text-danger">リンク先：-</span>
+																		</th:block>
+																	</th:block>
+																	<th:block th:if="${SURVEY_RESULT.code == answerLinkType }">
+																		<th:block th:if="*{categoryLst[0].categoryContentLst.^[id == __${answerLinkTo}__]}">
+																			<span th:text="|リンク先：診断結果[*{categoryLst[0].categoryContentLst.^[id == __${answerLinkTo}__].surveyResult}]|"></span>
+																		</th:block>
+																		<th:block th:unless="*{categoryLst[0].categoryContentLst.^[id == __${answerLinkTo}__]}">
+																			<span class="text-danger">リンク先：-</span>
+																		</th:block>
+																	</th:block>
+																</li>
+															</th:block>
+															<th:block th:unless="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}">
+																<li><span class="text-danger">リンク種別：-</span></li>
+																<li><span class="text-danger">リンク先：-</span></li>
+															</th:block>
+														</ul>
+													</div>
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;">
-													<a th:onclick="|showimage('contentImg__${stat.index}__')|" class="btn btn-default btn-xs active">
-														<img th:id="contentImg__${stat.index}__" th:src="${question.questionImageBase64}" height="40" width="50" th:alt="${question.questionImage}" class="img-thumbnail">
+													<a th:onclick="|showimage('contentQuestionImg__${stat.index}__')|" class="btn btn-default btn-xs active">
+														<img th:id="contentQuestionImg__${stat.index}__" th:src="${question.questionImageBase64}" height="40" width="50" th:alt="${question.questionImage}" class="img-thumbnail">
 													</a>
 												</td>
 											</tr>
@@ -398,6 +448,6 @@
 		</div>
 		<!-- ダイアログのインクルード -->
 		<th:block th:replace="/showImgModal.html" />
-
+		<th:block th:replace="dataDeleteConfirmDialog.html" />
 	</body>
 </html>

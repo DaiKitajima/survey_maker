@@ -8,7 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
 import jp.co.SurveyMaker.Form.SurveyCategoryUpdateForm;
 import jp.co.SurveyMaker.Form.SurveySummaryResultUpdateForm;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +37,7 @@ public class SurveySummaryResultController {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.addObject("surveyResultUpdateForm", new SurveySummaryResultUpdateForm());
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + surveyResultUpdateForm.getSurveyManagementId());
 		
 		return mav;
 	}
@@ -64,20 +63,7 @@ public class SurveySummaryResultController {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.addObject("surveyCategoryUpdateForm", new SurveyCategoryUpdateForm());
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
-		
-		return mav;
-	}
-	
-	@GetMapping("/surveyContentDetail/summaryResultDelete")
-	public ModelAndView questionContentDelete(
-			HttpServletRequest request,
-			HttpSession session ,
-			@RequestParam(value="id", required = true, defaultValue="-1") Integer id) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		
-		mav.addObject("questionContentUpdateForm", new QuestionContentUpdateForm());
-		mav.setViewName("redirect:/surveyContentList/contentDetail?id=1");
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + surveyResultUpdateForm.getSurveyManagementId());
 		
 		return mav;
 	}
