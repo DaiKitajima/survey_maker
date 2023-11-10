@@ -6,10 +6,13 @@ import lombok.ToString;
 
 @Getter @Setter
 @ToString
-public class AnswerPointDto {
+public class SurveyCategoryResultDto {
 	
     private Integer categoryId;
     
-    private Integer point;
+    private String categoryName;
     
+    private Integer categoryTotalPoint;
+    
+    private Integer categoryResultId;
 }

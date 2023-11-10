@@ -291,7 +291,7 @@ public class SurveyCategoryController {
 							+ Base64.getEncoder().encodeToString(imgByte);
 					dto.setSurveyResultImgBase64(encodedImage);
 				} catch (IOException e) {
-					log.error("総合評価画像(判定点数以上)ファイル取得にエラーが発生しました。",e);
+					log.error("診断軸の評価結果画像ファイル取得にエラーが発生しました。",e);
 				}
 				
 				categoryContentLst.add(dto);

@@ -28,14 +28,14 @@ public class SurveyResult {
 	    @Column(name = "survey_management_id")
 	    private Integer surveyManagementId;
 	    
-	    @Column(name = "key")
-	    private String key;
+	    @Column(name = "survey_key")
+	    private String surveyKey;
 	    
-	    @Column(name = "survey_summary_result_id")
-	    private Integer surveySummaryResultId;
+	    @Column(name = "summary_result_content")
+	    private String summaryResultContent;
 	    
-	    @Column(name = "result_content")
-	    private String resultContent;
+	    @Column(name = "survey_result_content")
+	    private String surveyResultContent;
 	    
 	    @Column(name = "expire_date")
 	    private LocalTime  expireDate;

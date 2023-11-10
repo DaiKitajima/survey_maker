@@ -56,4 +56,15 @@ public class LoginController {
 
 		return mav;
 	}
+	
+	@GetMapping("/logout")
+	public ModelAndView logout(HttpSession session) throws Exception {
+
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:/");
+
+		session.removeAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+
+		return mav;
+	}
 }

@@ -3,12 +3,16 @@ package jp.co.SurveyMaker.Service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Dto.QuestionOrderDto;
 import jp.co.SurveyMaker.Repository.SurveyQuestion.SurveyQuestionRepository;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
+import jp.co.SurveyMaker.Util.FileUtil;
+import jp.co.SurveyMaker.Util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +24,9 @@ public class SurveyQuestionService {
 	@Autowired
 	private  SurveyQuestionRepository surveyQuestionRepository;
 	
+	 @Value("${server.image.save.path}")
+	 private String imgSavePath;
+	 
 	// コンテンツIDより、各質問を取得
 	public List<SurveyQuestion> getSurveyQuestionByContentId(Integer contentId) throws Exception {
 		return surveyQuestionRepository.findBySurveyManagementIdAndDeleteFlgFalse(contentId);
@@ -57,7 +64,18 @@ public class SurveyQuestionService {
 				try {
 					SurveyQuestion newQue = this.getSurveyQuestionById(question.getQuestionId());
 					newQue.setQuestionOrderNo(question.getOrderNo());
+					String oldQuestionImg = "";
+					if( StringUtil.isNotEmpty(newQue.getQuestionImage()) ){
+						oldQuestionImg = newQue.getQuestionImage();
+						String externalKey = newQue.getQuestionImage().substring(newQue.getQuestionImage().lastIndexOf("."));
+						newQue.setQuestionImage(CommonConstants.SAVA_IMG_NAME_QUESTION + newQue.getQuestionOrderNo() + externalKey );
+					}
 					this.surveyQuestionUpdate(newQue);
+					
+					String savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + newQue.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_QUESTION
+							+ FileUtil.FILE_DIRECTORY_DELIMITER + newQue.getId() + FileUtil.FILE_DIRECTORY_DELIMITER;
+					FileUtil.renameTargetFile(savePath, oldQuestionImg, newQue.getQuestionImage());
+					
 				} catch (Exception e) {
 					throw e;
 				}

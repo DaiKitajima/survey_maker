@@ -243,6 +243,35 @@ public class FileUtil {
 	}
 
 	/**
+	 * ファイルリネーム
+	 *
+	 * @param targetDirStr 保存先ファイルパス
+	 * 	@param targetFileName	保存ファイル名
+	 * 	@param uploadFile	リネームファイル名
+	 * @throws Exception
+	 */
+	public static void renameTargetFile(String targetDirStr, String targetFileName, String renameFileName) throws Exception {
+			
+			File targetFile = new File(targetDirStr + targetFileName);
+
+			// ①保存ディレクトリ存在チェック
+			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			if(targetFile.exists()) {
+				// ファイルが存在する場合
+				try {
+					File renameFile = new File(targetDirStr + renameFileName);
+					targetFile.renameTo(renameFile);
+				} catch(Exception e) {
+					logger.error("ファイルリネームにエラーが発生しました。", e);
+					throw e;
+				}
+			} else {
+				throw new Exception("ソースファイルが存在していません。");
+			}
+	}
+	
+	
+	/**
 	 * 引数で指定されたバイナリデータを、レスポンスのストリームに出力しダウンロード処理を実行する
 	 *
 	 * @param fileName ダウンロードファイルの名称

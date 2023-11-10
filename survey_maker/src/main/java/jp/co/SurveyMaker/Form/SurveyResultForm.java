@@ -1,5 +1,7 @@
 package jp.co.SurveyMaker.Form;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,7 +16,17 @@ public class SurveyResultForm {
 	
 	private String key;
 	
-	private String resultContent;
+	// 診断コンテンツ
+	private SurveyContentUpdateForm survey;
 	
-	private SurveySummaryResultUpdateForm summary;
+	// 総合評価タイトル
+    private String surveySummaryTitle;
+    // 総合評価画像
+    private String surveySummaryImageBase64;
+    // 総合評価詳細
+    private String surveySummaryDetail;
+    
+	// 診断軸結果リスト
+	private List<CategoryResultForm> categoryResultLst;
+    
 }

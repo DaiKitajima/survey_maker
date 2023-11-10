@@ -1,43 +1,50 @@
 $(function(){
-	var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-	var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-	  return new bootstrap.Popover(popoverTriggerEl)
-	})
-	// =============================================
-	// 連続登録用チェックボックス制御
-	// =============================================
-	// checkitemsのclass属性のものを全選択する
-	$('#checkAll').on('click', function() {
-		$('.checkItems').prop('checked', $(this).is(':checked'));
-
-	});
-	
-	// チェックボックスの全選択・解除
-	$('.checkItems').on('click', function() {
-		checkBox = ".checkItems";
-		// 全チェックボックスの数を取得
-		var boxCount = $(checkBox).length;
-	    // チェックされているチェックボックスの数を取得
-		var checked  = $(checkBox + ':checked').length;
-		// チェックボックスがひとつでも外れたら、全選択のチェックボックスを外す
-	    if(checked === boxCount) {
-	    	$('#checkAll').prop('checked', true);
-	    } else {
-			$('#checkAll').prop('checked', false);
-	    }
-	});
 	
 	/* スクリプトコピーボタン押下*/
+	$("#resultUrl").val( window.location.protocol + '//' + window.location.host + $("#resultUrl").val() );
 	$("#urlCopyBtn").click(function(){
 		var copyText = $("#resultUrl").val();
 		navigator.clipboard.writeText(copyText);
 		alert("クリップボードにコピーしました。");
 	});
 
-	/* フローパタンの場合、回答リンク押下時*/
-	$("#nextQuestion").click(function(e){
-		e.preventDefault();
-		alert("ajaxで次質問取得して設定");
+	$('#nextQuestion').on('click', function() {
+		var radioChk = false;
+		var index = $("div.--current").prop("id");
+		var questionCnt = $("#questionCnt").val();
+		$("div.questionContent"+ index +" input[type='radio']").each(function(){
+			if($(this).prop("checked")){
+				radioChk = true;
+			}
+		});
+		if(!radioChk){
+			alert("質問の回答を選択してください。");
+			return false;
+		}else{
+			// サブミート要否判断
+			if( questionCnt == parseInt(index)+1 ){
+				// ボタン非活性にする
+				$(this).prop("disabled",true);
+				$('#submitFormId').submit();
+			}else{
+				// プログレスバー
+				var nextIndex = parseInt(index)+1;
+				$("div.--current").addClass("--completed");
+				$("div.--current").removeClass("--current");
+				$("[id=" + nextIndex + "]").addClass("--current");
+				
+				// 当該質問を隠れ
+				$("div.questionContent"+ index ).hide();
+				// 次質問を現す
+				$("div.questionContent"+ nextIndex ).show();
+				// 「次へ」を「サブミート」ボタンへ変更
+				if(questionCnt == parseInt(nextIndex) + 1){
+					$(this).text("サブミート");
+				}
+				return false;
+			}
+		}
 	});
+	
 
 })

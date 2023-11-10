@@ -33,7 +33,7 @@ public class SurveyCategory {
 	    private String surveyCategoryContent;
 	    
 	    @Column(name = "survey_summary_decide_point")
-	    private String surveySummaryDecidePoint;
+	    private Integer surveySummaryDecidePoint;
 	    
 	    @Column(name = "survey_summary_title_above")
 	    private String surveySummaryTitleAbove;

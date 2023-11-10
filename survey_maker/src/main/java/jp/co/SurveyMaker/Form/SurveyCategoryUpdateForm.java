@@ -19,7 +19,7 @@ public class SurveyCategoryUpdateForm {
     
     private String surveyCategoryName;
     
-    private String surveySummaryDecidePoint;
+    private Integer surveySummaryDecidePoint;
     
     private String surveySummaryTitleAbove;
     
