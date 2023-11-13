@@ -5,7 +5,7 @@
 		<th:block th:replace="commonTop.html" />
 
 		<script th:src="@{/js/surveyContentList.js}"></script>
-    	
+
 		<title>診断コンテンツ詳細画面</title>
 	</head>
 
@@ -28,7 +28,7 @@
 
 			</div>
 			<th:block th:object="${surveyContentDetailForm}" th:with="questionHead=${T(jp.co.SurveyMaker.Constants.CommonConstants).ORDER_NO_QUESTION}">
-				
+
 				<!-- コンテンツ基本情報 START -->
 				<div class="card shadow-lg mb-2">
 					<div class="card-header bg-white">
@@ -109,7 +109,7 @@
 
 							<!-- 診断軸リスト START -->
 							<div class="card mb-2" th:each="category,stat:*{categoryLst}">
-								<div class="card-header bg-white">
+								<div class="card-header og_headline-left-border">
 									<div class="d-flex justify-content-between">
 										<div>
 											<span class="h6" th:text="${category.surveyCategoryName}">身体の調査</span>
@@ -137,7 +137,10 @@
 									<!-- 複数（加算結果型）、フローの場合、総合評価不要 -->
 									<div class="card mb-2" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW }">
 										<div class="card-header bg-white">
-											<span class="h6">総合評価</span>
+											<span class="h6">
+												<i class="fa-solid fa-ranking-star pe-2 text-primary"></i>
+												総合評価
+											</span>
 										</div>
 										<div class="card-body">
 											<h6 th:text="|基準点数：${category.surveySummaryDecidePoint}点|">基準点数：50点</h6>
@@ -146,6 +149,7 @@
 												<div class="col-6">
 													<div class="card">
 														<div class="card-header bg-white">
+															<i class="fa-solid fa-up-long pe-2 text-primary"></i>
 															<span class="h6">基準点数以上の評価</span>
 														</div>
 														<div class="card-body">
@@ -191,6 +195,7 @@
 												<div class="col-6">
 													<div class="card">
 														<div class="card-header bg-white">
+															<i class="fa-solid fa-down-long text-danger pe-2"></i>
 															<span class="h6">基準点数未満の評価</span>
 														</div>
 														<div class="card-body">
@@ -242,7 +247,10 @@
 									<!-- 軸別診断結果 START -->
 									<div class="card">
 										<div class="card-header bg-white">
-											<span class="h6">軸別診断結果</span>
+											<span class="h6">
+												<i class="fa-solid fa-square-poll-vertical pe-2 text-primary"></i>
+												軸別診断結果
+											</span>
 										</div>
 										<div class="card-body">
 											<!-- <div style="overflow-x: auto; width:100%;"> -->
@@ -284,7 +292,7 @@
 															</td>
 														</tr>
 													</tbody>
-	
+
 												</table>
 											<!-- </div> -->
 										</div>
