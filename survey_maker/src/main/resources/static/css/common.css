@@ -3,7 +3,7 @@
 /** 見出し左枠線 */
 .og_headline-left-border {
 	border-left:solid 5px;
-	border-left-color : #0dcaf0;
+	border-left-color : #0d6efd;
 	background-color: white;
 }
 
@@ -33,7 +33,7 @@
 }
 
 /** 文字省略 */
-.dd {     
+.dd {
 	overflow: hidden;
     text-overflow:ellipsis;
     display:-webkit-box;
