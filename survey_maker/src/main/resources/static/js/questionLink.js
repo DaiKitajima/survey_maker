@@ -1,5 +1,30 @@
 $(function(){
 	// =============================================
+	// 画面初期表示時、リンク種別よりリンク先内容を事前設定
+	// =============================================
+	$('select[id^="linkType"]').each(function() {
+		var index = $(this).prop("id").replace("linkType","");
+		var idIndex = index.substring(0,index.indexOf("_"));
+		var questionId = $("#questionId" + idIndex).val();
+		var linkTo = $("#linkTo" + index);
+		// 初期時、タイプ選択あり、リンク先がなし、かつタイプが質問リンクの場合
+		if($(this).val() == 1 && linkTo.val() == null ){
+			linkTo.empty();
+			linkTo.append($("#toQuestionLst option").clone());
+			linkTo.find("option").each(function(){
+				if($(this).val() == questionId){
+					$(this).remove();
+				}
+			});
+		}
+		// 結果リンクの場合
+		if($(this).val() == 2 && linkTo.val() == null ){
+			linkTo.empty();
+			linkTo.append($("#toResultLst option").clone());
+		}
+	});
+	
+	// =============================================
 	// リンク種別選択時、リンク先内容を動的に変更
 	// =============================================
 	$('select[id^="linkType"]').on('change', function() {

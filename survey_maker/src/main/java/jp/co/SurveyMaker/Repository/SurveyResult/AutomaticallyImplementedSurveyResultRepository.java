@@ -15,6 +15,8 @@ public interface AutomaticallyImplementedSurveyResultRepository extends Reposito
 	boolean existsByIdAndDeleteFlgFalse(Integer id);
 	//１件取得(id識別)
 	Optional<SurveyResult> findByIdAndDeleteFlgFalse(Integer id);
+	//１件取得(key識別)
+	Optional<SurveyResult> findBySurveyKeyAndDeleteFlgFalse(String key);
 	//全取得
 	List<SurveyResult> findAll();
 	//全取得(未削除)

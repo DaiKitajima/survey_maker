@@ -19,6 +19,8 @@ public class SurveyResultForm {
 	// 診断コンテンツ
 	private SurveyContentUpdateForm survey;
 	
+	// 総合評価所属のカテゴリーID
+	private Integer topCategoryId;
 	// 総合評価タイトル
     private String surveySummaryTitle;
     // 総合評価画像

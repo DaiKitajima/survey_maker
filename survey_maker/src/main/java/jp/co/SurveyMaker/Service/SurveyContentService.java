@@ -28,8 +28,14 @@ public class SurveyContentService {
 		surveyManagementRepository.save(surveyContent);
 	}
 	
-	// IDより、診断コンテンツ取得
+	// IDとユーザIDより、診断コンテンツ取得
 	public SurveyManagement getSurveyContentByIdAndUserId(Integer id, Integer userId) throws Exception {
 		return surveyManagementRepository.findByIdAndUserIdAndDeleteFlgFalse(id, userId).orElseThrow();
 	}
+	
+	// IDより、診断コンテンツ取得
+	public SurveyManagement getSurveyContentById(Integer id) throws Exception {
+		return surveyManagementRepository.findByIdAndDeleteFlgFalse(id).orElseThrow();
+	}
+	
 }

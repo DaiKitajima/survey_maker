@@ -155,7 +155,7 @@ public class SurveySimulationController {
 		surveyResultForm.setKey(result.getSurveyKey());
 		surveyResultForm.setSurvey(this.convertSurveyContentEntityToForm(survey));
 		// 総合評価とカテゴリー別の評価結果設定
-		this.setSurveySummaryAndCategoryResult(surveyResultForm, result);
+		this.setSurveySummaryAndCategoryResult(surveyResultForm, result, survey.getSurveyPatternId());
 		
 		mav.addObject("surveyResultForm", surveyResultForm);
 		mav.setViewName("/surveySimulationResultForSingular");
@@ -164,46 +164,49 @@ public class SurveySimulationController {
 	}
 	
 	// 総合評価とカテゴリー別の評価結果設定
-	private void setSurveySummaryAndCategoryResult(SurveyResultForm surveyResultForm, SurveyResult result) throws Exception {
-		/*  総合評価 */
+	private void setSurveySummaryAndCategoryResult(SurveyResultForm surveyResultForm, SurveyResult result, Integer patternId) throws Exception {
+		// 一番ポイントのカテゴリーを設定
 		Type type = new TypeToken<SummaryResultDto>(){}.getType();
 		SummaryResultDto summaryResult = (new Gson()).fromJson(result.getSummaryResultContent(), type);  
 		SurveyCategory topCategory = surveyCategoryService.getSurveyCategoryById(summaryResult.getTopCategoryId());
-		// Aboveの場合
-		if( summaryResult.getTotalPoint() >= topCategory.getSurveySummaryDecidePoint() ) {
-			surveyResultForm.setSurveySummaryTitle(topCategory.getSurveySummaryTitleAbove());
-			surveyResultForm.setSurveySummaryDetail(topCategory.getSurveySummaryDetailAbove());
-			// Above画像設定
-			try {
-				String imgFileName = topCategory.getSurveySummaryImageAbove();
-				String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + topCategory.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
-						+ topCategory.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_ABOVE + FileUtil.FILE_DIRECTORY_DELIMITER 
-						+ imgFileName;
-				byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
-				String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
-						+ Base64.getEncoder().encodeToString(imgByte);
-				surveyResultForm.setSurveySummaryImageBase64(encodedImage);
-			} catch (IOException e) {
-				log.error("総合評価画像ファイル取得にエラーが発生しました。",e);
-			}
-		}else { // Belowの場合
-			surveyResultForm.setSurveySummaryTitle(topCategory.getSurveySummaryTitleBelow());
-			surveyResultForm.setSurveySummaryDetail(topCategory.getSurveySummaryDetailBelow());
-			// Below画像設定
-			try {
-				String imgFileName = topCategory.getSurveySummaryImageBelow();
-				String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + topCategory.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
-						+ topCategory.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_BELOW + FileUtil.FILE_DIRECTORY_DELIMITER 
-						+ imgFileName;
-				byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
-				String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
-						+ Base64.getEncoder().encodeToString(imgByte);
-				surveyResultForm.setSurveySummaryImageBase64(encodedImage);
-			} catch (IOException e) {
-				log.error("総合評価画像ファイル取得にエラーが発生しました。",e);
+		surveyResultForm.setTopCategoryId(topCategory.getId());
+		/*  総合評価 */
+		if(!CommonConstants.PARTTERN_COMPLEX_TOTAL.equals(patternId) && !CommonConstants.PARTTERN_FLOW.equals(patternId)) {
+			// Aboveの場合
+			if( summaryResult.getTotalPoint() >= topCategory.getSurveySummaryDecidePoint() ) {
+				surveyResultForm.setSurveySummaryTitle(topCategory.getSurveySummaryTitleAbove());
+				surveyResultForm.setSurveySummaryDetail(topCategory.getSurveySummaryDetailAbove());
+				// Above画像設定
+				try {
+					String imgFileName = topCategory.getSurveySummaryImageAbove();
+					String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + topCategory.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
+							+ topCategory.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_ABOVE + FileUtil.FILE_DIRECTORY_DELIMITER 
+							+ imgFileName;
+					byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+					String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+							+ Base64.getEncoder().encodeToString(imgByte);
+					surveyResultForm.setSurveySummaryImageBase64(encodedImage);
+				} catch (IOException e) {
+					log.error("総合評価画像ファイル取得にエラーが発生しました。",e);
+				}
+			}else { // Belowの場合
+				surveyResultForm.setSurveySummaryTitle(topCategory.getSurveySummaryTitleBelow());
+				surveyResultForm.setSurveySummaryDetail(topCategory.getSurveySummaryDetailBelow());
+				// Below画像設定
+				try {
+					String imgFileName = topCategory.getSurveySummaryImageBelow();
+					String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + topCategory.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
+							+ topCategory.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + CommonConstants.SAVA_IMG_PATH_SUMMARY_BELOW + FileUtil.FILE_DIRECTORY_DELIMITER 
+							+ imgFileName;
+					byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+					String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+							+ Base64.getEncoder().encodeToString(imgByte);
+					surveyResultForm.setSurveySummaryImageBase64(encodedImage);
+				} catch (IOException e) {
+					log.error("総合評価画像ファイル取得にエラーが発生しました。",e);
+				}
 			}
 		}
-		
 		/*  カテゴリー別の評価結果リスト */
 		Type listType = new TypeToken<ArrayList<SurveyCategoryResultDto>>(){}.getType();
 		List<SurveyCategoryResultDto> categoryResultLst = (new Gson()).fromJson(result.getSurveyResultContent(), listType);
@@ -271,9 +274,24 @@ public class SurveySimulationController {
 			HttpSession session ,
 			SurveySimulationForm surveySimulationForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(surveySimulationForm.getSurveyContent().getId(), user.getId());
+		mav.addObject("survey", survey);
 		
-		mav.addObject("surveyResultForm", new SurveyResultForm());
+		// 診断結果作成及び登録
+		Integer resultId = surveySimulationService.surveyResultRegist(surveySimulationForm.getAnswerResultLst());
+		SurveyResult result = surveySimulationService.getSurveyResultById(resultId);
 		
+		// 診断結果画面フォーム設定
+		SurveyResultForm surveyResultForm = new SurveyResultForm();
+		surveyResultForm.setId(result.getId());
+		surveyResultForm.setKey(result.getSurveyKey());
+		surveyResultForm.setSurvey(this.convertSurveyContentEntityToForm(survey));
+		// 総合評価とカテゴリー別の評価結果設定
+		this.setSurveySummaryAndCategoryResult(surveyResultForm, result, survey.getSurveyPatternId());
+		
+		mav.addObject("surveyResultForm", surveyResultForm);
 		mav.setViewName("/surveySimulationResultForComplex");
 		
 		return mav;

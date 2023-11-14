@@ -5,9 +5,7 @@
 		<th:block th:replace="commonTop.html" />
 
 		<script th:src="@{/js/surveySimulation.js}"></script>
-		<title th:text="高齢者健康調査画面">高齢者健康調査画面</title>
-		<!-- progress bar -->
-		<link rel="stylesheet" th:href="@{/css/progressBar.css}"/>
+		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 	</head>
 
 	<body style="background: #EEEEEE;">
@@ -28,62 +26,64 @@
 
 						<div class="row mb-2">
 							<div class="col d-flex justify-content-center">
-								<img id="contentImg" th:src="@{/img/content.png}" height="200" width="250" th:alt="テスト画像" class="img-thumbnail">
+								<img id="contentImg" th:src="*{survey.surveyImageBase64}" height="200" width="250" th:alt="*{survey.surveyImage}" class="img-thumbnail">
 							</div>
 						</div>
 
-						<div class="row mb-4">
+						<!-- 複数（ポイント型） -->
+						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}" >
 							<div class="col-2 d-flex justify-content-end">
 								<div>
-									<h6 class="bg-success text-light">身体の調査</h6>
+									<h6 class="bg-success text-light" th:text="${categoryResult.categoryName}" >身体の調査</h6>
 								</div>
 							</div>
 							<div class="col-10 d-flex justify-content-start">
 								<div class="categoryResult" >
 									<div class="row mb-2">
 										<div class="col">
-											<img id="contentImg" th:src="@{/img/result.png}" height="200" width="250" th:alt="テスト画像" class="img-thumbnail">
+											<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" height="200" width="250" alt="診断軸評価画像" class="img-thumbnail">
 										</div>
 									</div>
 									<div class="row mb-2">
 										<div class="col">
 											<h6>評価結果:</h6>
-											<span th:text="レベルA"></span>
+											<span th:text="${categoryResult.categoryResultTitle}"></span>
 										</div>
 									</div>
 									<div class="row mb-2">
 										<div class="col">
 											<h6>結果詳細:</h6>
-											<span th:text="身体は結構いい。身体は結構いい。身体は結構いい。身体は結構いい。身体は結構いい。身体は結構いい。身体は結構いい。身体は結構いい。"></span>
+											<span th:text="${categoryResult.categoryResultDetail}"></span>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						
-						<div class="row mb-4">
+						<!-- 複数（結果加算型） -->
+						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && __${categoryResult.categoryId}__ == __*{topCategoryId}__ }" >
 							<div class="col-2 d-flex justify-content-end">
 								<div>
-									<h6 class="bg-success text-light">心理の調査</h6>
+									<h6 class="bg-success text-light" th:text="${categoryResult.categoryName}" >身体の調査</h6>
 								</div>
 							</div>
 							<div class="col-10 d-flex justify-content-start">
 								<div class="categoryResult" >
 									<div class="row mb-2">
 										<div class="col">
-											<img id="contentImg" th:src="@{/img/result.png}" height="200" width="250" th:alt="テスト画像" class="img-thumbnail">
+											<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" height="200" width="250" alt="診断軸評価画像" class="img-thumbnail">
 										</div>
 									</div>
 									<div class="row mb-2">
 										<div class="col">
 											<h6>評価結果:</h6>
-											<span th:text="レベルB"></span>
+											<span th:text="${categoryResult.categoryResultTitle}"></span>
 										</div>
 									</div>
 									<div class="row mb-2">
 										<div class="col">
 											<h6>結果詳細:</h6>
-											<span th:utext="毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。毎週3回の身体訓練が必要。"></span>
+											<span th:text="${categoryResult.categoryResultDetail}"></span>
 										</div>
 									</div>
 								</div>
@@ -96,7 +96,7 @@
 							</div>
 							<div class="col-8">
 								<div class="input-group">
-								    <input id="resultUrl" class="form-control" value="http://localhost:8080/surveyResult?key=ebadd122144566222223785551ioiejsddd" disabled/>
+								    <input id="resultUrl" class="form-control" th:value="@{/api/surveyResult?key=__*{key}__}" disabled/>
 								    <button type="button" class="input-group-text btn btn-success" style="width:150px;" id="urlCopyBtn">URLコピー</button>
 								</div>
 							</div>

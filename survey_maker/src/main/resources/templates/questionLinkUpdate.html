@@ -79,15 +79,23 @@
 										<td class="align-middle text-left" style="white-space: nowrap;">
 											<ul>
 												<li class="questionLinkType" th:each="answer,stat2:${question.answerContentLst}">
-													<input type="hidden" th:name="|questionLinkLst[${stat2.index}].id|" th:value="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].id}" >
 													<input type="hidden" th:name="|questionLinkLst[${stat2.index}].surveyManagementId|" th:value="*{surveyManagementId}" >
 													<input type="hidden" th:name="|questionLinkLst[${stat2.index}].questionId|" th:value="${question.id}" >
 													<input type="hidden" th:name="|questionLinkLst[${stat2.index}].answerId|" th:value="${answer.answerId}" >
 													<span th:text="|回答${stat2.count}|"></span>
-													<select class="form-control" th:id="|linkType${stat.index}_${stat2.index}|" th:name="|questionLinkLst[${stat2.index}].linkType|" required>
-														<option value="">未選択</option>
-														<option	th:each="linkType:${linkTypeMap}" th:value="${linkType.key}" th:selected="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType == __${linkType.key}__ }">[[${linkType.value}]]</option>
-													</select>
+													<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}">
+														<input type="hidden" th:name="|questionLinkLst[${stat2.index}].id|" th:value="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].id}" >
+														<select class="form-control" th:id="|linkType${stat.index}_${stat2.index}|" th:name="|questionLinkLst[${stat2.index}].linkType|" required>
+															<option value="">未選択</option>
+															<option	th:each="linkType:${linkTypeMap}" th:value="${linkType.key}" th:selected="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType == __${linkType.key}__ }">[[${linkType.value}]]</option>
+														</select>
+													</th:block>
+													<th:block th:unless="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}">
+														<select class="form-control" th:id="|linkType${stat.index}_${stat2.index}|" th:name="|questionLinkLst[${stat2.index}].linkType|" required>
+															<option value="">未選択</option>
+															<option	th:each="linkType:${linkTypeMap}" th:value="${linkType.key}" >[[${linkType.value}]]</option>
+														</select>
+													</th:block>
 												</li>
 											</ul>
 										</td>
@@ -95,15 +103,23 @@
 											<ul>
 												<li class="questionLinkTo" th:each="answer,stat3:${question.answerContentLst}">
 													<span th:text="|回答${stat3.count}|"></span>
-													<select class="form-control" th:id="|linkTo${stat.index}_${stat3.index}|" th:name="|questionLinkLst[${stat3.index}].linkTo|" required>
-														<option value="">未選択</option>
-														<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType == __${NEXT_QUESTION.code}__ }">
-															<option	th:each="toQuestion: *{questionFormLst}" th:if="${question.id != toQuestion.id}" th:value="${toQuestion.id}" th:selected="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkTo == __${toQuestion.id}__ }">[[${questionHead + toQuestion.questionOrderNo}]]</option>
-														</th:block>
-														<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType == __${SURVEY_RESULT.code}__ }">
-															<option	th:each="result: ${surveyResultLst}" th:value="${result.id}" th:selected="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkTo == __${result.id}__ }">[[${result.surveyResult}]]</option>
-														</th:block>
-													</select>
+													<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}">
+														<select class="form-control" th:id="|linkTo${stat.index}_${stat3.index}|" th:name="|questionLinkLst[${stat3.index}].linkTo|" required>
+															<option value="">未選択</option>
+															<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType == __${NEXT_QUESTION.code}__ }">
+																<option	th:each="toQuestion: *{questionFormLst}" th:if="${question.id != toQuestion.id}" th:value="${toQuestion.id}" th:selected="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkTo == __${toQuestion.id}__ }">[[${questionHead + toQuestion.questionOrderNo}]]</option>
+															</th:block>
+															<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType == __${SURVEY_RESULT.code}__ }">
+																<option	th:each="result: ${surveyResultLst}" th:value="${result.id}" th:selected="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkTo == __${result.id}__ }">[[${result.surveyResult}]]</option>
+															</th:block>
+														</select>
+													</th:block>
+													<th:block th:unless="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}">
+														<select class="form-control" th:id="|linkTo${stat.index}_${stat3.index}|" th:name="|questionLinkLst[${stat3.index}].linkTo|" required>
+															<option value="">未選択</option>
+															<option	th:each="toQuestion: *{questionFormLst}" th:if="${question.id != toQuestion.id}" th:value="${toQuestion.id}">[[${questionHead + toQuestion.questionOrderNo}]]</option>
+														</select>
+													</th:block>
 												</li>
 											</ul>
 										</td>

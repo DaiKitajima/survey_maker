@@ -4,77 +4,59 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveyContentList.js}"></script>
-		<title th:text="高齢者健康調査画面">高齢者健康調査画面</title>
+		<script th:src="@{/js/surveySimulation.js}"></script>
+		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 		<!-- progress bar -->
 		<link rel="stylesheet" th:href="@{/css/progressBar.css}"/>
 	</head>
 
-	<body style="background: #EEEEEE;">
+	<body style="background: #EEEEEE;" th:object="${surveySimulationForm}">
 		<!-- 共通ナビヘッダー -->
 		<th:block th:replace="surveyNav.html" />
 
 		<div class="container-fluid mb-5">
 			<!-- 進捗欄 -->
-			<div class="ymtr--progress-bar mb-2">
-				<div class="ymtr--progress-bar__item --completed" style="background-color: rgb(0, 255, 0) !important;width:10%;" >　　</div>
-				<div class="ymtr--progress-bar__item --current" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
-				<div class="ymtr--progress-bar__item" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
-				<div class="ymtr--progress-bar__item" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
-				<div class="ymtr--progress-bar__item" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
-				<div class="ymtr--progress-bar__item" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
-				<div class="ymtr--progress-bar__item" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
-				<div class="ymtr--progress-bar__item" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
-				<div class="ymtr--progress-bar__item" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
-				<div class="ymtr--progress-bar__item" style="background-color: rgb(0, 255, 0) !important;width:10%;">　　</div>
+			<div class="ymtr--progress-bar mb-2" th:with="progressWidth=*{100/#lists.size(questionFormLst)}">
+				<div class="ymtr--progress-bar__item" th:style="|background-color: *{surveyContent.surveyColor} !important;width:${progressWidth}%;|" th:each="question,stat:*{questionFormLst}" th:id="${stat.index}" th:classappend="${stat.first?'--current':''}">　　</div>
 			</div>
 
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
-					<form action="/surveyContentDetail/surveySimulationForComplex/result" method="post" th:object="${surveySimulationForm}" id="submitFormId">
-						<input type="hidden" th:field="*{surveyManagementId}">
-						<input type="hidden" th:field="*{userId}">
+					<form action="/surveyContentDetail/surveySimulationForComplex/result" method="post" id="submitFormId">
+						<input type="hidden" th:field="*{surveyContent.id}">
+						<input type="hidden" th:field="*{surveyContent.userId}">
+						<input type="hidden" th:value="*{#lists.size(questionFormLst)}" id="questionCnt">
 						
-						<div class="row mb-2">
-							<div class="col d-flex justify-content-center">
-								<span th:text="質問２、普通に何KM走れるか？"></span><br>
+						<div th:each="question,stat:*{questionFormLst}" th:class="questionContent__${stat.index}__" th:style="${stat.first ? 'display:block;':'display:none;'}">
+							<div class="row mb-2">
+								<div class="col d-flex justify-content-center">
+									<input type="hidden" th:name="answerResultLst[__${stat.index}__].questionId" th:value="${question.id}">
+									<span th:text="|質問__${question.questionOrderNo}__、__${question.questionTitle}__|"></span><br>
+								</div>
 							</div>
-						</div>
-
-						<div class="row mb-2">
-							<div class="col d-flex justify-content-center">
-								<img id="questionImg" src="../img/test.png" height="100" width="120" th:alt="テスト画像" class="img-thumbnail">
+	
+							<div class="row mb-2">
+								<div class="col d-flex justify-content-center">
+									<img th:id="questionImg__${stat.index}__" th:src="${question.questionImageBase64}" height="200" width="300" th:alt="${question.questionImage}" class="img-thumbnail">
+								</div>
 							</div>
-						</div>
-
-						<div class="row mb-2">
-							<div class="col d-flex justify-content-center ">
-								<div class="answerContent">
-									<div class="form-check">
-									  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-									  <label class="form-check-label" for="flexRadioDefault1">
-									    A：１KM
-									  </label>
-									</div>
-									<div class="form-check">
-									  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-									  <label class="form-check-label" for="flexRadioDefault2">
-									    B：２KM
-									  </label>
-									</div>
-									<div class="form-check">
-									  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-									  <label class="form-check-label" for="flexRadioDefault3">
-									    C：５KM
-									  </label>
+	
+							<div class="row mb-2">
+								<div class="col d-flex justify-content-center ">
+									<div th:class="answerContent__${stat.index}__">
+										<div class="form-check" th:each="answer,stat1:${question.answerContentLst}">
+										  <input class="form-check-input" type="radio" th:name="answerResultLst[__${stat.index}__].answerId" th:id="|answerResultId__${stat.index + '_' + stat1.index}__|" th:value="${answer.answerId}">
+										  <label class="form-check-label" th:for="|answerResultId__${stat.index + '_' + stat1.index}__|">
+										    [[${answer.answer}]]
+										  </label>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">
-								<button type="submit" class="btn btn-sm btn-success" style="width:150px;" id="nextQuestion">次へ</button>
+								<button class="btn btn-sm btn-success" style="width:150px;" id="nextQuestion">次へ</button>
 							</div>
 						</div>
 					</form>

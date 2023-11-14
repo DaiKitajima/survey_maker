@@ -15,6 +15,8 @@ public interface AutomaticallyImplementedSurveyManagementRepository extends Repo
 	boolean existsByIdAndDeleteFlgFalse(Integer id);
 	//１件取得(id識別)
 	Optional<SurveyManagement> findByIdAndUserIdAndDeleteFlgFalse(Integer id,Integer userId);
+	//１件取得(id識別)
+	Optional<SurveyManagement> findByIdAndDeleteFlgFalse(Integer id);
 	//全取得
 	List<SurveyManagement> findAll();
 	//全取得(未削除)

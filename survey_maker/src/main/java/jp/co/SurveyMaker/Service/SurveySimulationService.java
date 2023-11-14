@@ -74,7 +74,7 @@ public class SurveySimulationService {
 		surveyResult.setSurveyResultContent(this.makeSurveyResultContent(categorySumMap));
 		surveyResult.setSummaryResultContent(this.makeSurveySummaryResult(categorySumMap));
 		surveyResult.setExpireDate(null);
-		surveyResult.setSurveyKey(UUIDUtil.get24UUID());
+		surveyResult.setSurveyKey(UUIDUtil.get32UUID());
 		surveyResultRepository.save(surveyResult);
 		
 		return surveyResultRepository.getLastInsertId();
@@ -116,9 +116,14 @@ public class SurveySimulationService {
 		return (new Gson()).toJson(categoryResultLst);
 	}
 	
-	// 診断結果取得
+	// IDより診断結果取得
 	public SurveyResult getSurveyResultById(Integer resultId)throws Exception {
 		return surveyResultRepository.findByIdAndDeleteFlgFalse(resultId).orElseThrow();
+	}
+	
+	// Keyより診断結果取得
+	public SurveyResult getSurveyResultByKey(String key)throws Exception {
+		return surveyResultRepository.findBySurveyKeyAndDeleteFlgFalse(key).orElseThrow();
 	}
 	
 }

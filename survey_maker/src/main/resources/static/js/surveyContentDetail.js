@@ -53,6 +53,31 @@ $(function(){
 		$(filePreviewClass).children("input").attr("disabled",false);
 	});
 	
+	// カテゴリー登録・更新サブミート
+	$('#categoryＦｏｒｍId').on('submit', function(e) {
+		e.preventDefault();
+		var submitFlg = true;
+		// ポイント範囲チェック
+		$("input[name*='pointTo']").each(function(){
+			var pointFrom = $(this).parent().siblings().find("input[name*='pointFrom']");
+			var fromVal = pointFrom.val();
+			var toVal = $(this).val();
+			if(fromVal >= toVal){
+				submitFlg = false;
+				alert("ポイント範囲のFROMとTOの値を正しく設定してください。");
+			}
+		});
+	
+		if(submitFlg){
+			$(this).unbind('submit').submit();
+			// ボタン非活性にする
+			$('#questionLinkBtn').prop("disabled",true);
+		}else{
+			// ボタン非活性にする
+			$('#questionLinkBtn').prop("disabled",false);
+			return false;
+		}
+	});
 })
 
 

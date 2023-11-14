@@ -20,7 +20,7 @@
 
 			<div class="card shadow-lg">
 				<div class="card-body">
-					<form action="/surveyContentDetail/surveyCategoryRegist/exec" method="post" th:object="${surveyCategoryUpdateForm}" id="submitFormId" enctype="multipart/form-data">
+					<form action="/surveyContentDetail/surveyCategoryRegist/exec" method="post" th:object="${surveyCategoryUpdateForm}" id="categoryＦｏｒｍId" enctype="multipart/form-data">
 						<input type="hidden" th:field="*{id}">
 						<input type="hidden" th:field="*{surveyManagementId}">
 
@@ -45,7 +45,7 @@
 								<div class="row">
 									<div class="col-2 mt-2 mb-2 ">
 										<span class="h6">判定基準点数</span><br>
-										<input th:field="*{surveySummaryDecidePoint}" class="form-control" />
+										<input th:field="*{surveySummaryDecidePoint}" class="form-control" required/>
 									</div>
 								</div>
 								<div class="row" >
@@ -55,7 +55,7 @@
 											<span class="small">総合評価タイトル</span>
 										</div>
 										<div class="row mb-1">
-											<div class="col"><input type="text" th:field="*{surveySummaryTitleAbove}" class="form-control"/></div>
+											<div class="col"><input type="text" th:field="*{surveySummaryTitleAbove}" class="form-control" required/></div>
 										</div>
 										<div class="row">
 											<span class="small">総合評価画像</span>
@@ -67,7 +67,7 @@
 											<span class="small">総合評価詳細</span>
 										</div>
 										<div class="row mb-1">
-											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailAbove}"></textarea></div>
+											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailAbove}" required></textarea></div>
 										</div>
 									</div>
 									<div class="col-6 mt-2 mb-2">
@@ -76,7 +76,7 @@
 											<span class="small">総合評価タイトル</span>
 										</div>
 										<div class="row mb-1">
-											<div class="col"><input type="text" th:field="*{surveySummaryTitleBelow}" class="form-control"/></div>
+											<div class="col"><input type="text" th:field="*{surveySummaryTitleBelow}" class="form-control" required/></div>
 										</div>
 										<div class="row">
 											<span class="small">総合評価画像</span>
@@ -88,7 +88,7 @@
 											<span class="small">総合評価詳細</span>
 										</div>
 										<div class="row mb-1">
-											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailBelow}"></textarea></div>
+											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailBelow}" required></textarea></div>
 										</div>
 									</div>
 								</div>
@@ -105,20 +105,20 @@
 									<span class="h6">ポイント評価範囲</span><br>
 									<div class="row">
 										<div class="col-4">
-											<input name="categoryContentLst[0].pointFrom" class="form-control categoryContentLst" />
+											<input name="categoryContentLst[0].pointFrom" class="form-control categoryContentLst" required />
 										</div>
 										<div class="col-2" style="text-align:center">
 											<span class="h6">～</span>
 										</div>
 										<div class="col-4">
-											<input name="categoryContentLst[0].pointTo" class="form-control categoryContentLst" />
+											<input name="categoryContentLst[0].pointTo" class="form-control categoryContentLst" required />
 										</div>
 									</div>
 								</div>
 								
 								<div class="col-3 mt-2 mb-2">
 									<span class="h6">評価結果</span><br>
-									<input name="categoryContentLst[0].surveyResult" class="form-control categoryContentLst"/>
+									<input name="categoryContentLst[0].surveyResult" class="form-control categoryContentLst" required/>
 								</div>
 								<div class="col-3 mt-2 mb-2">
 									<span class="h6">診断結果画像</span><br>
@@ -135,7 +135,7 @@
 							<div class="row" >
 								<div class="col-12 mt-2 mb-2">
 									<span class="h6">診断結果詳細</span><br>
-									<textarea class="form-control categoryContentLst" rows="3" name="categoryContentLst[0].surveyResultDetail"></textarea>
+									<textarea class="form-control categoryContentLst" rows="3" name="categoryContentLst[0].surveyResultDetail" required></textarea>
 								</div>
 							</div>
 						</div>
@@ -145,7 +145,7 @@
 
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">
-								<button type="submit" class="btn btn-sm btn-success me-5" data-target="submitFormId" style="width:150px;">登　録</button>
+								<button type="submit" class="btn btn-sm btn-success me-5" data-target="categoryＦｏｒｍId" style="width:150px;">登　録</button>
 							</div>
 						</div>
 					</form>
