@@ -7,6 +7,14 @@
 	background-color: white;
 }
 
+.og_headline-left-top-border {
+	border-left:solid 5px;
+	border-left-color : #0d6efd;
+	border-bottom:solid 1px;
+	border-bottom-color : #0d6efd;
+	background-color: white;
+}
+
 /** 見出し左枠線 アクティブ */
 .og_headline-left-border-active {
 	border-left:solid 5px;

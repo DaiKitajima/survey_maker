@@ -109,9 +109,9 @@
 
 							<!-- 診断軸リスト START -->
 							<div class="card mb-2" th:each="category,stat:*{categoryLst}">
-								<div class="card-header og_headline-left-border">
+								<div class="card-header og_headline-left-top-border">
 									<div class="d-flex justify-content-between">
-										<div>
+										<div class="pt-1">
 											<span class="h6" th:text="${category.surveyCategoryName}">身体の調査</span>
 										</div>
 										<div>
@@ -135,7 +135,7 @@
 
 									<!-- 総合評価 START -->
 									<!-- 複数（加算結果型）、フローの場合、総合評価不要 -->
-									<div class="card mb-2" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW }">
+									<div class="card shadow-lg mb-2" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW }">
 										<div class="card-header bg-white">
 											<span class="h6">
 												<i class="fa-solid fa-ranking-star pe-2 text-primary"></i>
@@ -245,7 +245,7 @@
 									<!-- 総合評価 END -->
 
 									<!-- 軸別診断結果 START -->
-									<div class="card">
+									<div class="card shadow-lg">
 										<div class="card-header bg-white">
 											<span class="h6">
 												<i class="fa-solid fa-square-poll-vertical pe-2 text-primary"></i>
