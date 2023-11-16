@@ -4,10 +4,8 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveySimulation.js}"></script>
-		<title th:text="ツアー調査">ツアー調査画面</title>
-		<!-- progress bar -->
-		<link rel="stylesheet" th:href="@{/css/progressBar.css}"/>
+		<script th:src="@{/js/surveySimulationForFlow.js}"></script>
+		<title th:text="|${survey.surveyName}画面|">ツアー調査画面</title>
 	</head>
 
 	<body style="background: #EEEEEE;">
@@ -17,34 +15,36 @@
 		<div class="container-fluid mb-5">
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
-					<th:block th:object="${surveySimulationForm}" id="submitFormId">
-						<input type="hidden" th:field="*{surveyManagementId}">
-						<input type="hidden" th:field="*{userId}">
+					<th:block th:object="${surveySimulationForm}">
+						<input type="hidden" th:field="*{surveyContent.id}">
+						<input type="hidden" th:field="*{surveyContent.userId}">
+						<input type="hidden" th:id="NEXT_QUESTION" th:value="${NEXT_QUESTION.code}">
+						<input type="hidden" th:id="SURVEY_RESULT" th:value="${SURVEY_RESULT.code}">
 						
-						<div class="row mb-2">
-							<div class="col d-flex justify-content-center">
-								<span th:text="質問1、旅行にいくなら？"></span><br>
+						<div th:each="question,stat:*{questionFormLst}" th:if="${stat.first}">
+							<div class="row mt-5 mb-3">
+								<div class="col d-flex justify-content-center">
+									<span id="questionContent" th:text="|質問__${question.questionOrderNo}__、__${question.questionTitle}__|"></span><br>
+								</div>
 							</div>
-						</div>
-
-						<div class="row mb-2">
-							<div class="col d-flex justify-content-center">
-								<img id="questionImg" src="../img/result.png" height="200" width="250" th:alt="テスト画像" class="img-thumbnail">
+	
+							<div class="row mb-5">
+								<div class="col d-flex justify-content-center">
+									<img id="questionImg" th:src="${question.questionImageBase64}" height="200" width="300" th:alt="${question.questionImage}" class="img-thumbnail">
+								</div>
 							</div>
-						</div>
-
-						<div class="row mb-2">
-							<div class="col d-flex justify-content-center ">
-								<div class="answerContent">
-									<div class="form-check mb-2">
-										<label class="form-check-label">
-											<a th:href="@{/internalApi/getSurveyQuestionContent?toQuestionId=1}" class="btn btn-sm btn-primary" style="width:150px;" id="nextQuestion" >広い海</a>
-										</label>
-									</div>
-									<div class="form-check mb-2">
-										<label class="form-check-label">
-									  		<a th:href="@{/surveyContentDetail/surveySimulationForFlow/result?id=1}" class="btn btn-sm btn-primary" style="width:150px;">高い山</a>
-										</label>
+	
+							<div class="row mb-5">
+								<div class="col d-flex justify-content-center ">
+									<div class="answerContent">
+										<input type="hidden" th:id="contentId" th:value="*{surveyContent.id}">
+										<div class="form-check mb-2" th:each="answer,stat1:${question.answerContentLst}" th:with="linkType=*{questionLinkLst.^[surveyQuestionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType},linkTo=*{questionLinkLst.^[surveyQuestionId==__${question.id}__ && answerId== __${answer.answerId}__].linkTo}">
+											<input type="hidden" th:id="linkType__${stat1.index}__" th:value="${linkType}">
+											<input type="hidden" th:id="linkTo__${stat1.index}__" th:value="${linkTo}">
+											<label class="form-check-label">
+												<a href="#" class="btn btn-sm btn-info" style="width:150px;" th:text="${answer.answer}" th:id="nextQuestion__${stat1.index}__">広い海</a>
+											</label>
+										</div>
 									</div>
 								</div>
 							</div>

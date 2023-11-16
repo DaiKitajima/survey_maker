@@ -4,10 +4,8 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveySimulation.js}"></script>
-		<title th:text="高齢者健康調査画面">高齢者健康調査画面</title>
-		<!-- progress bar -->
-		<link rel="stylesheet" th:href="@{/css/progressBar.css}"/>
+		<script th:src="@{/js/surveySimulationForFlow.js}"></script>
+		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 	</head>
 
 	<body style="background: #EEEEEE;">
@@ -28,21 +26,22 @@
 
 						<div class="row mb-2">
 							<div class="col mb-2 d-flex justify-content-center">
-								<img id="contentImg" th:src="@{/img/tsua.png}" height="200" width="250" th:alt="テスト画像" class="img-thumbnail">
+								<img id="contentImg" th:src="*{survey.surveyImageBase64}" height="200" width="250" th:alt="*{survey.surveyImage}" class="img-thumbnail">
 							</div>
 						</div>
 						
-						<div class="row mb-4">
+						<div class="row mt-5 mb-5" th:each="categoryResult,stat:*{categoryResultLst}" th:if="${stat.first}">
 							<div class="col-2 d-flex justify-content-end">
 								<h6>結果詳細:</h6>
 							</div>
 							<div class="col d-flex justify-content-start">
 								<div class="media">
 									<div class="media-left media-top">
-										<img id="contentImg" th:src="@{/img/result.png}" height="150" width="200" th:alt="テスト画像" class="img-thumbnail media-object">
+										<img id="categoryResultImg" th:src="${categoryResult.categoryResultImgBase64}" height="150" width="200" alt="診断軸評価画像" class="img-thumbnail media-object">
 									</div>
 									<div class="media-body">
-										<p>あなたにおすすめのツアー<br>山で紅葉を見よう！</p>
+										<p th:text="${categoryResult.categoryName}">あなたにおすすめのツアー</p>
+										<p th:text="${categoryResult.categoryResultTitle}">山で紅葉を見よう！</p>
 									</div>
 							  	</div>
 							</div>
@@ -54,7 +53,7 @@
 							</div>
 							<div class="col-8">
 								<div class="input-group">
-								    <input id="resultUrl" class="form-control" value="http://localhost:8080/surveyResult?key=ebadd122144566222223785551ioiejsddd" disabled/>
+								    <input id="resultUrl" class="form-control" th:value="@{/api/surveyResult?key=__*{key}__}" disabled/>
 								    <button type="button" class="input-group-text btn btn-success" style="width:150px;" id="urlCopyBtn">URLコピー</button>
 								</div>
 							</div>

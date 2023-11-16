@@ -30,7 +30,7 @@
 						</div>
 						<div class="row">
 							<div class="col-4 mt-2 mb-2">
-								<input th:field="*{surveyCategoryName}" class="form-control" required/>
+								<input th:field="*{surveyCategoryName}" class="form-control" maxlength="100" required/>
 							</div>
 						</div>
 						
@@ -45,7 +45,7 @@
 								<div class="row">
 									<div class="col-2 mt-2 mb-2 ">
 										<span class="h6">判定基準点数</span><br>
-										<input th:field="*{surveySummaryDecidePoint}" class="form-control" />
+										<input th:field="*{surveySummaryDecidePoint}" class="form-control" type="number" required />
 									</div>
 								</div>
 								<div class="row" >
@@ -55,7 +55,7 @@
 											<span class="small">総合評価タイトル</span>
 										</div>
 										<div class="row mb-1">
-											<div class="col"><input type="text" th:field="*{surveySummaryTitleAbove}" class="form-control" value="愛され自由人型" /></div>
+											<div class="col"><input type="text" th:field="*{surveySummaryTitleAbove}" class="form-control" value="愛され自由人型" maxlength="100" required/></div>
 										</div>
 										<div class="row">
 											<span class="small">総合評価画像</span>
@@ -81,7 +81,7 @@
 											<span class="small">総合評価詳細</span>
 										</div>
 										<div class="row mb-1">
-											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailAbove}">フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。
+											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailAbove}" required>フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。
 											</textarea></div>
 										</div>
 									</div>
@@ -91,7 +91,7 @@
 											<span class="small">総合評価タイトル</span>
 										</div>
 										<div class="row mb-1">
-											<div class="col"><input type="text" th:field="*{surveySummaryTitleBelow}" class="form-control"/></div>
+											<div class="col"><input type="text" th:field="*{surveySummaryTitleBelow}" class="form-control" maxlength="100" required/></div>
 										</div>
 										<div class="row">
 											<span class="small">総合評価画像</span>
@@ -117,7 +117,7 @@
 											<span class="small">総合評価詳細</span>
 										</div>
 										<div class="row mb-1">
-											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailBelow}">コミュニケーション能力上手の「リーダータイプ」です。
+											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailBelow}" required>コミュニケーション能力上手の「リーダータイプ」です。
 											</textarea></div>
 										</div>
 									</div>
@@ -136,23 +136,23 @@
 									<span class="h6">ポイント評価範囲</span><br>
 									<div class="row">
 										<div class="col-4">
-											<input th:name="|categoryContentLst[${stat.index}].pointFrom|" class="form-control categoryContentLst" th:value="${category.pointFrom}"/>
+											<input th:name="|categoryContentLst[${stat.index}].pointFrom|" class="form-control categoryContentLst" th:value="${category.pointFrom}" type="number" required/>
 										</div>
 										<div class="col-2" style="text-align:center">
 											<span  class="h6">～</span>
 										</div>
 										<div class="col-4">
-											<input th:name="|categoryContentLst[${stat.index}].pointTo|" class="form-control categoryContentLst" th:value="${category.pointTo}"/>
+											<input th:name="|categoryContentLst[${stat.index}].pointTo|" class="form-control categoryContentLst" th:value="${category.pointTo}" type="number" required/>
 										</div>
 									</div>
 								</div>
 								
 								<div class="col-3 mt-2 mb-2">
 									<span class="h6">評価結果</span><br>
-									<input th:name="|categoryContentLst[${stat.index}].surveyResult|" class="form-control categoryContentLst" th:value="${category.surveyResult}"/>
+									<input th:name="|categoryContentLst[${stat.index}].surveyResult|" class="form-control categoryContentLst" th:value="${category.surveyResult}" required/>
 								</div>
 								<div class="col-3 mt-2 mb-2">
-									<span class="h6">コンテンツ画像</span>
+									<span class="h6">診断結果画像</span>
 									<div class="input-group mb-3" th:classappend="|previewResultImg${stat.index}|">
 										<input th:name="|categoryContentLst[${stat.index}].surveyResultImage|" class="form-control" th:value="${category.surveyResultImage}" readonly />
 										<div class="input-group-append">
@@ -190,6 +190,7 @@
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">
 								<button type="submit" class="btn btn-sm btn-primary me-5" data-target="categoryＦｏｒｍId" style="width:150px;">更新</button>
+								<a th:href="${referer}" class="btn btn-sm btn-secondary" style="width:150px;">戻る</a>
 							</div>
 						</div>
 					</form>

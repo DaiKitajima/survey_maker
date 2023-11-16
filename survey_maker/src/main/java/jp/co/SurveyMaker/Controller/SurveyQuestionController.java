@@ -85,6 +85,8 @@ public class SurveyQuestionController {
 		mav.addObject("questionContentUpdateForm", questionContentUpdateForm);
 		mav.addObject("categoryLst", surveyCategoryService.getSurveyCategoryByContentId(contentId));
 		
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/questionContentRegist");
 		
 		return mav;
@@ -180,6 +182,8 @@ public class SurveyQuestionController {
 		mav.addObject("questionContentUpdateForm", questionContentUpdateForm);
 		mav.addObject("categoryLst", surveyCategoryService.getSurveyCategoryByContentId(question.getSurveyManagementId()));
 		
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/questionContentUpdate");
 		
 		return mav;

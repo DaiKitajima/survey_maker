@@ -1,7 +1,8 @@
 $(function(){
+	const rootPath = window.location.protocol + '//' + window.location.host;
 	
 	/* スクリプトコピーボタン押下*/
-	$("#resultUrl").val( window.location.protocol + '//' + window.location.host + $("#resultUrl").val() );
+	$("#resultUrl").val( rootPath + $("#resultUrl").val() );
 	$("#urlCopyBtn").click(function(){
 		var copyText = $("#resultUrl").val();
 		navigator.clipboard.writeText(copyText);

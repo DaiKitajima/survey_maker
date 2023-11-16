@@ -63,6 +63,8 @@ public class SurveyCategoryController {
 		surveyCategoryUpdateForm.setSurveyManagementId(contentId);
 		
 		mav.addObject("surveyCategoryUpdateForm", surveyCategoryUpdateForm);
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/surveyCategoryRegist");
 		
 		return mav;
@@ -220,6 +222,8 @@ public class SurveyCategoryController {
 		this.convertEntityToCategoryForm(category, surveyCategoryUpdateForm, survey.getSurveyPatternId());
 		
 		mav.addObject("surveyCategoryUpdateForm", surveyCategoryUpdateForm);
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/surveyCategoryUpdate");
 		
 		return mav;

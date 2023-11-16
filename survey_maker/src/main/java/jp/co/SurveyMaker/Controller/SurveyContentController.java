@@ -47,7 +47,7 @@ public class SurveyContentController {
 		ModelAndView mav = new ModelAndView();
 		// セッションからユーザ情報取得
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
-		
+
 		List<SurveyPattern> patterns = surveyPatternService.getAllPattern();
 		mav.addObject("patternLst", patterns);
 		
@@ -55,6 +55,8 @@ public class SurveyContentController {
 		surveyContentUpdateForm.setUserId(user.getId());
 		mav.addObject("surveyContentUpdateForm", surveyContentUpdateForm);
 		
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/surveyContentRegist");
 		
 		return mav;
@@ -109,6 +111,8 @@ public class SurveyContentController {
 		SurveyContentUpdateForm surveyContentUpdateForm = new SurveyContentUpdateForm();
 		this.convertSurveyContentEntityToForm(surveyContent, surveyContentUpdateForm);
 		mav.addObject("surveyContentUpdateForm", surveyContentUpdateForm);
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/surveyContentUpdate");
 		
 		return mav;

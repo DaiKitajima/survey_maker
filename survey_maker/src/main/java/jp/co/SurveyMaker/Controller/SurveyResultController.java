@@ -116,12 +116,18 @@ public class SurveyResultController {
 	// 総合評価とカテゴリー別の評価結果設定
 	private void setSurveySummaryAndCategoryResult(SurveyResultForm surveyResultForm, SurveyResult result , Integer patternId) throws Exception {
 		// 一番ポイントのカテゴリーを設定
-		Type type = new TypeToken<SummaryResultDto>(){}.getType();
-		SummaryResultDto summaryResult = (new Gson()).fromJson(result.getSummaryResultContent(), type);  
-		SurveyCategory topCategory = surveyCategoryService.getSurveyCategoryById(summaryResult.getTopCategoryId());
-		surveyResultForm.setTopCategoryId(topCategory.getId());
+		if(!CommonConstants.PARTTERN_FLOW.equals(patternId)) {
+			Type type = new TypeToken<SummaryResultDto>(){}.getType();
+			SummaryResultDto summaryResult = (new Gson()).fromJson(result.getSummaryResultContent(), type);  
+			SurveyCategory topCategory = surveyCategoryService.getSurveyCategoryById(summaryResult.getTopCategoryId());
+			surveyResultForm.setTopCategoryId(topCategory.getId());
+		}
+		
 		/*  総合評価 */
 		if(!CommonConstants.PARTTERN_COMPLEX_TOTAL.equals(patternId) && !CommonConstants.PARTTERN_FLOW.equals(patternId)) {
+			Type type = new TypeToken<SummaryResultDto>(){}.getType();
+			SummaryResultDto summaryResult = (new Gson()).fromJson(result.getSummaryResultContent(), type);  
+			SurveyCategory topCategory = surveyCategoryService.getSurveyCategoryById(summaryResult.getTopCategoryId());
 			// Aboveの場合
 			if( summaryResult.getTotalPoint() >= topCategory.getSurveySummaryDecidePoint() ) {
 				surveyResultForm.setSurveySummaryTitle(topCategory.getSurveySummaryTitleAbove());

@@ -30,7 +30,7 @@
 						</div>
 						<div class="row">
 							<div class="col-4 mb-2">
-								<input th:field="*{questionTitle}" class="form-control" required/>
+								<input th:field="*{questionTitle}" class="form-control" maxlength="250" required/>
 							</div>
 						</div>
 						
@@ -64,7 +64,7 @@
 								<div class="col-11 mt-2 mb-2 ">
 									<span class="h6">回答内容</span><br>
 									<input type="hidden" class="answerContentLst" th:name="answerContentLst[__${stat.index}__].answerId" th:value="${answer.answerId}"/>
-									<input th:name="answerContentLst[__${stat.index}__].answer" class="form-control answerContentLst" th:value="${answer.answer}"/>
+									<input th:name="answerContentLst[__${stat.index}__].answer" class="form-control answerContentLst" th:value="${answer.answer}" required/>
 								</div>
 								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" >
 									<div>
@@ -84,10 +84,10 @@
 										</div>
 										<div class="col-1">
 											<th:block th:if="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
-												<input th:name="answerContentLst[__${stat.index}__].answerPointLst[__${stat1.index}__].point" class="form-control answerContentLst" th:value="${answer.answerPointLst.^[categoryId==__${category.id}__].point}"/>
+												<input th:name="answerContentLst[__${stat.index}__].answerPointLst[__${stat1.index}__].point" class="form-control answerContentLst" th:value="${answer.answerPointLst.^[categoryId==__${category.id}__].point}" type="number" required/>
 											</th:block>
 											<th:block th:unless="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
-												<input th:name="answerContentLst[__${stat.index}__].answerPointLst[__${stat1.index}__].point" class="form-control answerContentLst"/>
+												<input th:name="answerContentLst[__${stat.index}__].answerPointLst[__${stat1.index}__].point" class="form-control answerContentLst" type="number" required/>
 											</th:block>
 										</div>
 									</div>
@@ -102,6 +102,7 @@
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">
 								<button type="submit" class="btn btn-sm btn-primary me-5" data-target="submitFormId" style="width:150px;">更新</button>
+								<a th:href="${referer}" class="btn btn-sm btn-secondary" style="width:150px;">戻る</a>
 							</div>
 						</div>
 					</form>

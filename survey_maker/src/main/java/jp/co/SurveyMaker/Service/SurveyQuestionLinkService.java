@@ -42,6 +42,11 @@ public class SurveyQuestionLinkService {
 		return surveyQuestionLinkRepository.findBySurveyManagementIdAndDeleteFlgFalse(contentId);
 	}
 	
+	// 指定質問のリンク情報取得
+	public List<SurveyQuestionLink> getSurveyQuestionLinkLstByQuestionId(Integer contentId, Integer questionId) throws Exception {
+		return surveyQuestionLinkRepository.findBySurveyManagementIdAndSurveyQuestionIdAndDeleteFlgFalse(contentId, questionId);
+	}
+	
 	// 質問リンク情報削除
 	public void deleteQuestionLinkByContentIdAndQuestionId(Integer contentId,Integer questionId) throws Exception {
 		surveyQuestionLinkRepository.deleteBySurveyManagementIdAndSurveyQuestionId(contentId, questionId);

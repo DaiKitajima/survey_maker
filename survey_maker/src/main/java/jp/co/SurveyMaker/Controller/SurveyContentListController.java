@@ -210,6 +210,9 @@ public class SurveyContentListController {
 		mav.addObject(LinkType.SURVEY_RESULT.name(), LinkType.SURVEY_RESULT);
 		
 		mav.addObject("surveyContentDetailForm", surveyContentDetailForm );
+		
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/surveyContentDetail");
 		
 		return mav;

@@ -125,5 +125,41 @@ public class SurveySimulationService {
 	public SurveyResult getSurveyResultByKey(String key)throws Exception {
 		return surveyResultRepository.findBySurveyKeyAndDeleteFlgFalse(key).orElseThrow();
 	}
+
+	// フローの場合、診断結果登録
+	public Integer surveyResultRegistForFlow(Integer contentId, Integer categoryResultId)throws Exception {
+		SurveyCategory  category = surveyCategoryRepository.findBySurveyManagementIdAndDeleteFlgFalse(contentId).get(0);
+		// 結果登録
+		SurveyResult surveyResult = new SurveyResult();
+		surveyResult.setSurveyManagementId(contentId);
+		surveyResult.setSurveyResultContent(this.makeSurveyResultContentForFlow(category, categoryResultId));
+		surveyResult.setSummaryResultContent(null);
+		surveyResult.setExpireDate(null);
+		surveyResult.setSurveyKey(UUIDUtil.get32UUID());
+		surveyResultRepository.save(surveyResult);
+		
+		return surveyResultRepository.getLastInsertId();
+	}
+	
+	// フローの場合、カテゴリー評価結果作成
+	private String makeSurveyResultContentForFlow(SurveyCategory category, Integer categoryResultId) {
+		List<SurveyCategoryResultDto>  categoryResultLst = new ArrayList<SurveyCategoryResultDto>();
+
+		Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
+		List<CategoryContentDto> resultLst = (new Gson()).fromJson(category.getSurveyCategoryContent(), listType);
+		
+		SurveyCategoryResultDto categoryResult = new SurveyCategoryResultDto();
+		categoryResult.setCategoryId(category.getId());
+		categoryResult.setCategoryName(category.getSurveyCategoryName());
+		categoryResult.setCategoryTotalPoint(null);
+		resultLst.forEach(result ->{
+			if(result.getId().equals(categoryResultId) ) {
+				categoryResult.setCategoryResultId(result.getId());
+			}
+		});
+		categoryResultLst.add(categoryResult);
+
+		return (new Gson()).toJson(categoryResultLst);
+	}
 	
 }

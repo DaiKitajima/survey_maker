@@ -82,6 +82,8 @@ public class SurveyQuestionLinkController {
 		List<CategoryContentDto> contentLst = (new Gson()).fromJson(surveyCategoryService.getSurveyCategoryByContentId(contentId).get(0).getSurveyCategoryContent(), listType);  
 		mav.addObject("surveyResultLst", contentLst);
 		
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/questionLinkRegist");
 		
 		return mav;
@@ -185,6 +187,8 @@ public class SurveyQuestionLinkController {
 		mav.addObject(LinkType.NEXT_QUESTION.name(), LinkType.NEXT_QUESTION);
 		mav.addObject(LinkType.SURVEY_RESULT.name(), LinkType.SURVEY_RESULT);
 		
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("/questionLinkUpdate");
 		
 		return mav;

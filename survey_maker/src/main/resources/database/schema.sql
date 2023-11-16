@@ -44,10 +44,10 @@ create table IF NOT EXISTS `survey_category` (
 `survey_category_name` varchar(256) COMMENT '診断軸名',
 `survey_summary_decide_point` varchar(50) COMMENT '総合評価判定点数',
 `survey_summary_title_above` varchar(256) COMMENT '総合評価タイトル（判定点数以上）',
-`survey_summary_image_above` varchar(50) COMMENT '総合評価画像（判定点数以上）',
+`survey_summary_image_above` varchar(256) COMMENT '総合評価画像（判定点数以上）',
 `survey_summary_detail_above` text COMMENT '総合評価詳細（判定点数以上）',
 `survey_summary_title_below` varchar(256) COMMENT '総合評価タイトル（判定点数以下）',
-`survey_summary_image_below` varchar(50) COMMENT '総合評価画像（判定点数以下）',
+`survey_summary_image_below` varchar(256) COMMENT '総合評価画像（判定点数以下）',
 `survey_summary_detail_below` text COMMENT '総合評価詳細（判定点数以下）',
 `survey_category_content` json COMMENT '診断軸コンテンツ',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
@@ -83,7 +83,7 @@ create table IF NOT EXISTS `survey_question_link` (
 `survey_question_id` int COMMENT '質問コンテンツID',
 `answer_id` int COMMENT '回答ID',
 `link_type` int COMMENT 'リンク種別　',
-`link_to` varchar(50) COMMENT 'リンク先',
+`link_to` int COMMENT 'リンク先',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='診断質問リンクコンテンツテーブル';

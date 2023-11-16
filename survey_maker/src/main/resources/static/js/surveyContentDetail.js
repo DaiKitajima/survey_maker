@@ -60,8 +60,8 @@ $(function(){
 		// ポイント範囲チェック
 		$("input[name*='pointTo']").each(function(){
 			var pointFrom = $(this).parent().siblings().find("input[name*='pointFrom']");
-			var fromVal = pointFrom.val();
-			var toVal = $(this).val();
+			var fromVal = parseInt(pointFrom.val());
+			var toVal = parseInt($(this).val());
 			if(fromVal >= toVal){
 				submitFlg = false;
 				alert("ポイント範囲のFROMとTOの値を正しく設定してください。");

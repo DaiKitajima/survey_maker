@@ -21,6 +21,8 @@ public interface AutomaticallyImplementedSurveyQuestionLinkRepository extends Re
 	List<SurveyQuestionLink> findByDeleteFlgFalse();
 	//診断コンテンツ所属のリンク情報取得
 	List<SurveyQuestionLink> findBySurveyManagementIdAndDeleteFlgFalse(Integer contentId);
+	//診断コンテンツ配下、指定質問のリンク情報取得
+	List<SurveyQuestionLink> findBySurveyManagementIdAndSurveyQuestionIdAndDeleteFlgFalse(Integer contentId,Integer questionId);
 	//登録・更新
 	<S extends SurveyQuestionLink> S save(S entity);
 	//削除

@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jp.co.SurveyMaker.Constants.CommonConstants;
+import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
 import jp.co.SurveyMaker.Dto.CategoryContentDto;
 import jp.co.SurveyMaker.Dto.SummaryResultDto;
@@ -33,6 +34,7 @@ import jp.co.SurveyMaker.Form.SurveyResultForm;
 import jp.co.SurveyMaker.Form.SurveySimulationForm;
 import jp.co.SurveyMaker.Service.SurveyCategoryService;
 import jp.co.SurveyMaker.Service.SurveyContentService;
+import jp.co.SurveyMaker.Service.SurveyQuestionLinkService;
 import jp.co.SurveyMaker.Service.SurveyQuestionService;
 import jp.co.SurveyMaker.Service.SurveySimulationService;
 import jp.co.SurveyMaker.Service.Entity.SurveyCategory;
@@ -57,6 +59,9 @@ public class SurveySimulationController {
 	
 	@Autowired
 	private SurveyCategoryService surveyCategoryService;
+	
+	@Autowired
+	private SurveyQuestionLinkService surveyQuestionLinkService;
 	
 	@Value("${server.image.save.path}")
 	 private String imgSavePath;
@@ -86,8 +91,12 @@ public class SurveySimulationController {
 		}else if( survey.getSurveyPatternId() == CommonConstants.PARTTERN_COMPLEX_POINT || survey.getSurveyPatternId() == CommonConstants.PARTTERN_COMPLEX_TOTAL ) {
 			// 複数
 			mav.setViewName("/surveySimulationForComplex");
-		}else {
-			// フロー
+		}else { // フロー
+			// 質問リンクコンテンツフォーム設定
+			simulationForm.setQuestionLinkLst(surveyQuestionLinkService.getSurveyQuestionLinkLst(contentId));
+			mav.addObject(LinkType.NEXT_QUESTION.name(), LinkType.NEXT_QUESTION);
+			mav.addObject(LinkType.SURVEY_RESULT.name(), LinkType.SURVEY_RESULT);
+			
 			mav.setViewName("/surveySimulationForFlow");
 		}
 		
@@ -166,12 +175,19 @@ public class SurveySimulationController {
 	// 総合評価とカテゴリー別の評価結果設定
 	private void setSurveySummaryAndCategoryResult(SurveyResultForm surveyResultForm, SurveyResult result, Integer patternId) throws Exception {
 		// 一番ポイントのカテゴリーを設定
-		Type type = new TypeToken<SummaryResultDto>(){}.getType();
-		SummaryResultDto summaryResult = (new Gson()).fromJson(result.getSummaryResultContent(), type);  
-		SurveyCategory topCategory = surveyCategoryService.getSurveyCategoryById(summaryResult.getTopCategoryId());
-		surveyResultForm.setTopCategoryId(topCategory.getId());
+		if(!CommonConstants.PARTTERN_FLOW.equals(patternId)) {
+			Type type = new TypeToken<SummaryResultDto>(){}.getType();
+			SummaryResultDto summaryResult = (new Gson()).fromJson(result.getSummaryResultContent(), type);  
+			SurveyCategory topCategory = surveyCategoryService.getSurveyCategoryById(summaryResult.getTopCategoryId());
+			surveyResultForm.setTopCategoryId(topCategory.getId());
+		}
+
 		/*  総合評価 */
 		if(!CommonConstants.PARTTERN_COMPLEX_TOTAL.equals(patternId) && !CommonConstants.PARTTERN_FLOW.equals(patternId)) {
+			Type type = new TypeToken<SummaryResultDto>(){}.getType();
+			SummaryResultDto summaryResult = (new Gson()).fromJson(result.getSummaryResultContent(), type); 
+			SurveyCategory topCategory = surveyCategoryService.getSurveyCategoryById(summaryResult.getTopCategoryId());
+			
 			// Aboveの場合
 			if( summaryResult.getTotalPoint() >= topCategory.getSurveySummaryDecidePoint() ) {
 				surveyResultForm.setSurveySummaryTitle(topCategory.getSurveySummaryTitleAbove());
@@ -301,10 +317,28 @@ public class SurveySimulationController {
 	public ModelAndView surveySimulationForFlowResult(
 			HttpServletRequest request,
 			HttpSession session ,
-			@RequestParam(value="id", required = true, defaultValue="-1") Integer id) throws Exception {
+			@RequestParam(value="contentId", required = true) Integer contentId,
+			@RequestParam(value="linkTo", required = true) Integer linkTo) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		
-		mav.addObject("surveyResultForm", new SurveyResultForm());
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
+		mav.addObject("survey", survey);
+		
+		// 診断結果作成及び登録
+		Integer resultId = surveySimulationService.surveyResultRegistForFlow(contentId, linkTo);
+		SurveyResult result = surveySimulationService.getSurveyResultById(resultId);
+		
+		// 診断結果画面フォーム設定
+		SurveyResultForm surveyResultForm = new SurveyResultForm();
+		surveyResultForm.setId(result.getId());
+		surveyResultForm.setKey(result.getSurveyKey());
+		surveyResultForm.setSurvey(this.convertSurveyContentEntityToForm(survey));
+		// 総合評価とカテゴリー別の評価結果設定
+		this.setSurveySummaryAndCategoryResult(surveyResultForm, result, survey.getSurveyPatternId());
+			
+		mav.addObject("surveyResultForm", surveyResultForm);
 		
 		mav.setViewName("/surveySimulationResultForFlow");
 		

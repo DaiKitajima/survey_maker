@@ -19,8 +19,12 @@
 				<div class="col-8">
 					<span class="h5" th:text="|「${surveyContentDetailForm.surveyContent.surveyName}」コンテンツ詳細|"> 「高齢者健康調査」コンテンツ詳細</span>
 				</div>
-				<div class="col-4">
-					<div class="d-flex justify-content-end">
+				<div class="col-4" th:if="${#lists.size(surveyContentDetailForm.categoryLst)>0 && #lists.size(surveyContentDetailForm.questionFormLst)>0 }">
+					<div class="d-flex justify-content-end" th:if="${surveyContentDetailForm.surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW && #lists.size(surveyContentDetailForm.questionLinkLst)>0}">
+						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-5" target="_blank">診断シミュレーション</a>
+						<a th:href="@{/surveyContentDetail/surveyScriptCreate?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success" target="_blank">埋め込みコード生成</a>
+					</div>
+					<div class="d-flex justify-content-end" th:unless="${surveyContentDetailForm.surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
 						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-5" target="_blank">診断シミュレーション</a>
 						<a th:href="@{/surveyContentDetail/surveyScriptCreate?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success" target="_blank">埋め込みコード生成</a>
 					</div>
@@ -320,7 +324,7 @@
 												<th:block th:if="*{#lists.size(questionLinkLst) > 0 }">
 													<a th:href="@{/surveyContentDetail/questionLinkUpdate?contentId=__*{contentId}__}" class="btn btn-sm btn-primary me-1">リンク編集</a>
 												</th:block>
-												<th:block th:unless="*{#lists.size(questionLinkLst) > 0 }">
+												<th:block th:if="*{#lists.size(questionLinkLst) <= 0 && #lists.size(questionFormLst) > 0 && #lists.size(categoryLst) > 0 }">
 													<a th:href="@{/surveyContentDetail/questionLinkRegist?contentId=__*{contentId}__}" class="btn btn-sm btn-success me-1">リンク設定</a>
 												</th:block>
 											</th:block>
