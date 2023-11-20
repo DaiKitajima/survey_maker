@@ -173,7 +173,9 @@ public class SurveyResultController {
 			SurveyCategory category = surveyCategoryService.getSurveyCategoryById(categoryResult.getCategoryId());
 			resultForm.setCategoryId(category.getId());
 			resultForm.setCategoryName(category.getSurveyCategoryName());
+			resultForm.setCategoryColor(category.getSurveyCategoryColor());
 			resultForm.setCategoryPoint(categoryResult.getCategoryTotalPoint());
+			resultForm.setCategoryMaxPoint(categoryResult.getCategoryMaxPoint());
 			resultForm.setCategoryResultId(categoryResult.getCategoryResultId());
 			
 			Type contentlistType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();

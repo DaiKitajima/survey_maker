@@ -1,4 +1,4 @@
-package jp.co.SurveyMaker.Dto;
+package jp.co.SurveyMaker.Form;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,15 +6,15 @@ import lombok.ToString;
 
 @Getter @Setter
 @ToString
-public class SurveyCategoryResultDto {
+public class CategoryPointForm {
 	
-    private Integer categoryId;
+    private Integer id;
+
+    private Integer surveyManagementId;
     
     private String categoryName;
     
     private Integer categoryTotalPoint;
     
-    private Integer categoryMaxPoint;
-    
-    private Integer categoryResultId;
+    private Integer categoryUnUsedPoint;
 }

@@ -12,7 +12,11 @@ public class CategoryResultForm {
     
 	private String categoryName;
 	
+	private String categoryColor;
+	
 	private Integer categoryPoint;
+	
+	private Integer categoryMaxPoint;
 	
 	private Integer categoryResultId;
 	

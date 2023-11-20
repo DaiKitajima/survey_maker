@@ -24,12 +24,58 @@
 							</div>
 						</div>
 
-						<div class="row mb-2">
+						<div class="row mb-5">
 							<div class="col d-flex justify-content-center">
 								<img id="contentImg" th:src="*{survey.surveyImageBase64}" height="200" width="250" th:alt="*{survey.surveyImage}" class="img-thumbnail">
 							</div>
 						</div>
 
+						<!-- 総合評価 -->
+						<div th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">
+							<div class="row mb-4" >
+								<div class="col d-flex justify-content-center">
+									<h3>
+										<span class="badge rounded-pill bg-info" th:text="*{surveySummaryTitle}">タイトル</span>
+									</h3>
+								</div>
+							</div>
+							<div class="row mb-4">
+								<div class="col-2 d-flex justify-content-end">
+									<div>
+										<h6 class="bg-warning text-light">総合評価:</h6>
+									</div>
+								</div>
+								<div class="col ">
+									<div class="summaryResult">
+										<div class="row mb-2">
+											<div class="col-4">
+												<img id="surveyResultImg" th:src="*{surveySummaryImageBase64}" height="300" width="350" alt="総合評価画像" class="img-thumbnail">
+											</div>
+											<div class="col-5 shadow-lg">
+												<div class="categoryResultProgress">
+													<div class="row mb-2" th:each="categoryResult,stat:*{categoryResultLst}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
+														<div class="col">
+															<h6 th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+															<div class="progress" >
+																<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row mb-2">
+											<div class="col">
+												<h6>評価詳細:</h6>
+												<span th:text="*{surveySummaryDetail}"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 						<!-- 複数（ポイント型） -->
 						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}" >
 							<div class="col-2 d-flex justify-content-end">

@@ -19,6 +19,8 @@ public class SurveyCategoryUpdateForm {
     
     private String surveyCategoryName;
     
+    private String surveyCategoryColor;
+    
     private Integer surveySummaryDecidePoint;
     
     private String surveySummaryTitleAbove;

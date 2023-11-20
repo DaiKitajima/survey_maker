@@ -29,6 +29,9 @@ public class SurveyCategory {
 	    @Column(name = "survey_category_name")
 	    private String surveyCategoryName;
 	    
+	    @Column(name = "survey_category_color")
+	    private String surveyCategoryColor;
+	    
 	    @Column(name = "survey_category_content")
 	    private String surveyCategoryContent;
 	    

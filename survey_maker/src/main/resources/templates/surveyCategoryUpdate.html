@@ -26,11 +26,13 @@
 
 						<!-- カテゴリー名 -->
 						<div class="row">
-							<span class="h6">診断軸名</span>
-						</div>
-						<div class="row">
 							<div class="col-4 mt-2 mb-2">
+								<span class="h6">診断軸名</span><br>
 								<input th:field="*{surveyCategoryName}" class="form-control" maxlength="100" required/>
+							</div>
+							<div class="col-2 mt-2 mb-2">
+								<span class="h6">診断軸カラー</span><br>
+								<input type="color" th:field="*{surveyCategoryColor}" class="form-control form-control-color" value="#198754" required/>
 							</div>
 						</div>
 						

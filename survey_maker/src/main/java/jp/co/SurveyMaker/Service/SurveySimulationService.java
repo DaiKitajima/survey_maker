@@ -2,6 +2,7 @@ package jp.co.SurveyMaker.Service;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -103,6 +104,10 @@ public class SurveySimulationService {
 			List<CategoryContentDto> resultLst = (new Gson()).fromJson(category.getSurveyCategoryContent(), listType);
 			
 			SurveyCategoryResultDto categoryResult = new SurveyCategoryResultDto();
+			CategoryContentDto maxPointContent = resultLst.stream().max(Comparator.comparingInt(CategoryContentDto::getPointTo)).orElse(null);
+			if(maxPointContent != null) {
+				categoryResult.setCategoryMaxPoint(maxPointContent.getPointTo());
+			}
 			categoryResult.setCategoryId(categoryId);
 			categoryResult.setCategoryName(category.getSurveyCategoryName());
 			categoryResult.setCategoryTotalPoint(categoryPoint);

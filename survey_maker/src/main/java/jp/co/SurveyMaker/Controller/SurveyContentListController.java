@@ -294,6 +294,7 @@ public class SurveyContentListController {
 		surveyCategoryUpdateForm.setId(category.getId());
 		surveyCategoryUpdateForm.setSurveyManagementId(category.getSurveyManagementId());
 		surveyCategoryUpdateForm.setSurveyCategoryName(category.getSurveyCategoryName());
+		surveyCategoryUpdateForm.setSurveyCategoryColor(category.getSurveyCategoryColor());
 		
 		// 総合評価部分
 		if(patternId !=CommonConstants.PARTTERN_FLOW && patternId !=CommonConstants.PARTTERN_COMPLEX_TOTAL) {

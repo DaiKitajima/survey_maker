@@ -131,6 +131,7 @@ public class SurveyCategoryController {
 		category.setId(surveyCategoryUpdateForm.getId());
 		category.setSurveyManagementId(surveyCategoryUpdateForm.getSurveyManagementId());
 		category.setSurveyCategoryName(surveyCategoryUpdateForm.getSurveyCategoryName());
+		category.setSurveyCategoryColor(surveyCategoryUpdateForm.getSurveyCategoryColor());
 		category.setSurveySummaryDecidePoint(surveyCategoryUpdateForm.getSurveySummaryDecidePoint());
 		category.setSurveySummaryTitleAbove(surveyCategoryUpdateForm.getSurveySummaryTitleAbove());
 		category.setSurveySummaryDetailAbove(surveyCategoryUpdateForm.getSurveySummaryDetailAbove());
@@ -234,6 +235,7 @@ public class SurveyCategoryController {
 		surveyCategoryUpdateForm.setId(category.getId());
 		surveyCategoryUpdateForm.setSurveyManagementId(category.getSurveyManagementId());
 		surveyCategoryUpdateForm.setSurveyCategoryName(category.getSurveyCategoryName());
+		surveyCategoryUpdateForm.setSurveyCategoryColor(category.getSurveyCategoryColor());
 		
 		if(patternId !=CommonConstants.PARTTERN_FLOW && patternId !=CommonConstants.PARTTERN_COMPLEX_TOTAL) {
 			surveyCategoryUpdateForm.setSurveySummaryDecidePoint(category.getSurveySummaryDecidePoint());

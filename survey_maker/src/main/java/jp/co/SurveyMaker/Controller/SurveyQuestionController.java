@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,12 +27,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
+import jp.co.SurveyMaker.Dto.AnswerPointDto;
+import jp.co.SurveyMaker.Dto.CategoryContentDto;
 import jp.co.SurveyMaker.Dto.QuestionOrderDto;
+import jp.co.SurveyMaker.Form.CategoryPointForm;
 import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
 import jp.co.SurveyMaker.Service.SurveyCategoryService;
 import jp.co.SurveyMaker.Service.SurveyContentService;
 import jp.co.SurveyMaker.Service.SurveyQuestionLinkService;
 import jp.co.SurveyMaker.Service.SurveyQuestionService;
+import jp.co.SurveyMaker.Service.Entity.SurveyCategory;
 import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
 import jp.co.SurveyMaker.Service.Entity.User;
@@ -83,7 +89,11 @@ public class SurveyQuestionController {
 		}
 		
 		mav.addObject("questionContentUpdateForm", questionContentUpdateForm);
-		mav.addObject("categoryLst", surveyCategoryService.getSurveyCategoryByContentId(contentId));
+		
+		if(survey.getSurveyPatternId() != CommonConstants.PARTTERN_FLOW ) {
+			List<CategoryPointForm> categoryLst = this.getCategoryPointInfo(contentId);
+			mav.addObject("categoryLst", categoryLst);
+		}
 		
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
@@ -92,6 +102,58 @@ public class SurveyQuestionController {
 		return mav;
 	}
 	
+	// 軸情報取得（残ポイント情報持ち）
+	private List<CategoryPointForm> getCategoryPointInfo(Integer contentId) throws Exception {
+		List<CategoryPointForm> categoryFormLst = new ArrayList<CategoryPointForm>();
+		List<SurveyCategory> categoryLst = surveyCategoryService.getSurveyCategoryByContentId(contentId);
+		List<SurveyQuestion>	questionLst = surveyQuestionService.getSurveyQuestionByContentId(contentId);
+		
+		// 登録済み質問の軸別のポイント情報取得
+		List<AnswerPointDto> categoryPointLst = new ArrayList<AnswerPointDto>(); 
+		if(questionLst != null && questionLst.size() != 0 ) {
+			for(SurveyQuestion question : questionLst) {
+				// 質問内の回答ポイント情報取得
+				List<AnswerPointDto> answerPointLstInQuestion = new ArrayList<AnswerPointDto>(); 
+				Type listType = new TypeToken<ArrayList<AnswerContentDto>>(){}.getType();
+				List<AnswerContentDto> answerLst = (new Gson()).fromJson(question.getAnswerContent(), listType);
+				answerLst.forEach(answer ->{
+					answerPointLstInQuestion.addAll(answer.getAnswerPointLst());
+				});
+				// 質問内の各軸に設定した最大ポイント情報取得
+				Map<Integer,Optional<AnswerPointDto>> categoryMaxPointMap = answerPointLstInQuestion.stream().collect(Collectors.groupingBy(AnswerPointDto::getCategoryId,Collectors.maxBy(Comparator.comparingInt(AnswerPointDto::getPoint))));
+				categoryMaxPointMap.forEach((key,val) ->{
+					categoryPointLst.add(val.orElse(null));
+				});
+			}
+		}
+		
+		// 登録済み質問の軸別でトタル―ポイントを計算
+		Map<Integer, Integer> categorySumMap = categoryPointLst.stream().collect(Collectors.groupingBy(AnswerPointDto::getCategoryId, Collectors.summingInt(AnswerPointDto::getPoint)));
+
+		if(categoryLst != null && categoryLst.size() != 0 ) {
+			categoryLst.forEach(cate ->{
+				CategoryPointForm form = new CategoryPointForm();
+				form.setId(cate.getId());
+				form.setCategoryName(cate.getSurveyCategoryName());
+				form.setSurveyManagementId(contentId)	;
+				// 軸の評価結果に最大ポイント設定
+				Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
+				List<CategoryContentDto> categoryContentLst = (new Gson()).fromJson(cate.getSurveyCategoryContent(), listType);
+				Integer maxPoint = categoryContentLst.stream().map(CategoryContentDto::getPointTo)
+																.mapToInt(Integer::intValue)
+																.max()
+																.getAsInt();
+				form.setCategoryTotalPoint(maxPoint);
+				// 軸の残ポイント設定
+				Integer usedPoint = ( categorySumMap == null || !categorySumMap.containsKey(cate.getId()) ? 0 : categorySumMap.get(cate.getId()) );
+				form.setCategoryUnUsedPoint(maxPoint-usedPoint );
+				categoryFormLst.add(form)	;
+				});
+		}
+
+		return categoryFormLst;
+	}
+
 	@PostMapping("/surveyContentDetail/questionContentRegist/exec")
 	public ModelAndView questionContentRegistExec(
 			HttpServletRequest request,
@@ -180,7 +242,11 @@ public class SurveyQuestionController {
 		this.convertEntityToQuestionForm(question, questionContentUpdateForm);
 		
 		mav.addObject("questionContentUpdateForm", questionContentUpdateForm);
-		mav.addObject("categoryLst", surveyCategoryService.getSurveyCategoryByContentId(question.getSurveyManagementId()));
+		
+		if(survey.getSurveyPatternId() != CommonConstants.PARTTERN_FLOW ) {
+			List<CategoryPointForm> categoryLst = this.getCategoryPointInfo(survey.getId());
+			mav.addObject("categoryLst", categoryLst);
+		}
 		
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
@@ -266,6 +332,19 @@ public class SurveyQuestionController {
 					continue;
 				}
 			}
+			
+			// 質問削除後、Order更新
+			List<SurveyQuestion> questionLst =  surveyQuestionService.getSurveyQuestionByContentIdOrderByOrderNo(contentId);
+			List<QuestionOrderDto> questionOrderLst = new ArrayList<QuestionOrderDto>();
+			if( questionLst != null && questionLst.size() != 0) {
+				for(int order =1;order<=questionLst.size();order++) {
+					QuestionOrderDto dto = new QuestionOrderDto();
+					dto.setQuestionId(questionLst.get(order - 1).getId());
+					dto.setOrderNo(order);
+					questionOrderLst.add(dto);
+				}
+			}
+			surveyQuestionService.questionOrderUpdate(questionOrderLst);
 		}
 		
 		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId="+ contentId);
