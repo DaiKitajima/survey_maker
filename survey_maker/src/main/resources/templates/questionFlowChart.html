@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+		
+		<script th:src="@{/js/questionFlowChart.js}"></script>
+		<title>診断質問リンクコンテンツ更新画面</title>
+		<style>
+			.flowchart-container {
+				width:100%;
+				height: 500px;
+				background: white;
+				border: 1px solid #BBB;
+				margin-bottom: 10px;
+				overflow-x: auto; 
+				overflow-y: auto;
+			}
+		</style>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<!-- 共通ナビヘッダー -->
+		<th:block th:replace="commonNav.html" />
+
+		<div class="container-fluid mb-5">
+			<!-- タイトル -->
+			<div class="d-flex justify-content-start mt-3 mb-2">
+				<span class="h5" th:text="|「${survey.surveyName}」フローチャート|"> 「高齢者健康調査」フローチャート</span>
+				<input type="hidden" id="flowchartData" th:value="${questionLinkUpdateForm.flowChartData}" >
+			</div>
+
+			<div class="card shadow-lg">
+				<div class="card-body">
+					<div class="flowchart-container" id="flowchartworkspace">
+					</div>
+					
+					<div class="row">
+						<div class="col d-flex justify-content-center mt-2 mb-2 ">
+							<a th:href="${referer}" class="btn btn-sm btn-secondary" style="width:150px;">戻る</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

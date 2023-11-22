@@ -16,4 +16,5 @@ public class QuestionLinkUpdateForm {
     
     private List<QuestionLinkForm> questionLinkLst;
     
+    private String flowChartData;
 }

@@ -6,6 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.co.SurveyMaker.Constants.LinkType;
+import jp.co.SurveyMaker.Dto.AnswerContentDto;
+import jp.co.SurveyMaker.Dto.CategoryContentDto;
+import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
+import jp.co.SurveyMaker.Form.QuestionLinkForm;
+import jp.co.SurveyMaker.Form.SurveyCategoryUpdateForm;
 import jp.co.SurveyMaker.Repository.SurveyQuestionLink.SurveyQuestionLinkRepository;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestionLink;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +56,99 @@ public class SurveyQuestionLinkService {
 	// 質問リンク情報削除
 	public void deleteQuestionLinkByContentIdAndQuestionId(Integer contentId,Integer questionId) throws Exception {
 		surveyQuestionLinkRepository.deleteBySurveyManagementIdAndSurveyQuestionId(contentId, questionId);
+	}
+
+	// チャートデータ作成
+	public String makeFlowchartData(List<QuestionContentUpdateForm> questionFormLst, List<QuestionLinkForm> linkFormLst, SurveyCategoryUpdateForm category) {
+		// チャートデータ構造
+		/*
+		 * { 
+		 * "operators": { 
+		 * "operator1": { "top": 20, "left": 20, "properties": {
+		 * "title": "Question1", "inputs": { "input_0": { "label": "QuestionContent" }
+		 * }, "outputs": { "output_0": { "label": "Answer1" } } } }, }, 
+		 * "links": {
+		 * "link_1": { "fromOperator": "operator1", "fromConnector": "output_0",
+		 * "toOperator": "operator2", "toConnector": "input_0", } }, 
+		 * "operatorTypes": {}
+		 * }
+		 */
+		// operators 構築
+		String operator = "";
+		for(QuestionContentUpdateForm question : questionFormLst) {
+			operator = operator + "    'operator"+ question.getId() + "': {\n";
+			operator = operator  + "      'top': 20,\n";
+			operator = operator  + "      'left': 20,\n";
+			operator = operator  + "      'properties': {\n";
+			operator = operator  + "        'title': 'Question" +question.getQuestionOrderNo() +"',\n";
+			operator = operator  + "        'inputs': {\n";
+			operator = operator  + "          'input_"+ question.getId() +"': {\n";
+			operator = operator  + "            'label': '"+ question.getQuestionTitle() + "'\n";
+			operator = operator  + "          }\n";
+			operator = operator  + "        },\n";
+			operator = operator  + "        'outputs': {\n";
+			// 回答設定
+			String outputs = "";
+			for(AnswerContentDto answer : question.getAnswerContentLst()) {
+				outputs = outputs + "          'output_"+answer.getAnswerId() + "': {\n";
+				outputs = outputs + "            'label': '"+answer.getAnswer() + "'\n";
+				outputs = outputs + "          },\n";
+			}
+			outputs = outputs.substring(0, outputs.length() -2 ) + "\n";
+			operator = operator  + outputs;
+			operator = operator  + "        }\n";
+			operator = operator  + "      }\n";
+			operator = operator  + "    },\n";
+		}
+		
+		// 評価結果をoperatorsに設定
+		operator = operator + "    'result': {\n";
+		operator = operator  + "      'top': 20,\n";
+		operator = operator  + "      'left': 20,\n";
+		operator = operator  + "      'properties': {\n";
+		operator = operator  + "        'title': '評価結果',\n";
+		operator = operator  + "        'inputs': {\n";
+		String inputs = "";
+		for(CategoryContentDto result : category.getCategoryContentLst()) {
+			inputs = inputs + "          'input_"+result.getId() + "': {\n";
+			inputs = inputs + "            'label': '"+result.getSurveyResult() + "'\n";
+			inputs = inputs + "          },\n";
+		}
+		inputs = inputs.substring(0, inputs.length() -2 ) + "\n";
+		operator = operator  + inputs;
+		operator = operator  + "        }\n";
+		operator = operator  + "      }\n";
+		operator = operator  + "    }\n";
+		
+		// links構築
+		String link = "";
+		for(QuestionLinkForm linkForm : linkFormLst) {
+			link = link + "    'link_"+linkForm.getId() +"': {\n";
+			link = link + "      'fromOperator': 'operator" +linkForm.getQuestionId() +"',\n";
+			link = link + "      'fromConnector': 'output_"+ linkForm.getAnswerId() +"',\n";
+			if(LinkType.NEXT_QUESTION.getCode().equals(linkForm.getLinkType()) ) {
+				link = link + "      'toOperator': 'operator"+ linkForm.getLinkTo() +"',\n";
+				link = link + "      'toConnector': 'input_"+ linkForm.getLinkTo()  +"'\n";
+			}else if(LinkType.SURVEY_RESULT.getCode().equals(linkForm.getLinkType()) ) {
+				link = link + "      'toOperator': 'result',\n";
+				link = link + "      'toConnector': 'input_"+ linkForm.getLinkTo()  +"'\n";
+			}
+			link = link + "    },\n";
+		}
+		link = link.substring(0, link.length() -2 ) + "\n";
+		
+		String chartData = "";
+		chartData = chartData + "{\n";
+		chartData = chartData + "  'operators': {\n";
+		chartData = chartData + operator;
+		chartData = chartData + "  },\n";
+		chartData = chartData + "  'links': {\n";
+		chartData = chartData + link;
+		chartData = chartData + "  },\n";
+		chartData = chartData + "  'operatorTypes': {}\n";
+		chartData = chartData + "}\n";
+
+		return chartData;
 	}
 	
 }

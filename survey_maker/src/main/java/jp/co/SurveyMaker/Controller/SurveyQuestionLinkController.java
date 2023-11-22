@@ -25,10 +25,12 @@ import jp.co.SurveyMaker.Dto.CategoryContentDto;
 import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
 import jp.co.SurveyMaker.Form.QuestionLinkForm;
 import jp.co.SurveyMaker.Form.QuestionLinkUpdateForm;
+import jp.co.SurveyMaker.Form.SurveyCategoryUpdateForm;
 import jp.co.SurveyMaker.Service.SurveyCategoryService;
 import jp.co.SurveyMaker.Service.SurveyContentService;
 import jp.co.SurveyMaker.Service.SurveyQuestionLinkService;
 import jp.co.SurveyMaker.Service.SurveyQuestionService;
+import jp.co.SurveyMaker.Service.Entity.SurveyCategory;
 import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestionLink;
@@ -144,7 +146,7 @@ public class SurveyQuestionLinkController {
 	public ModelAndView questionLinkUpdate(
 			HttpServletRequest request,
 			HttpSession session ,
-			@RequestParam(value="contentId", required = true, defaultValue="-1") Integer contentId) throws Exception {
+			@RequestParam(value="contentId", required = true) Integer contentId) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		// セッションからユーザ情報取得
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
@@ -224,4 +226,69 @@ public class SurveyQuestionLinkController {
 		
 		return mav;
 	}
+	
+	@GetMapping("/surveyContentDetail/questionFlowChart")
+	public ModelAndView questionFlowChart(
+			HttpServletRequest request,
+			HttpSession session ,
+			@RequestParam(value="contentId", required = true) Integer contentId) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
+		mav.addObject("survey", survey);
+		
+		QuestionLinkUpdateForm questionLinkUpdateForm = new QuestionLinkUpdateForm();
+		List<SurveyQuestion> questionLst = surveyQuestionService.getSurveyQuestionByContentIdOrderByOrderNo(contentId);
+		List<QuestionContentUpdateForm> formLst = new ArrayList<QuestionContentUpdateForm>();
+		if(questionLst != null && questionLst.size() != 0 ) {
+			for(SurveyQuestion question : questionLst) {
+				QuestionContentUpdateForm questionContentUpdateForm = new QuestionContentUpdateForm();
+				this.convertEntityToQuestionForm(question, questionContentUpdateForm);
+				formLst.add(questionContentUpdateForm);
+			}
+		}
+		questionLinkUpdateForm.setQuestionFormLst(formLst);
+		
+		List<SurveyQuestionLink> questionLinkLst = surveyQuestionLinkService.getSurveyQuestionLinkLst(contentId);
+		List<QuestionLinkForm> linkFormLst = new ArrayList<QuestionLinkForm>();
+		if(questionLinkLst != null && questionLinkLst.size() != 0 ) {
+			for(SurveyQuestionLink link : questionLinkLst) {
+				QuestionLinkForm linkForm = new QuestionLinkForm();
+				this.convertEntityToQuestionLinkForm(link, linkForm);
+				linkFormLst.add(linkForm);
+			}
+		}
+		questionLinkUpdateForm.setQuestionLinkLst(linkFormLst);
+		questionLinkUpdateForm.setSurveyManagementId(contentId);
+		
+		SurveyCategory category = surveyCategoryService.getSurveyCategoryByContentId(contentId).get(0);
+		
+		SurveyCategoryUpdateForm surveyCategoryUpdateForm = new SurveyCategoryUpdateForm();
+		this.convertEntityToCategoryForm(category, surveyCategoryUpdateForm, survey.getSurveyPatternId());
+		
+		// チャートデータ作成
+		questionLinkUpdateForm.setFlowChartData(surveyQuestionLinkService.makeFlowchartData(formLst, linkFormLst, surveyCategoryUpdateForm));
+		mav.addObject("questionLinkUpdateForm", questionLinkUpdateForm);
+		
+		// リファラ
+		mav.addObject("referer", request.getHeader("referer"));
+		mav.setViewName("/questionFlowChart");
+		
+		return mav;
+	}
+
+	// Entityからフォームへ変換
+	private void convertEntityToCategoryForm(SurveyCategory category, SurveyCategoryUpdateForm surveyCategoryUpdateForm, Integer patternId) {
+		surveyCategoryUpdateForm.setId(category.getId());
+		surveyCategoryUpdateForm.setSurveyManagementId(category.getSurveyManagementId());
+		surveyCategoryUpdateForm.setSurveyCategoryName(category.getSurveyCategoryName());
+		surveyCategoryUpdateForm.setSurveyCategoryColor(category.getSurveyCategoryColor());
+		
+		// カテゴリーコンテンツ
+		Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
+		List<CategoryContentDto> contentLst = (new Gson()).fromJson(category.getSurveyCategoryContent(), listType);  
+		surveyCategoryUpdateForm.setCategoryContentLst(contentLst);
+	}
+
 }
