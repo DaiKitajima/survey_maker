@@ -7,14 +7,19 @@
 		<script th:src="@{/js/questionFlowChart.js}"></script>
 		<title>診断質問リンクコンテンツ更新画面</title>
 		<style>
+			#chart_container {
+			    width: 100%;
+			    height: 600px;
+			    overflow: hidden;
+			    background: repeating-linear-gradient( 45deg, #eee, #eee 10px, #e5e5e5 10px, #e5e5e5 20px );
+			    border: 1px solid black;
+			}
 			.flowchart-container {
-				width:100%;
-				height: 500px;
+			    width: 2000px;
+			    height: 2000px;
 				background: white;
 				border: 1px solid #BBB;
 				margin-bottom: 10px;
-				overflow-x: auto; 
-				overflow-y: auto;
 			}
 		</style>
 	</head>
@@ -27,16 +32,23 @@
 			<!-- タイトル -->
 			<div class="d-flex justify-content-start mt-3 mb-2">
 				<span class="h5" th:text="|「${survey.surveyName}」フローチャート|"> 「高齢者健康調査」フローチャート</span>
+				<input type="hidden" id="contentId" th:value="${survey.id}" >
 				<input type="hidden" id="flowchartData" th:value="${questionLinkUpdateForm.flowChartData}" >
 			</div>
 
 			<div class="card shadow-lg">
 				<div class="card-body">
-					<div class="flowchart-container" id="flowchartworkspace">
+					<div id="chart_container" style="overflow: hidden; position: relative;">
+						<div class="flowchart-container" id="flowchartworkspace">
+						</div>
 					</div>
 					
 					<div class="row">
 						<div class="col d-flex justify-content-center mt-2 mb-2 ">
+							<input type="hidden" id="selectedOperatorId">
+							<input type="hidden" id="selectedLinkId">
+							<a th:href="@{/surveyContentDetail/questionContentRegist?contentId=__${survey.id}__&onFlowchartFlg=true}" class="btn btn-sm btn-success me-1" style="width:150px;">質問追加</a>
+							<a id="questionDelBtn" th:href="@{/internalApi/questionOrLinkDelete?contentId=__${survey.id}__}" class="btn btn-sm btn-danger me-1" style="width:150px;">質問/リンク削除</a>
 							<a th:href="${referer}" class="btn btn-sm btn-secondary" style="width:150px;">戻る</a>
 						</div>
 					</div>

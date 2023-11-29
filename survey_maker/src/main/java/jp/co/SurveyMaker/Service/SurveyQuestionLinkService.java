@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
 import jp.co.SurveyMaker.Dto.CategoryContentDto;
@@ -25,7 +26,13 @@ public class SurveyQuestionLinkService {
 	@Autowired
 	private  SurveyQuestionLinkRepository surveyQuestionLinkRepository;
 	
-	// 質問リンク情報登録/更新
+	// 質問リンク情報登録
+	public Integer surveyQuestionLinkRegist(SurveyQuestionLink questionLink) throws Exception {
+		surveyQuestionLinkRepository.save(questionLink);
+		return surveyQuestionLinkRepository.getLastInsertId();
+	}
+	
+	// 質問リンク情報更新
 	public void surveyQuestionLinkUpdate(SurveyQuestionLink questionLink) throws Exception {
 		surveyQuestionLinkRepository.save(questionLink);
 	}
@@ -53,11 +60,16 @@ public class SurveyQuestionLinkService {
 		return surveyQuestionLinkRepository.findBySurveyManagementIdAndSurveyQuestionIdAndDeleteFlgFalse(contentId, questionId);
 	}
 	
-	// 質問リンク情報削除
+	// 質問リンク情報削除(コンテンツIDと質問IDより)
 	public void deleteQuestionLinkByContentIdAndQuestionId(Integer contentId,Integer questionId) throws Exception {
 		surveyQuestionLinkRepository.deleteBySurveyManagementIdAndSurveyQuestionId(contentId, questionId);
 	}
 
+	// 質問リンク情報削除(コンテンツIDと質問リンクIDより)
+	public void deleteQuestionLinkByContentIdAndLinkId(Integer contentId,Integer linkId) throws Exception {
+		surveyQuestionLinkRepository.deleteBySurveyManagementIdAndId(contentId, linkId);
+	}
+	
 	// チャートデータ作成
 	public String makeFlowchartData(List<QuestionContentUpdateForm> questionFormLst, List<QuestionLinkForm> linkFormLst, SurveyCategoryUpdateForm category) {
 		// チャートデータ構造
@@ -75,10 +87,19 @@ public class SurveyQuestionLinkService {
 		 */
 		// operators 構築
 		String operator = "";
+		Integer questionCnt = 0;
 		for(QuestionContentUpdateForm question : questionFormLst) {
 			operator = operator + "    'operator"+ question.getId() + "': {\n";
-			operator = operator  + "      'top': 20,\n";
-			operator = operator  + "      'left': 20,\n";
+			List<QuestionLinkForm> haveLinkQuestion  = linkFormLst.stream().filter(link -> link.getQuestionId().equals(question.getId())).toList();
+			if(haveLinkQuestion == null || haveLinkQuestion.size() == 0 ) {
+				  operator = operator + "      'top': 1100,\n";
+				  operator = operator +"      'left': 300,\n";
+			}else {
+				  operator = operator + "      'top': 750+"+ ( 40*questionCnt ) +",\n";
+				  operator = operator +"      'left': 300+" + ( +60*questionCnt ) + ",\n";
+				  questionCnt ++;
+			}
+			
 			operator = operator  + "      'properties': {\n";
 			operator = operator  + "        'title': 'Question" +question.getQuestionOrderNo() +"',\n";
 			operator = operator  + "        'inputs': {\n";
@@ -102,9 +123,9 @@ public class SurveyQuestionLinkService {
 		}
 		
 		// 評価結果をoperatorsに設定
-		operator = operator + "    'result': {\n";
-		operator = operator  + "      'top': 20,\n";
-		operator = operator  + "      'left': 20,\n";
+		operator = operator + "    '"+ CommonConstants.FLOW_CHART_RESULT +"': {\n";
+		operator = operator  + "      'top': 750,\n";
+		operator = operator  + "      'left': 1500,\n";
 		operator = operator  + "      'properties': {\n";
 		operator = operator  + "        'title': '評価結果',\n";
 		operator = operator  + "        'inputs': {\n";

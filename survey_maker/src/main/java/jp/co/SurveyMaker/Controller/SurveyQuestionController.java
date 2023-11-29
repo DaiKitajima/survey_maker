@@ -66,13 +66,19 @@ public class SurveyQuestionController {
 	public ModelAndView questionContentRegist(
 			HttpServletRequest request,
 			HttpSession session ,
-			@RequestParam(value="contentId", required = true, defaultValue="-1") Integer contentId) throws Exception {
+			@RequestParam(value="contentId", required = true) Integer contentId,
+			@RequestParam(value="onFlowchartFlg", required = false) boolean onFlowchartFlg) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		// セッションからユーザ情報取得
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
 		// コンテンツ情報取得
 		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
 		mav.addObject("survey", survey);
+		
+		// flowChart図からの登録の場合、マック
+		if(onFlowchartFlg) {
+			session.setAttribute("onFlowchartFlg", onFlowchartFlg);
+		}
 		
 		QuestionContentUpdateForm questionContentUpdateForm = new QuestionContentUpdateForm();
 		questionContentUpdateForm.setSurveyManagementId(contentId);
@@ -173,7 +179,18 @@ public class SurveyQuestionController {
 										+ FileUtil.FILE_DIRECTORY_DELIMITER + questionId + FileUtil.FILE_DIRECTORY_DELIMITER;
 		FileUtil.registTargetFile(savePath, CommonConstants.SAVA_IMG_NAME_QUESTION + questionContentUpdateForm.getQuestionOrderNo() , questionContentUpdateForm.getQuestionImgFile());
 
-		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId());
+		boolean onFlowchartFlg = false;
+		try {
+			onFlowchartFlg = (boolean) session.getAttribute("onFlowchartFlg");
+			session.removeAttribute("onFlowchartFlg");
+		} catch (Exception e) {
+			onFlowchartFlg = false;
+		}
+		if(onFlowchartFlg) {
+			mav.setViewName("redirect:/surveyContentDetail/questionFlowChart?contentId=" + questionContentUpdateForm.getSurveyManagementId());
+		}else {
+			mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId());
+		}
 		
 		return mav;
 	}
@@ -324,9 +341,7 @@ public class SurveyQuestionController {
 					// ユーザ所属のコンテンツか検証
 					surveyContentService.getSurveyContentByIdAndUserId(question.getSurveyManagementId(), user.getId());
 					// 質問コンテンツ削除
-					surveyQuestionService.surveyQuestionDelete(questionId);
-					// 質問リンク削除
-					surveyQuestionLinkService.deleteQuestionLinkByContentIdAndQuestionId(question.getSurveyManagementId(), questionId);
+					surveyQuestionService.surveyQuestionAndLinkDelete(question);
 				} catch (Exception e) {
 					log.error("質問コンテンツ削除にエラーが発生しました。 ", e );
 					continue;

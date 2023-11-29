@@ -10,12 +10,12 @@ public class CommonConstants {
 	
 	/** リファラ用のキー */
 	public static final String SESSION_KEY_REFERER = "refererKey";
-	/** リファラ用のキー(2階層深い一覧画面用) */
+	/** リファラ用のキー(2階層深い詳細画面用) */
 	public static final String SESSION_KEY_REFERER_LEVEL_TWO = "refererKeyLevelTwo";
-	/** リファラ用のキー(3階層深い詳細画面用) */
+	/** リファラ用のキー(3階層深い個別詳細画面用) */
 	public static final String SESSION_KEY_REFERER_LEVEL_THREE = "refererKeyLevelThree";
-	/** リファラ用のキー(帳票画面用) */
-	public static final String SESSION_KEY_REFERER_REPORT = "refererKeyReport";
+	/** リファラ用のキー(その他画面用) */
+	public static final String SESSION_KEY_REFERER_OTHER = "refererKeyOther";
 	
 	//==========================================================
 	// 表示
@@ -95,4 +95,11 @@ public class CommonConstants {
 	public static final Integer PARTTERN_COMPLEX_TOTAL = 3;
 	/** フロー */
 	public static final Integer PARTTERN_FLOW = 4;
+	
+	
+	//==========================================================
+	// フローチャート図 評価結果ID
+	//==========================================================
+	/** 単数 */
+	public static final String FLOW_CHART_RESULT = "result";
 }

@@ -7,10 +7,13 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,13 +24,16 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jp.co.SurveyMaker.Constants.CommonConstants;
+import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
+import jp.co.SurveyMaker.Dto.QuestionOrderDto;
 import jp.co.SurveyMaker.Form.QuestionAndLinkForm;
 import jp.co.SurveyMaker.Service.SurveyContentService;
 import jp.co.SurveyMaker.Service.SurveyQuestionLinkService;
 import jp.co.SurveyMaker.Service.SurveyQuestionService;
 import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
+import jp.co.SurveyMaker.Service.Entity.SurveyQuestionLink;
 import jp.co.SurveyMaker.Service.Entity.User;
 import jp.co.SurveyMaker.Util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -88,5 +94,82 @@ public class RestSurveyMakerController {
 		resultForm.setQuestionLinkLst(surveyQuestionLinkService.getSurveyQuestionLinkLstByQuestionId(contentId, question.getId()));
 		
 		return (new Gson()).toJson(resultForm) ;
+	}
+	
+	@GetMapping("/questionOrLinkDelete")
+	public void questionOrLinkDelete(
+			HttpServletRequest request,
+			HttpSession session ,
+			@RequestParam(value="contentId", required = true) Integer contentId,
+			@RequestParam(value="questionId", required = false) Integer questionId,
+			@RequestParam(value="linkId", required = false) Integer linkId) throws Exception {
+		// セッションからユーザ情報取得
+		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
+
+		// 質問削除
+		if( questionId != null ) {
+			try {
+				SurveyQuestion question = surveyQuestionService.getSurveyQuestionById(questionId);
+				// ユーザ所属のコンテンツか検証
+				surveyContentService.getSurveyContentByIdAndUserId(question.getSurveyManagementId(), user.getId());
+				// 質問コンテンツ削除
+				surveyQuestionService.surveyQuestionAndLinkDelete(question);
+			} catch (Exception e) {
+				log.error("質問コンテンツ削除にエラーが発生しました。 ", e );
+			}
+			
+			// 質問削除後、Order更新
+			List<SurveyQuestion> questionLst =  surveyQuestionService.getSurveyQuestionByContentIdOrderByOrderNo(contentId);
+			List<QuestionOrderDto> questionOrderLst = new ArrayList<QuestionOrderDto>();
+			if( questionLst != null && questionLst.size() != 0) {
+				for(int order =1;order<=questionLst.size();order++) {
+					QuestionOrderDto dto = new QuestionOrderDto();
+					dto.setQuestionId(questionLst.get(order - 1).getId());
+					dto.setOrderNo(order);
+					questionOrderLst.add(dto);
+				}
+			}
+			surveyQuestionService.questionOrderUpdate(questionOrderLst);
+		}else if(linkId != null){
+			// 質問リンク削除
+			surveyQuestionLinkService.deleteQuestionLinkByContentIdAndLinkId(contentId, linkId);
+		}
+	}
+	
+	@PostMapping("/questionLinkCreate")
+	public Integer questionLinkCreate(
+			HttpServletRequest request,
+			HttpSession session ,
+			@RequestBody Map<String,String> linkData) throws Exception {
+		
+	    Integer contentId = Integer.parseInt(linkData.get("contentId"));
+	    String fromConnector = linkData.get("fromConnector");
+	    String fromOperator = linkData.get("fromOperator");
+	    String fromSubConnector = linkData.get("fromSubConnector");
+	    String toConnector = linkData.get("toConnector");
+	    String toOperator = linkData.get("toOperator");
+	    String toSubConnector = linkData.get("toSubConnector");
+	    
+		try {
+			// セッションからユーザ情報取得
+			User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+			SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
+			
+			SurveyQuestionLink link = new SurveyQuestionLink();
+			link.setSurveyManagementId(contentId);
+			link.setSurveyQuestionId( Integer.parseInt( fromOperator.replace("operator", "")) );
+			link.setAnswerId( Integer.parseInt( fromConnector.replace("output_", "")) );
+			if(toOperator.equals(CommonConstants.FLOW_CHART_RESULT)) {
+				link.setLinkType(LinkType.SURVEY_RESULT.getCode());
+			}else {
+				link.setLinkType(LinkType.NEXT_QUESTION.getCode());
+			}
+			link.setLinkTo( Integer.parseInt( toConnector.replace("input_", "")) );
+			return surveyQuestionLinkService.surveyQuestionLinkRegist(link);
+		} catch (Exception e) {
+			log.error("フローチャートにリンク設定時、エラーが発生しました。 ", e );
+		}
+		return null;
 	}
 }

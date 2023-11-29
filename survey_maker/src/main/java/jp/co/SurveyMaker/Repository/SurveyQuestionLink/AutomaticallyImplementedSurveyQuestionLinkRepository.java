@@ -30,6 +30,8 @@ public interface AutomaticallyImplementedSurveyQuestionLinkRepository extends Re
 	
 	//診断コンテンツIDより削除
 	void deleteBySurveyManagementId(Integer contentId);
+	//診断コンテンツIDより削除
+	void deleteBySurveyManagementIdAndId(Integer contentId,Integer id);
 	//診断コンテンツID、質問IDより削除
 	void deleteBySurveyManagementIdAndSurveyQuestionId(Integer contentId,Integer questionId);
 }

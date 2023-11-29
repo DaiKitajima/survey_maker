@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Dto.QuestionOrderDto;
 import jp.co.SurveyMaker.Repository.SurveyQuestion.SurveyQuestionRepository;
+import jp.co.SurveyMaker.Repository.SurveyQuestionLink.SurveyQuestionLinkRepository;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
 import jp.co.SurveyMaker.Util.FileUtil;
 import jp.co.SurveyMaker.Util.StringUtil;
@@ -23,6 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 public class SurveyQuestionService {
 	@Autowired
 	private  SurveyQuestionRepository surveyQuestionRepository;
+	
+	@Autowired
+	private  SurveyQuestionLinkRepository surveyQuestionLinkRepository;
 	
 	 @Value("${server.image.save.path}")
 	 private String imgSavePath;
@@ -55,6 +59,13 @@ public class SurveyQuestionService {
 	// 質問情報削除
 	public void surveyQuestionDelete(Integer questionId) throws Exception {
 		surveyQuestionRepository.deleteById(questionId);
+	}
+	
+	// 質問とリンク情報削除
+	public void surveyQuestionAndLinkDelete(SurveyQuestion question) throws Exception {
+		surveyQuestionRepository.deleteById(question.getId());
+		
+		surveyQuestionLinkRepository.deleteBySurveyManagementIdAndSurveyQuestionId(question.getSurveyManagementId(), question.getId());
 	}
 	
 	// 質問順番更新

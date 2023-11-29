@@ -210,3 +210,12 @@
     padding: 5px;
     cursor: move;
 }
+
+.flowchart-operator-connector-label {
+    /* 2行超過の場合、省略 */
+	overflow: hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+}

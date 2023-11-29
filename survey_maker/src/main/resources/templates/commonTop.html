@@ -8,8 +8,10 @@
     	<link th:href="@{/libs/bootstrap-icons/font/bootstrap-icons.css}" rel="stylesheet">
 
 		<!-- jQuery読み込み -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+<!-- 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script th:src="@{/js/jquery-ui.min.js}"></script>
+		
 		<!-- Popper.js -->
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 
@@ -42,9 +44,10 @@
 		<link rel="stylesheet" th:href="@{/css/tablesorter.css}"/>
 
 		<!-- フローチャートJSとCSS -->
-<!-- 		<script th:src="@{/js/jquery.flowchart.js}"></script> -->
-		<script th:src="@{/js/jquery-ui.min.js}"></script>
-		<script th:src="@{/js/jquery.flowchart.min.js}"></script>
+		<script th:src="@{/js/jquery.panzoom.min.js}"></script>
+		<script th:src="@{/js/jquery.mousewheel.min.js}"></script>
+		<script th:src="@{/js/jquery.flowchart.js}"></script>
+<!-- 		<script th:src="@{/js/jquery.flowchart.min.js}"></script> -->
 		
 <!-- 		<link rel="stylesheet" th:href="@{/css/jquery.flowchart.css}"/> -->
 		<link rel="stylesheet" th:href="@{/css/jquery.flowchart.min.css}"/>

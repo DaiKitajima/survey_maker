@@ -1,22 +1,45 @@
 $(function(){
-	// テストデータ
+	// フローチャートデータ
 	var defaultFlowchartData = eval('(' + $("#flowchartData").val() + ')') ;
 	
 	var $flowchart = $('#flowchartworkspace');
 	var $container = $flowchart.parent();
+	
+    var cx = $flowchart.width() / 2;
+    var cy = $flowchart.height() / 2;
+    
+    // Panzoom initialization...
+    $flowchart.panzoom();
+    
+    // Centering panzoom
+    $flowchart.panzoom('pan', -cx + $container.width() / 2, -cy + $container.height() / 2);
 
+    // Panzoom zoom handling...
+    var possibleZooms = [0.5, 0.75, 1, 2, 3];
+    var currentZoom = 2;
+    $container.on('mousewheel.focal', function( e ) {
+        e.preventDefault();
+        var delta = (e.delta || e.originalEvent.wheelDelta) || e.originalEvent.detail;
+        var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
+        currentZoom = Math.max(0, Math.min(possibleZooms.length - 1, (currentZoom + (zoomOut * 2 - 1))));
+        $flowchart.flowchart('setPositionRatio', possibleZooms[currentZoom]);
+        $flowchart.panzoom('zoom', possibleZooms[currentZoom], {
+            animate: false,
+            focal: e
+        });
+    });
 
 	// Apply the plugin on a standard, empty div...
 	$flowchart.flowchart({
 		data: defaultFlowchartData,
 		defaultSelectedLinkColor: '#ff0000',
-		grid: 10,
+		grid: 5,
 		multipleLinksOnInput: true,
 		multipleLinksOnOutput: true,
 		linkWidth: 5
 	});
 
-	function getOperatorData($element) {
+/*	function getOperatorData($element) {
 		var nbInputs = parseInt($element.data('nb-inputs'), 10);
 		var nbOutputs = parseInt($element.data('nb-outputs'), 10);
 		var data = {
@@ -40,42 +63,76 @@ $(function(){
 		}
 
 		return data;
-	}
+	}*/
 
 
 
 	//-----------------------------------------
 	//--- operator and link properties
 	//--- start
-	var $operatorProperties = $('#operator_properties');
+/*	var $operatorProperties = $('#operator_properties');
 	$operatorProperties.hide();
 	var $linkProperties = $('#link_properties');
 	$linkProperties.hide();
 	var $operatorTitle = $('#operator_title');
-	var $linkColor = $('#link_color');
+	var $linkColor = $('#link_color');*/
 
 	$flowchart.flowchart({
 		onOperatorSelect: function(operatorId) {
-			$operatorProperties.show();
-			$operatorTitle.val($flowchart.flowchart('getOperatorTitle', operatorId));
+			$("#selectedOperatorId").val(operatorId);
 			return true;
 		},
 		onOperatorUnselect: function() {
-			$operatorProperties.hide();
+			$("#selectedOperatorId").val("");
 			return true;
 		},
 		onLinkSelect: function(linkId) {
-			$linkProperties.show();
-			$linkColor.val($flowchart.flowchart('getLinkMainColor', linkId));
+			$("#selectedLinkId").val(linkId);
 			return true;
 		},
 		onLinkUnselect: function() {
-			$linkProperties.hide();
+			$("#selectedLinkId").val("");
 			return true;
-		}
+		},
+		onLinkCreate: function(linkId,linkData){
+			linkData["contentId"] = $("#contentId").val();
+			$.ajax({
+			  async: true,
+			  url: "/internalApi/questionLinkCreate",
+			  type: 'POST',
+			  dataType: 'text',
+			  data: JSON.stringify(linkData),
+			  timeout: 30000,
+			  contentType: 'application/json;charset=utf-8',
+			  success: successCallback,
+			  error: errorCallback,
+			  complete: completeCallback
+			})
+			function successCallback(data) {
+				if(data == null){
+					alert('設定したリンクの保存が失敗しました。');
+				}else{
+					$("g.flowchart-link").each(function(){
+						var dataLinkId = $(this).attr("data-link_id");
+						if(dataLinkId == linkId){
+							$(this).attr("data-link_id","link_" + data)
+						}
+					});
+					$flowchart.flowchart('redrawLinksLayer');
+				}
+			}
+			function errorCallback(xhr, status){
+			    console.log('error: ' + status);
+			    alert('エラーが発生しました。');
+			}
+			function completeCallback(xhr, status){
+			    console.log('questionLinkCreate Complete!');
+			}
+			return true;
+		} 
 	});
 
-	$operatorTitle.keyup(function() {
+/*	$operatorTitle.keyup(function() {
 		var selectedOperatorId = $flowchart.flowchart('getSelectedOperatorId');
 		if (selectedOperatorId != null) {
 			$flowchart.flowchart('setOperatorTitle', selectedOperatorId, $operatorTitle.val());
@@ -87,7 +144,7 @@ $(function(){
 		if (selectedLinkId != null) {
 			$flowchart.flowchart('setLinkMainColor', selectedLinkId, $linkColor.val());
 		}
-	});
+	});*/
 	//--- end
 	//--- operator and link properties
 	//-----------------------------------------
@@ -95,9 +152,22 @@ $(function(){
 	//-----------------------------------------
 	//--- delete operator / link button
 	//--- start
-	$flowchart.parent().siblings('.delete_selected_button').click(function() {
-		$flowchart.flowchart('deleteSelected');
+	$('#questionDelBtn').click(function(e) {
+		e.preventDefault();
+		var url = $(this).prop("href");
+		var operator = $("#selectedOperatorId").val();
+		var link = $("#selectedLinkId").val();
+		if((operator == "" && link == "") || operator == "result"){
+			alert("質問または質問リンクを選択してください。");
+		}else{
+			$flowchart.flowchart('deleteSelected');
+			var param = "&questionId=" + operator.replace("operator","") + "&linkId=" + link.replace("link_","");
+			$.get( url + param );
+		}
 	});
+	/*$flowchart.parent().siblings('.delete_selected_button').click(function() {
+		$flowchart.flowchart('deleteSelected');
+	});*/
 	//--- end
 	//--- delete operator / link button
 	//-----------------------------------------
@@ -107,7 +177,7 @@ $(function(){
 	//-----------------------------------------
 	//--- create operator button
 	//--- start
-	var operatorI = 0;
+/*	var operatorI = 0;
 	$flowchart.parent().siblings('.create_operator').click(function() {
 		var operatorId = 'created_operator_' + operatorI;
 		var operatorData = {
@@ -132,7 +202,7 @@ $(function(){
 
 		$flowchart.flowchart('createOperator', operatorId, operatorData);
 
-	});
+	});*/
 	//--- end
 	//--- create operator button
 	//-----------------------------------------
@@ -192,7 +262,7 @@ $(function(){
 	//-----------------------------------------
 	//--- save and load
 	//--- start
-	function Flow2Text() {
+/*	function Flow2Text() {
 		var data = $flowchart.flowchart('getData');
 		$('#flowchart_data').val(JSON.stringify(data, null, 2));
 	}
@@ -202,9 +272,9 @@ $(function(){
 		var data = JSON.parse($('#flowchart_data').val());
 		$flowchart.flowchart('setData', data);
 	}
-	$('#set_data').click(Text2Flow);
+	$('#set_data').click(Text2Flow);*/
 
-	/*global localStorage*/
+/*	// global localStorage
 	function SaveToLocalStorage() {
 		if (typeof localStorage !== 'object') {
 			alert('local storage not available');
@@ -229,7 +299,7 @@ $(function(){
 			alert('local storage empty');
 		}
 	}
-	$('#load_local').click(LoadFromLocalStorage);
+	$('#load_local').click(LoadFromLocalStorage);*/
 	//--- end
 	//--- save and load
 	//-----------------------------------------

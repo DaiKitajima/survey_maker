@@ -35,6 +35,7 @@ import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestionLink;
 import jp.co.SurveyMaker.Service.Entity.User;
+import jp.co.SurveyMaker.Util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -272,7 +273,13 @@ public class SurveyQuestionLinkController {
 		mav.addObject("questionLinkUpdateForm", questionLinkUpdateForm);
 		
 		// リファラ
-		mav.addObject("referer", request.getHeader("referer"));
+		if(StringUtil.isNotEmpty((String)session.getAttribute(CommonConstants.SESSION_KEY_REFERER)) ) {
+			mav.addObject("referer", (String)session.getAttribute(CommonConstants.SESSION_KEY_REFERER));
+		}else {
+			mav.addObject("referer", request.getHeader("referer"));
+			session.setAttribute(CommonConstants.SESSION_KEY_REFERER, request.getHeader("referer"));
+		}
+		
 		mav.setViewName("/questionFlowChart");
 		
 		return mav;
@@ -290,5 +297,4 @@ public class SurveyQuestionLinkController {
 		List<CategoryContentDto> contentLst = (new Gson()).fromJson(category.getSurveyCategoryContent(), listType);  
 		surveyCategoryUpdateForm.setCategoryContentLst(contentLst);
 	}
-
 }
