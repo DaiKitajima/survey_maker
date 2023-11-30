@@ -323,6 +323,8 @@
 											<th:block th:if="*{surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
 												<th:block th:if="*{#lists.size(questionLinkLst) > 0 }">
 													<a th:href="@{/surveyContentDetail/questionLinkUpdate?contentId=__*{contentId}__}" class="btn btn-sm btn-primary me-1">リンク編集</a>
+												</th:block>
+												<th:block th:if="*{#lists.size(categoryLst) > 0 }">
 													<a th:href="@{/surveyContentDetail/questionFlowChart?contentId=__*{contentId}__}" class="btn btn-sm btn-primary me-1">フローチャート</a>
 												</th:block>
 												<th:block th:if="*{#lists.size(questionLinkLst) <= 0 && #lists.size(questionFormLst) > 0 && #lists.size(categoryLst) > 0 }">
@@ -398,12 +400,18 @@
 												<td class="align-middle text-left" style="white-space: nowrap;" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
 													<div th:each="answer,stat1:${question.answerContentLst}">
 														<span class="h6" th:text="|回答${stat1.count}|"></span>
+														<span class="text-danger" th:if="*{#lists.size(categoryLst) == 0}"><br>※軸を登録してください。</span>
 														<ul>
 															<li th:each="category:*{categoryLst}">
-																<th:block th:if="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
-																	<span th:text="|${category.surveyCategoryName}：${answer.answerPointLst.^[categoryId==__${category.id}__].point}|"></span>
+																<th:block th:if="${!#lists.isEmpty(answer.answerPointLst)}">
+																	<th:block th:if="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																		<span th:text="|${category.surveyCategoryName}：${answer.answerPointLst.^[categoryId==__${category.id}__].point}|"></span>
+																	</th:block>
+																	<th:block th:unless="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																		<span class="text-danger" th:text="|${category.surveyCategoryName}：-|"></span>
+																	</th:block>
 																</th:block>
-																<th:block th:unless="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																<th:block th:if="${#lists.isEmpty(answer.answerPointLst)}">
 																	<span class="text-danger" th:text="|${category.surveyCategoryName}：-|"></span>
 																</th:block>
 															</li>

@@ -26,6 +26,11 @@ public class SurveyQuestionLinkService {
 	@Autowired
 	private  SurveyQuestionLinkRepository surveyQuestionLinkRepository;
 	
+	// 質問リンク情報存在チェック
+	public boolean existsBySurveyManagementIdAndSurveyQuestionIdAndAnswerId(SurveyQuestionLink questionLink) throws Exception {
+		return surveyQuestionLinkRepository.existsBySurveyManagementIdAndSurveyQuestionIdAndAnswerIdAndDeleteFlgFalse(questionLink.getSurveyManagementId(), questionLink.getSurveyQuestionId(), questionLink.getAnswerId());
+	}
+	
 	// 質問リンク情報登録
 	public Integer surveyQuestionLinkRegist(SurveyQuestionLink questionLink) throws Exception {
 		surveyQuestionLinkRepository.save(questionLink);
@@ -135,7 +140,7 @@ public class SurveyQuestionLinkService {
 			inputs = inputs + "            'label': '"+result.getSurveyResult() + "'\n";
 			inputs = inputs + "          },\n";
 		}
-		inputs = inputs.substring(0, inputs.length() -2 ) + "\n";
+		inputs = ( inputs == "" ? "" : inputs.substring(0, inputs.length() -2 ) + "\n" );
 		operator = operator  + inputs;
 		operator = operator  + "        }\n";
 		operator = operator  + "      }\n";
@@ -156,7 +161,7 @@ public class SurveyQuestionLinkService {
 			}
 			link = link + "    },\n";
 		}
-		link = link.substring(0, link.length() -2 ) + "\n";
+		link = ( link == "" ? "" : link.substring(0, link.length() -2 ) + "\n" );
 		
 		String chartData = "";
 		chartData = chartData + "{\n";

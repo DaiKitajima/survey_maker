@@ -4,7 +4,19 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 		
+		<!-- フローチャートJSとCSS -->
+		<script th:src="@{/js/jquery-ui.min.js}"></script><!-- v1.13.2 -->
+		<script th:src="@{/js/jquery.panzoom.min.js}"></script><!-- v3.0.0 -->
+		<script th:src="@{/js/jquery.mousewheel.min.js}"></script><!-- v3.1.13 -->
+<!-- 		<script th:src="@{/js/jquery.flowchart.js}"></script> -->
+		<script th:src="@{/js/jquery.flowchart.min.js}"></script>
+		
+		<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}"/>
+		<link rel="stylesheet" th:href="@{/css/jquery.flowchart.css}"/>
+<!-- 		<link rel="stylesheet" th:href="@{/css/jquery.flowchart.min.css}"/> -->
+		
 		<script th:src="@{/js/questionFlowChart.js}"></script>
+		
 		<title>診断質問リンクコンテンツ更新画面</title>
 		<style>
 			#chart_container {

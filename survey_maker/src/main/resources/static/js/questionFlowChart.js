@@ -24,7 +24,7 @@ $(function(){
         currentZoom = Math.max(0, Math.min(possibleZooms.length - 1, (currentZoom + (zoomOut * 2 - 1))));
         $flowchart.flowchart('setPositionRatio', possibleZooms[currentZoom]);
         $flowchart.panzoom('zoom', possibleZooms[currentZoom], {
-            animate: false,
+            animate: true,
             focal: e
         });
     });
@@ -108,17 +108,17 @@ $(function(){
 			  error: errorCallback,
 			  complete: completeCallback
 			})
-			function successCallback(data) {
-				if(data == null){
-					alert('設定したリンクの保存が失敗しました。');
+			function successCallback(newLinkId) {
+				if(newLinkId == null || newLinkId == ""){
+					alert('リンク設定が失敗しました。');
+					$("[data-link_id=" + linkId + "]").parent().remove();
 				}else{
 					$("g.flowchart-link").each(function(){
 						var dataLinkId = $(this).attr("data-link_id");
 						if(dataLinkId == linkId){
-							$(this).attr("data-link_id","link_" + data)
+							$(this).attr("data-link_id",("link_" + newLinkId));
 						}
 					});
-					$flowchart.flowchart('redrawLinksLayer');
 				}
 			}
 			function errorCallback(xhr, status){

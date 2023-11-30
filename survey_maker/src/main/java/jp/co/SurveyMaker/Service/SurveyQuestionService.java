@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.SurveyMaker.Constants.CommonConstants;
+import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.QuestionOrderDto;
 import jp.co.SurveyMaker.Repository.SurveyQuestion.SurveyQuestionRepository;
 import jp.co.SurveyMaker.Repository.SurveyQuestionLink.SurveyQuestionLinkRepository;
@@ -64,8 +65,10 @@ public class SurveyQuestionService {
 	// 質問とリンク情報削除
 	public void surveyQuestionAndLinkDelete(SurveyQuestion question) throws Exception {
 		surveyQuestionRepository.deleteById(question.getId());
-		
+		// 削除質問からのリンクを削除
 		surveyQuestionLinkRepository.deleteBySurveyManagementIdAndSurveyQuestionId(question.getSurveyManagementId(), question.getId());
+		// 削除質問へのリンクを削除
+		surveyQuestionLinkRepository.deleteBySurveyManagementIdAndLinkTypeAndLinkTo(question.getSurveyManagementId(), LinkType.NEXT_QUESTION.getCode(), question.getId());
 	}
 	
 	// 質問順番更新

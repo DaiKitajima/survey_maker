@@ -13,6 +13,8 @@ import jp.co.SurveyMaker.Service.Entity.SurveyQuestionLink;
 public interface AutomaticallyImplementedSurveyQuestionLinkRepository extends Repository<SurveyQuestionLink, Integer> {
 	//存在判定
 	boolean existsByIdAndDeleteFlgFalse(Integer id);
+	//存在判定
+	boolean existsBySurveyManagementIdAndSurveyQuestionIdAndAnswerIdAndDeleteFlgFalse(Integer contentId, Integer questionId, Integer answerId);
 	//１件取得(id識別)
 	Optional<SurveyQuestionLink> findByIdAndDeleteFlgFalse(Integer id);
 	//全取得
@@ -34,4 +36,6 @@ public interface AutomaticallyImplementedSurveyQuestionLinkRepository extends Re
 	void deleteBySurveyManagementIdAndId(Integer contentId,Integer id);
 	//診断コンテンツID、質問IDより削除
 	void deleteBySurveyManagementIdAndSurveyQuestionId(Integer contentId,Integer questionId);
+	//診断コンテンツID、リンク先情報より削除
+	void deleteBySurveyManagementIdAndLinkTypeAndLinkTo(Integer contentId,Integer linkType, Integer linkTo);
 }

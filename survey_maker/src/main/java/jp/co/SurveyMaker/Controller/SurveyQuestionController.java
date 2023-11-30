@@ -123,7 +123,9 @@ public class SurveyQuestionController {
 				Type listType = new TypeToken<ArrayList<AnswerContentDto>>(){}.getType();
 				List<AnswerContentDto> answerLst = (new Gson()).fromJson(question.getAnswerContent(), listType);
 				answerLst.forEach(answer ->{
-					answerPointLstInQuestion.addAll(answer.getAnswerPointLst());
+					if(answer.getAnswerPointLst() != null ) {
+						answerPointLstInQuestion.addAll(answer.getAnswerPointLst());
+					}
 				});
 				// 質問内の各軸に設定した最大ポイント情報取得
 				Map<Integer,Optional<AnswerPointDto>> categoryMaxPointMap = answerPointLstInQuestion.stream().collect(Collectors.groupingBy(AnswerPointDto::getCategoryId,Collectors.maxBy(Comparator.comparingInt(AnswerPointDto::getPoint))));
