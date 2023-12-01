@@ -53,8 +53,9 @@ $(function(){
 			$("#dataDeleteConfirmDialog").modal("show");
 		}
 	});
+	
 	// 軸削除確認
-	$('#categoryDelBtn').on('click', function(e) {
+	$('[id^=categoryDelBtn]').on('click', function(e) {
 		e.preventDefault();
 		var url = $(this).attr('href');
 		$('#deleteDataURL').val(url); 
@@ -66,6 +67,30 @@ $(function(){
 		$(this).prop("disabled", true);
 	});
 
+	// シミュレーションボタン押下
+	$('.simulationBtn').on('click', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		$('#simulationURL').val(url); 
+		var fubiFlg = false;
+		$('.simuCk').each(function(){
+			fubiFlg = true;
+			return false;
+		});
+		// 提示メッセージを表示
+		if(fubiFlg){
+			$(".fubi_msg").show();
+		}else{
+			$(".fubi_msg").hide();
+		}
+		$("#simulationConfirmDialog").modal("show");
+	});
+	
+	$('#simulationConfirmDialogSubmit').on('click', function() {
+		window.open($('#simulationURL').val());
+		$("#simulationConfirmDialog").modal('hide');
+	});
+	
 	// ========================================================
 	// テーブルソート初期化（ディフォルト：第一列以外、全項目ソート）
 	// ========================================================

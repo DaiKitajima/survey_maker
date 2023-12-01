@@ -183,9 +183,12 @@ public class SurveyQuestionLinkController {
 		mav.addObject("linkTypeMap", Stream.of(LinkType.values()).collect(Collectors.toMap(t->t.getCode(),  t->t.getDisplay())));
 		
 		// カテゴリー評価結果コンテンツ
-		Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
-		List<CategoryContentDto> contentLst = (new Gson()).fromJson(surveyCategoryService.getSurveyCategoryByContentId(contentId).get(0).getSurveyCategoryContent(), listType);  
-		mav.addObject("surveyResultLst", contentLst);
+		List<SurveyCategory> categoryLst = surveyCategoryService.getSurveyCategoryByContentId(contentId);
+		if(categoryLst != null && categoryLst.size() != 0 ) {
+			Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
+			List<CategoryContentDto> contentLst = (new Gson()).fromJson(categoryLst.get(0).getSurveyCategoryContent(), listType);  
+			mav.addObject("surveyResultLst", contentLst);
+		}
 
 		mav.addObject(LinkType.NEXT_QUESTION.name(), LinkType.NEXT_QUESTION);
 		mav.addObject(LinkType.SURVEY_RESULT.name(), LinkType.SURVEY_RESULT);
