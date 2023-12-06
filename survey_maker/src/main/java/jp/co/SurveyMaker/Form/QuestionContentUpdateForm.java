@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
+import jp.co.SurveyMaker.Dto.QuestionPositionDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,6 +25,8 @@ public class QuestionContentUpdateForm {
     private String questionImage;
     
     private String questionImageBase64;
+    
+    private QuestionPositionDto position;
     
     private MultipartFile questionImgFile;
     

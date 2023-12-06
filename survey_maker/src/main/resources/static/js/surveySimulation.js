@@ -40,7 +40,7 @@ $(function(){
 				$("div.questionContent"+ nextIndex ).show();
 				// 「次へ」を「サブミート」ボタンへ変更
 				if(questionCnt == parseInt(nextIndex) + 1){
-					$(this).text("サブミート");
+					$(this).text("診断する");
 				}
 				return false;
 			}

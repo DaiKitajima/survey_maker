@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.gson.Gson;
+
 import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.QuestionOrderDto;
+import jp.co.SurveyMaker.Dto.QuestionPositionDto;
 import jp.co.SurveyMaker.Repository.SurveyQuestion.SurveyQuestionRepository;
 import jp.co.SurveyMaker.Repository.SurveyQuestionLink.SurveyQuestionLinkRepository;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
@@ -90,6 +93,22 @@ public class SurveyQuestionService {
 							+ FileUtil.FILE_DIRECTORY_DELIMITER + newQue.getId() + FileUtil.FILE_DIRECTORY_DELIMITER;
 					FileUtil.renameTargetFile(savePath, oldQuestionImg, newQue.getQuestionImage());
 					
+				} catch (Exception e) {
+					throw e;
+				}
+			}
+		}
+	}
+	
+	
+	// フローチャート図上の質問位置更新
+	public void questionPositionUpdate(List<QuestionPositionDto> positionLst)throws Exception {
+		if(positionLst != null && positionLst.size() != 0) {
+			for(QuestionPositionDto position : positionLst) {
+				try {
+					SurveyQuestion newQue = this.getSurveyQuestionById(position.getId());
+					newQue.setQuestionPosition((new Gson()).toJson(position));
+					this.surveyQuestionUpdate(newQue);
 				} catch (Exception e) {
 					throw e;
 				}

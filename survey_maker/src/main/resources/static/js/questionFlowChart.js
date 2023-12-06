@@ -16,8 +16,9 @@ $(function(){
 
     // Panzoom zoom handling...
     var possibleZooms = [0.5, 0.75, 1, 2, 3];
-    var currentZoom = 2;
-    $container.on('mousewheel.focal', function( e ) {
+    var currentZoom = 1;
+    // 拡大と縮小
+/*    $container.on('mousewheel.focal', function( e ) {
         e.preventDefault();
         var delta = (e.delta || e.originalEvent.wheelDelta) || e.originalEvent.detail;
         var zoomOut = delta ? delta < 0 : e.originalEvent.deltaY > 0;
@@ -27,7 +28,7 @@ $(function(){
             animate: true,
             focal: e
         });
-    });
+    });*/
 
 	// Apply the plugin on a standard, empty div...
 	$flowchart.flowchart({
@@ -303,6 +304,38 @@ $(function(){
 	//--- end
 	//--- save and load
 	//-----------------------------------------
-
-
+	
+	// 位置保存
+	$('#positionSaveBtn').click(function(e) {
+		e.preventDefault();
+		var url = $(this).prop("href");
+		var data = $flowchart.flowchart('getData');
+		
+		$.ajax({
+		  async: true,
+		  url: url,
+		  type: 'POST',
+		  dataType: 'text',
+		  data: JSON.stringify(data.operators, null, 2),
+		  timeout: 30000,
+		  contentType: 'application/json;charset=utf-8',
+		  success: successCallback,
+		  error: errorCallback,
+		  complete: completeCallback
+		})
+		function successCallback(successFlg) {
+			if(successFlg == "true"){
+				alert('位置保存が完了しました。');
+			}else{
+				alert('位置保存が失敗しました。');
+			}
+		}
+		function errorCallback(xhr, status){
+		    console.log('error: ' + status);
+		    alert('エラーが発生しました。');
+		}
+		function completeCallback(xhr, status){
+		    console.log('question position save Complete!');
+		}
+	});
 });

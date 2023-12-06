@@ -56,6 +56,9 @@ public class SurveyCategory {
 	    @Column(name = "survey_summary_detail_below")
 	    private String surveySummaryDetailBelow;
 	    
+	    @Column(name = "survey_category_position")
+	    private String surveyCategoryPosition;
+	    
 	    @Column(name = "delete_flg")
 	    private boolean deleteFlg;
 	

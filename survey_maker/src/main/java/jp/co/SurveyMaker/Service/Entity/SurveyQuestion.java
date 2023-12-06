@@ -32,6 +32,9 @@ public class SurveyQuestion {
 	    @Column(name = "question_title")
 	    private String questionTitle;
 	    
+	    @Column(name = "question_position")
+	    private String questionPosition;
+	    
 	    @Column(name = "question_image")
 	    private String questionImage;
 	    

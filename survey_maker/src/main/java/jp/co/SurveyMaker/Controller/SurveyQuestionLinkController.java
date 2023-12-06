@@ -22,6 +22,7 @@ import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
 import jp.co.SurveyMaker.Dto.CategoryContentDto;
+import jp.co.SurveyMaker.Dto.QuestionPositionDto;
 import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
 import jp.co.SurveyMaker.Form.QuestionLinkForm;
 import jp.co.SurveyMaker.Form.QuestionLinkUpdateForm;
@@ -99,6 +100,13 @@ public class SurveyQuestionLinkController {
 		questionContentUpdateForm.setQuestionTitle(question.getQuestionTitle());
 		questionContentUpdateForm.setQuestionOrderNo(question.getQuestionOrderNo());
 		questionContentUpdateForm.setQuestionImage(question.getQuestionImage());
+		// チャート図の場合、位置設定
+		if(StringUtil.isNotEmpty(question.getQuestionPosition()) ) {
+			// 位置
+			Type type = new TypeToken<QuestionPositionDto>(){}.getType();
+			QuestionPositionDto position = (new Gson()).fromJson(question.getQuestionPosition(), type);  
+			questionContentUpdateForm.setPosition(position);
+		}
 		
 		// 回答コンテンツ
 		Type listType = new TypeToken<ArrayList<AnswerContentDto>>(){}.getType();
@@ -295,6 +303,12 @@ public class SurveyQuestionLinkController {
 		surveyCategoryUpdateForm.setSurveyCategoryName(category.getSurveyCategoryName());
 		surveyCategoryUpdateForm.setSurveyCategoryColor(category.getSurveyCategoryColor());
 		
+		if( category.getSurveyCategoryPosition() != null ) {
+			// 位置情報
+			Type type = new TypeToken<QuestionPositionDto>(){}.getType();
+			QuestionPositionDto resultPosition = (new Gson()).fromJson(category.getSurveyCategoryPosition(), type);  
+			surveyCategoryUpdateForm.setSurveyCategoryPosition(resultPosition);
+		}
 		// カテゴリーコンテンツ
 		Type listType = new TypeToken<ArrayList<CategoryContentDto>>(){}.getType();
 		List<CategoryContentDto> contentLst = (new Gson()).fromJson(category.getSurveyCategoryContent(), listType);  

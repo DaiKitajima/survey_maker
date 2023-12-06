@@ -51,6 +51,7 @@ create table IF NOT EXISTS `survey_category` (
 `survey_summary_image_below` varchar(256) COMMENT '総合評価画像（判定点数以下）',
 `survey_summary_detail_below` text COMMENT '総合評価詳細（判定点数以下）',
 `survey_category_content` json COMMENT '診断軸コンテンツ',
+`survey_category_position` json COMMENT 'フローチャート軸位置',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='診断軸コンテンツテーブル';
@@ -73,6 +74,7 @@ create table IF NOT EXISTS `survey_question` (
 `question_order_no` int COMMENT '質問順番',
 `question_title` varchar(256) COMMENT '質問内容',
 `question_image` varchar(256) COMMENT '質問画像 ',
+`question_position` json COMMENT '質問位置',
 `answer_content` json COMMENT '回答コンテンツ',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)

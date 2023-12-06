@@ -96,13 +96,19 @@ public class SurveyQuestionLinkService {
 		for(QuestionContentUpdateForm question : questionFormLst) {
 			operator = operator + "    'operator"+ question.getId() + "': {\n";
 			List<QuestionLinkForm> haveLinkQuestion  = linkFormLst.stream().filter(link -> link.getQuestionId().equals(question.getId())).toList();
-			if(haveLinkQuestion == null || haveLinkQuestion.size() == 0 ) {
-				  operator = operator + "      'top': 1100,\n";
-				  operator = operator +"      'left': 300,\n";
+			
+			if(question.getPosition() != null ) {
+				  operator = operator + "      'top': "+ question.getPosition().getTop() + ",\n";
+				  operator = operator +"      'left': "+ question.getPosition().getLeft() + ",\n";
 			}else {
-				  operator = operator + "      'top': 750+"+ ( 40*questionCnt ) +",\n";
-				  operator = operator +"      'left': 300+" + ( +60*questionCnt ) + ",\n";
-				  questionCnt ++;
+				if(haveLinkQuestion == null || haveLinkQuestion.size() == 0 ) {
+					  operator = operator + "      'top': 1100,\n";
+					  operator = operator +"      'left': 350,\n";
+				}else {
+					  operator = operator + "      'top': "+ ( 750 + 40*questionCnt ) +",\n";
+					  operator = operator +"      'left': " + ( 350 +60*questionCnt ) + ",\n";
+					  questionCnt ++;
+				}
 			}
 			
 			operator = operator  + "      'properties': {\n";
@@ -129,8 +135,13 @@ public class SurveyQuestionLinkService {
 		
 		// 評価結果をoperatorsに設定
 		operator = operator + "    '"+ CommonConstants.FLOW_CHART_RESULT +"': {\n";
-		operator = operator  + "      'top': 750,\n";
-		operator = operator  + "      'left': 1500,\n";
+		if(category.getSurveyCategoryPosition() != null ) {
+			operator = operator  + "      'top': "+ category.getSurveyCategoryPosition().getTop() +",\n";
+			operator = operator  + "      'left': "+ category.getSurveyCategoryPosition().getLeft() + ",\n";
+		}else {
+			operator = operator  + "      'top': 750,\n";
+			operator = operator  + "      'left': 1500,\n";
+		}
 		operator = operator  + "      'properties': {\n";
 		operator = operator  + "        'title': '評価結果',\n";
 		operator = operator  + "        'inputs': {\n";
@@ -156,7 +167,7 @@ public class SurveyQuestionLinkService {
 				link = link + "      'toOperator': 'operator"+ linkForm.getLinkTo() +"',\n";
 				link = link + "      'toConnector': 'input_"+ linkForm.getLinkTo()  +"'\n";
 			}else if(LinkType.SURVEY_RESULT.getCode().equals(linkForm.getLinkType()) ) {
-				link = link + "      'toOperator': 'result',\n";
+				link = link + "      'toOperator': '" + CommonConstants.FLOW_CHART_RESULT  + "',\n";
 				link = link + "      'toConnector': 'input_"+ linkForm.getLinkTo()  +"'\n";
 			}
 			link = link + "    },\n";

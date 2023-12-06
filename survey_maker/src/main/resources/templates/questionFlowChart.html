@@ -58,6 +58,7 @@
 							<input type="hidden" id="selectedOperatorId">
 							<input type="hidden" id="selectedLinkId">
 							<a th:href="@{/surveyContentDetail/questionContentRegist?contentId=__${survey.id}__&onFlowchartFlg=true}" class="btn btn-sm btn-success me-1" style="width:150px;">質問追加</a>
+							<a id="positionSaveBtn" th:href="@{/internalApi/questionPositionSave/__${survey.id}__}" class="btn btn-sm btn-info me-1" style="width:150px;">質問位置保存</a>
 							<a id="questionDelBtn" th:href="@{/internalApi/questionOrLinkDelete?contentId=__${survey.id}__}" class="btn btn-sm btn-danger me-1" style="width:150px;">質問/リンク削除</a>
 							<a th:href="${referer}" class="btn btn-sm btn-secondary" style="width:150px;">戻る</a>
 						</div>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.SurveyMaker.Dto.CategoryContentDto;
+import jp.co.SurveyMaker.Dto.QuestionPositionDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -44,6 +45,8 @@ public class SurveyCategoryUpdateForm {
     private String surveySummaryDetailBelow;
     
     private String surveyCategoryContent;
+    
+    private QuestionPositionDto surveyCategoryPosition;
     
     private List<CategoryContentDto> categoryContentLst;
     

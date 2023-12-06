@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,10 +30,13 @@ import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
 import jp.co.SurveyMaker.Dto.QuestionOrderDto;
+import jp.co.SurveyMaker.Dto.QuestionPositionDto;
 import jp.co.SurveyMaker.Form.QuestionAndLinkForm;
+import jp.co.SurveyMaker.Service.SurveyCategoryService;
 import jp.co.SurveyMaker.Service.SurveyContentService;
 import jp.co.SurveyMaker.Service.SurveyQuestionLinkService;
 import jp.co.SurveyMaker.Service.SurveyQuestionService;
+import jp.co.SurveyMaker.Service.Entity.SurveyCategory;
 import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
 import jp.co.SurveyMaker.Service.Entity.SurveyQuestionLink;
@@ -54,6 +60,9 @@ public class RestSurveyMakerController {
 	
 	@Autowired
 	private SurveyContentService surveyContentService;
+	
+	@Autowired
+	private SurveyCategoryService surveyCategoryService;
 	
 	@GetMapping("/getSurveyQuestionContent")
 	public String getSurveyQuestionContent(
@@ -173,5 +182,60 @@ public class RestSurveyMakerController {
 			log.error("フローチャートにリンク設定時、エラーが発生しました。 ", e );
 		}
 		return null;
+	}
+	
+	@PostMapping("/questionPositionSave/{contentId}")
+	public boolean questionPositionSave(
+			HttpServletRequest request,
+			HttpSession session ,
+			@PathVariable("contentId") Integer contentId,
+			@RequestBody String jsonData) throws Exception {
+		try {
+			// セッションからユーザ情報取得
+			User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+			SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
+			// 質問位置
+			List<QuestionPositionDto> positionLst = new ArrayList<QuestionPositionDto>();
+			// 評価結果位置
+			QuestionPositionDto resultPosition = new QuestionPositionDto();
+			
+			Gson gson = new Gson();
+			JsonElement element  = gson.fromJson(jsonData, JsonElement.class);
+			Map<String, JsonElement> map = element.getAsJsonObject().asMap();
+			if(map != null ) {
+				for(String key: map.keySet()) {
+					JsonElement value = map.get(key);
+					JsonObject  positionVal = value.getAsJsonObject();
+					
+					if(!CommonConstants.FLOW_CHART_RESULT.equals(key) ) {
+						QuestionPositionDto dto = new QuestionPositionDto();
+						dto.setId(Integer.valueOf(key.replace("operator", "")) );
+						dto.setLeft( positionVal.get("left").getAsInt());
+						dto.setTop(positionVal.get("top").getAsInt());
+						positionLst.add(dto);
+					}else {
+						resultPosition.setLeft(positionVal.get("left").getAsInt());
+						resultPosition.setTop(positionVal.get("top").getAsInt());
+					}
+				}
+			}
+			
+			// 質問位置更新
+			if(positionLst.size() != 0 ) {
+				surveyQuestionService.questionPositionUpdate(positionLst);
+			}
+			// 評価結果位置更新
+			if( resultPosition != null ) {
+				// フローの場合、１カテゴリーのみあり
+				SurveyCategory category = surveyCategoryService.getSurveyCategoryByContentId(contentId).get(0);
+				resultPosition.setId(category.getId());
+				category.setSurveyCategoryPosition((new Gson()).toJson(resultPosition));
+				surveyCategoryService.surveyCategoryUpdate(category);
+			}
+		} catch (Exception e) {
+			log.error("フローチャートに位置保存時、エラーが発生しました。 ", e );
+			return false;
+		}
+		return true;
 	}
 }
