@@ -24,7 +24,7 @@
 							</div>
 						</div>
 
-						<div class="row mb-5">
+						<div class="row mb-5" th:if="*{survey.surveyImageBase64}">
 							<div class="col d-flex justify-content-center">
 								<img id="contentImg" th:src="*{survey.surveyImageBase64}" height="200" width="250" th:alt="*{survey.surveyImage}" class="img-thumbnail">
 							</div>

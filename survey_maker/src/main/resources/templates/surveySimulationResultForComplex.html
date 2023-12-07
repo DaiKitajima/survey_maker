@@ -24,7 +24,7 @@
 							</div>
 						</div>
 
-						<div class="row mb-5">
+						<div class="row mb-5" th:if="*{survey.surveyImageBase64}">
 							<div class="col d-flex justify-content-center">
 								<img id="contentImg" th:src="*{survey.surveyImageBase64}" height="200" width="250" th:alt="*{survey.surveyImage}" class="img-thumbnail">
 							</div>
@@ -66,9 +66,9 @@
 											</div>
 										</div>
 										<div class="row mb-2">
-											<div class="col">
+											<div class="col-9">
 												<h6>評価詳細:</h6>
-												<span th:text="*{surveySummaryDetail}"></span>
+												<span th:utext="*{surveySummaryDetail}"></span>
 											</div>
 										</div>
 									</div>
@@ -77,7 +77,8 @@
 						</div>
 						
 						<!-- 複数（ポイント型） -->
-						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}" >
+						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}" 
+							th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 							<div class="col-2 d-flex justify-content-end">
 								<div>
 									<h6 class="bg-success text-light" th:text="${categoryResult.categoryName}" >身体の調査</h6>
@@ -86,20 +87,29 @@
 							<div class="col-10 d-flex justify-content-start">
 								<div class="categoryResult" >
 									<div class="row mb-2">
-										<div class="col">
+										<div class="col-8">
 											<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" height="200" width="250" alt="診断軸評価画像" class="img-thumbnail">
 										</div>
 									</div>
 									<div class="row mb-2">
-										<div class="col">
-											<h6>評価結果:</h6>
-											<span th:text="${categoryResult.categoryResultTitle}"></span>
+										<div class="col-8">
+											<h6 th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+											<div class="progress" style="width:400px;">
+												<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
+												</div>
+											</div>
 										</div>
 									</div>
 									<div class="row mb-2">
-										<div class="col">
+										<div class="col-8">
+											<h6>評価結果:</h6>
+											<span th:utext="${categoryResult.categoryResultTitle}"></span>
+										</div>
+									</div>
+									<div class="row mb-2">
+										<div class="col-8">
 											<h6>結果詳細:</h6>
-											<span th:text="${categoryResult.categoryResultDetail}"></span>
+											<span th:utext="${categoryResult.categoryResultDetail}"></span>
 										</div>
 									</div>
 								</div>
