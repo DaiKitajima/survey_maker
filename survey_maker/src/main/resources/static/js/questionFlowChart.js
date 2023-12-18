@@ -110,14 +110,24 @@ $(function(){
 			  complete: completeCallback
 			})
 			function successCallback(newLinkId) {
+				if(linkId.toString().indexOf("link_") > -1 ) return;
 				if(newLinkId == null || newLinkId == ""){
 					alert('リンク設定が失敗しました。');
 					$("[data-link_id=" + linkId + "]").parent().remove();
-				}else{
+				}else if(parseInt(newLinkId)){
 					$("g.flowchart-link").each(function(){
 						var dataLinkId = $(this).attr("data-link_id");
 						if(dataLinkId == linkId){
-							$(this).attr("data-link_id",("link_" + newLinkId));
+							// 画面上ID変換
+							var createId = "link_" + newLinkId;
+							$(this).attr("data-link_id",createId);
+							// 内部システム上に新規データのID追加
+							delete linkData.contentId;
+							$flowchart.flowchart('createLink', createId, linkData);
+							// 自動生成されたID情報削除
+							var data = $flowchart.flowchart('getData');
+							delete data.links[linkId];
+							$flowchart.flowchart('setData', data);
 						}
 					});
 				}

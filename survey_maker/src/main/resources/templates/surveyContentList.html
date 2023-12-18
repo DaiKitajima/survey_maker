@@ -104,7 +104,7 @@
 											</th:block>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<a th:onclick="|showimage('contentImg${stat.index}')|" class="btn btn-default btn-xs active">
+											<a th:onclick="|showimage('contentImg${stat.index}')|" class="btn btn-default btn-xs active" th:if="${survey.surveyImageBase64}">
 												<img th:id="contentImg__${stat.index}__" th:src="${survey.surveyImageBase64}" height="40" width="50" th:alt="${survey.surveyImage}" class="img-thumbnail">
 											</a>
 										</td>

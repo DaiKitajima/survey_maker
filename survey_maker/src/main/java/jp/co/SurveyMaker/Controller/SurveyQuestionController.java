@@ -102,7 +102,7 @@ public class SurveyQuestionController {
 		}
 		
 		// リファラ
-		mav.addObject("referer", request.getHeader("referer"));
+		mav.addObject("referer", request.getHeader("referer") + "&onFlowchartFlg=" + onFlowchartFlg  );
 		mav.setViewName("/questionContentRegist");
 		
 		return mav;
@@ -189,7 +189,7 @@ public class SurveyQuestionController {
 			onFlowchartFlg = false;
 		}
 		if(onFlowchartFlg) {
-			mav.setViewName("redirect:/surveyContentDetail/questionFlowChart?contentId=" + questionContentUpdateForm.getSurveyManagementId());
+			mav.setViewName("redirect:/surveyContentDetail/questionFlowChart?contentId=" + questionContentUpdateForm.getSurveyManagementId() + "&onFlowchartFlg=" + onFlowchartFlg );
 		}else {
 			mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId());
 		}

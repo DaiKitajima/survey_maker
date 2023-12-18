@@ -93,6 +93,7 @@ public class SurveyQuestionLinkService {
 		// operators 構築
 		String operator = "";
 		Integer questionCnt = 0;
+		Integer linkQuestionCnt = 0;
 		for(QuestionContentUpdateForm question : questionFormLst) {
 			operator = operator + "    'operator"+ question.getId() + "': {\n";
 			List<QuestionLinkForm> haveLinkQuestion  = linkFormLst.stream().filter(link -> link.getQuestionId().equals(question.getId())).toList();
@@ -102,11 +103,12 @@ public class SurveyQuestionLinkService {
 				  operator = operator +"      'left': "+ question.getPosition().getLeft() + ",\n";
 			}else {
 				if(haveLinkQuestion == null || haveLinkQuestion.size() == 0 ) {
-					  operator = operator + "      'top': 1100,\n";
-					  operator = operator +"      'left': 350,\n";
+					  operator = operator + "      'top': "+ ( 950 + 30*linkQuestionCnt ) +",\n";
+					  operator = operator +"      'left': "+ ( 500 +30*linkQuestionCnt ) + ",\n";
+					  linkQuestionCnt++;
 				}else {
-					  operator = operator + "      'top': "+ ( 750 + 40*questionCnt ) +",\n";
-					  operator = operator +"      'left': " + ( 350 +60*questionCnt ) + ",\n";
+					  operator = operator + "      'top': "+ ( 750 + 30*questionCnt ) +",\n";
+					  operator = operator +"      'left': " + ( 500 +30*questionCnt ) + ",\n";
 					  questionCnt ++;
 				}
 			}
@@ -140,7 +142,7 @@ public class SurveyQuestionLinkService {
 			operator = operator  + "      'left': "+ category.getSurveyCategoryPosition().getLeft() + ",\n";
 		}else {
 			operator = operator  + "      'top': 750,\n";
-			operator = operator  + "      'left': 1500,\n";
+			operator = operator  + "      'left': 1200,\n";
 		}
 		operator = operator  + "      'properties': {\n";
 		operator = operator  + "        'title': '評価結果',\n";

@@ -63,7 +63,7 @@
 							</div>
 							<div class="col-4">
 								<span class="h6">コンテンツ画像</span><br>
-								<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active">
+								<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyImageBase64}">
 									<img id="contentImg" th:src="*{surveyContent.surveyImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyImage}" class="img-thumbnail">
 								</a>
 							</div>
@@ -334,7 +334,7 @@
 										</div>
 									</div>
 									<!-- 質問2件以上の場合のみ、順番更新可能 -->
-									<div class="col-4 d-flex justify-content-start " th:if="*{#lists.size(questionFormLst) >= 2}">
+									<div class="col-4 d-flex justify-content-start " th:if="*{#lists.size(questionFormLst) >= 2 && surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
 										<form action="/surveyContentDetail/questionOrderUpdate" method="post" id="questionOrderUpdateForm">
 											<input type="hidden" th:value="*{contentId}" name="contentId">
 											<button type="submit" class="btn btn-sm btn-success me-1" id="questionOrderUpdateBtn" style="width:150px;">今の質問順番で更新</button>

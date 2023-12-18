@@ -243,7 +243,8 @@ public class SurveyQuestionLinkController {
 	public ModelAndView questionFlowChart(
 			HttpServletRequest request,
 			HttpSession session ,
-			@RequestParam(value="contentId", required = true) Integer contentId) throws Exception {
+			@RequestParam(value="contentId", required = true) Integer contentId,
+			@RequestParam(value="onFlowchartFlg", required = false) boolean onFlowchartFlg) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		// セッションからユーザ情報取得
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
@@ -284,9 +285,10 @@ public class SurveyQuestionLinkController {
 		mav.addObject("questionLinkUpdateForm", questionLinkUpdateForm);
 		
 		// リファラ
-		if(StringUtil.isNotEmpty((String)session.getAttribute(CommonConstants.SESSION_KEY_REFERER)) ) {
+		if(onFlowchartFlg && StringUtil.isNotEmpty((String)session.getAttribute(CommonConstants.SESSION_KEY_REFERER)) ) {
 			mav.addObject("referer", (String)session.getAttribute(CommonConstants.SESSION_KEY_REFERER));
 		}else {
+			session.removeAttribute(CommonConstants.SESSION_KEY_REFERER);
 			mav.addObject("referer", request.getHeader("referer"));
 			session.setAttribute(CommonConstants.SESSION_KEY_REFERER, request.getHeader("referer"));
 		}
