@@ -102,7 +102,8 @@ public class SurveyQuestionController {
 		}
 		
 		// リファラ
-		mav.addObject("referer", request.getHeader("referer") + "&onFlowchartFlg=" + onFlowchartFlg  );
+		String referer = request.getHeader("referer") ;
+		mav.addObject("referer",  referer.indexOf("onFlowchartFlg") > -1 ?  referer : referer +  "&onFlowchartFlg=" + onFlowchartFlg  );
 		mav.setViewName("/questionContentRegist");
 		
 		return mav;
