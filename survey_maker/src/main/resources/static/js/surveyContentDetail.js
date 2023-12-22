@@ -57,26 +57,69 @@ $(function(){
 	$('#categoryＦｏｒｍId').on('submit', function(e) {
 		e.preventDefault();
 		var submitFlg = true;
-		// ポイント範囲チェック
+		var minFromVal = 100;
+		var maxToVal = 0;
+		// ポイント範囲チェック(FromとTo値チェック)
 		$("input[name*='pointTo']").each(function(){
 			var pointFrom = $(this).parent().siblings().find("input[name*='pointFrom']");
 			var fromVal = parseInt(pointFrom.val());
 			var toVal = parseInt($(this).val());
 			if(fromVal >= toVal){
 				submitFlg = false;
-				alert("ポイント範囲のFROMとTOの値を正しく設定してください。");
+				alert("ポイント範囲のFROMがTOより小さい値で設定してください。");
+			}
+			
+			// min値取得
+			if(fromVal < minFromVal ){
+				minFromVal = fromVal;
+			}
+			// max値取得
+			if(toVal > maxToVal ){
+				maxToVal = toVal;
 			}
 		});
-	
+		
+		// ポイント範囲チェック(FromとTo値チェック)
+		if(minFromVal > 0 ){
+			submitFlg = false;
+			alert("ポイント範囲[0-"+ maxToVal+"]の値を全て設定してください。");
+		}
+		
 		if(submitFlg){
 			$(this).unbind('submit').submit();
 			// ボタン非活性にする
 			$('#questionLinkBtn').prop("disabled",true);
 		}else{
-			// ボタン非活性にする
+			// ボタン活性にする
 			$('#questionLinkBtn').prop("disabled",false);
 			return false;
 		}
+	});
+	
+	// カテゴリーコンテンツ削除
+	$("a[name^='categoryContentLst'], [name$='delete']").on('click', function(e) {
+		e.preventDefault();
+		$("#deleteContent").val($(this).prop("name"));
+		$("#categoryResultDeleteConfirmDialog").modal("show");
+	});
+	
+	$("#categoryResultDeleteConfirmDialogSubmit").on('click', function() {
+		var deleteContentName = $("#deleteContent").val();
+		contentDel(null,'categoryContent','categoryContentLst',deleteContentName);
+		$("#categoryResultDeleteConfirmDialog").modal("hide");
+	});
+	
+	// 回答コンテンツ削除
+	$("a[name^='answerContentLst'], [name$='delete']").on('click', function(e) {
+		e.preventDefault();
+		$("#deleteContent").val($(this).prop("name"));
+		$("#questionAnswerDeleteConfirmDialog").modal("show");
+	});
+	
+	$("#questionAnswerDeleteConfirmDialogSubmit").on('click', function() {
+		var deleteContentName = $("#deleteContent").val();
+		contentDel(null,'questionContent','answerContentLst',deleteContentName);
+		$("#questionAnswerDeleteConfirmDialog").modal("hide");
 	});
 })
 
@@ -113,8 +156,13 @@ function contentAdd(addBtn, copyContentEle,formDataEle){
 	delContentEle：削除コンテンツ要素
 	formDataEle:　フォーム要素
 */
-function contentDel(delBtn,delContentEle,formDataEle){
-	var delBtnName = $(delBtn).prop("name");
+function contentDel(delBtn,delContentEle,formDataEle,deleteContentName){
+	var delBtnName = "";
+	if(deleteContentName != null ){
+		delBtnName = deleteContentName;
+	}else{
+		delBtnName = $(delBtn).prop("name");
+	}
 	if($('.'+delContentEle).length != 1 ){
 		$('.'+delContentEle).each(function(){
 			if($(this).find("[name='"+delBtnName+"']").length > 0 ){

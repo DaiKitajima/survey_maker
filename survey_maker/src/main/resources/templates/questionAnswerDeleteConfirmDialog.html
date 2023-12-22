@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<div class="modal fade" id="questionAnswerDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="questionAnswerDeleteConfirmDialogTitle" aria-hidden="false">
+	    <div class="modal-dialog modal-dialog-centered" role="document">
+	        <div class="modal-content">
+	        	<div class="modal-header border-0" style="background-color:#56b9b3;">
+					<h6 class="modal-title" id="questionAnswerDeleteConfirmDialogTitle" style="color:#ffffff;">削除確認</h6>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+	            <div class="modal-body">
+					<div class="text-left">
+						<div class="h6 pt-3">
+							<input type="hidden" id="deleteContent">
+							選択した回答コンテンツを削除します、よろしいですか？<br>
+							<span class="sm text-danger"><br>※回答コンテンツ情報を削除しますと、ポイント採点への影響があります。</span>
+						</div>
+					</div>
+	            </div>
+
+	            <div class="modal-footer justify-content-center border-0">
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+	                <button type="button" class="btn btn-primary" style="width:100px;" id="questionAnswerDeleteConfirmDialogSubmit">OK</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</html>

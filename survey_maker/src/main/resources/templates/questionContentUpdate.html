@@ -68,7 +68,7 @@
 								</div>
 								<div class="col-1 mt-2 mb-2 d-flex justify-content-end" >
 									<div>
-										<a href="#" th:name="answerContentLst[__${stat.index}__].delete|" onclick="contentDel(this,'questionContent','answerContentLst')">
+										<a href="#" th:name="answerContentLst[__${stat.index}__].delete|">
 											<span class="h5 text-danger"><i class="bi bi-trash3-fill"></i></span>
 										</a>
 									</div>
@@ -121,5 +121,8 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- ダイアログのインクルード -->
+		<th:block th:replace="questionAnswerDeleteConfirmDialog.html" />
 	</body>
 </html>
