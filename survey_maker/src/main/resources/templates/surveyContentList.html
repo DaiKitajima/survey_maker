@@ -112,7 +112,7 @@
 											<span th:style="|background:${survey.surveyColor};|" th:text="${survey.surveyColor}">#198754</span>
 										</td>
 										<td class="align-middle text-center" style="white-space: nowrap;">
-											<a th:href="@{/surveyContentList/contentDelete?contentId=__${survey.id}__}" id="contentDelBtn"　class="text-dark">
+											<a th:href="@{/surveyContentList/contentDelete?contentId=__${survey.id}__}" th:id="contentDelBtn__${stat.index}__" class="text-dark">
 												<i class="fa-solid fa-trash-can"></i>
 											</a>
 										</td>

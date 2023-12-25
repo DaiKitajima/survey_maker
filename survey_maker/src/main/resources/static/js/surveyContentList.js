@@ -28,8 +28,9 @@ $(function(){
 	});
 
 	// データ削除確認
-	$('#contentDelBtn').on('click', function(e) {
+	$("[id^='contentDelBtn']").on('click', function(e) {
 		e.preventDefault();
+		$('.remind-msg').text(''); 
 		var url = $(this).attr('href');
 		$('#deleteDataURL').val(url); 
 		$("#dataDeleteConfirmDialog").modal("show");
@@ -37,6 +38,7 @@ $(function(){
 	// 質問削除確認
 	$('#questionDelBtn').on('click', function(e) {
 		e.preventDefault();
+		$('.remind-msg').text(''); 
 		var url = $(this).attr('href');
 		var questionIdLst = [];
 	    // チェックされているチェックボックスの値を取得
@@ -50,6 +52,7 @@ $(function(){
 	    }else{
 			url = url + "?questionIdLst=" + questionIdLst;
 			$('#deleteDataURL').val(url); 
+			$('.remind-msg').text('※診断質問を削除しますと、ポイント設定不足になる可能性があります。質問追加、各質問のポイント調整などで対応してください。'); 
 			$("#dataDeleteConfirmDialog").modal("show");
 		}
 	});
@@ -57,16 +60,20 @@ $(function(){
 	// 軸削除確認
 	$('[id^=categoryDelBtn]').on('click', function(e) {
 		e.preventDefault();
+		$('.remind-msg').text(''); 
 		var url = $(this).attr('href');
 		$('#deleteDataURL').val(url); 
+		$('.remind-msg').text('※診断軸を削除しますと、質問のポイント採点の更新が必要になります。且つ、実施済みの診断結果にこの軸の結果が取得できなくなります。'); 
+		
 		$("#dataDeleteConfirmDialog").modal("show");
 	});
 	
 	$('#dataDeleteConfirmDialogSubmit').on('click', function() {
 		location.href = $('#deleteDataURL').val();
 		$(this).prop("disabled", true);
+		$('.remind-msg').text(''); 
 	});
-
+	
 	// シミュレーションボタン押下
 	$('.simulationBtn').on('click', function(e) {
 		e.preventDefault();
