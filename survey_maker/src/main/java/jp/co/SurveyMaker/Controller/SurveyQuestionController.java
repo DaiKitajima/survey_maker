@@ -241,6 +241,9 @@ public class SurveyQuestionController {
 					answer.setAnswerId(answerContentId);
 					answerContentId++;
 				}
+				answer.getAnswerPointLst().forEach(point -> {
+					if(point.getPoint() == null ) point.setPoint(0);
+				});
 			}
 		}
 		questionContent.setAnswerContent(new Gson().toJson(questionContentUpdateForm.getAnswerContentLst() ));
