@@ -177,6 +177,8 @@ public class RestSurveyMakerController {
 			link.setLinkTo( Integer.parseInt( toConnector.replace("input_", "")) );
 			if(!surveyQuestionLinkService.existsBySurveyManagementIdAndSurveyQuestionIdAndAnswerId(link)) {
 				return surveyQuestionLinkService.surveyQuestionLinkRegist(link);
+			}else {
+				return -1;
 			}
 		} catch (Exception e) {
 			log.error("フローチャートにリンク設定時、エラーが発生しました。 ", e );

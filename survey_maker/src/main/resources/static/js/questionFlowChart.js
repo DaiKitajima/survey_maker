@@ -37,7 +37,7 @@ $(function(){
 		grid: 5,
 		multipleLinksOnInput: true,
 		multipleLinksOnOutput: true,
-		linkWidth: 5
+		linkWidth: 3
 	});
 
 /*	function getOperatorData($element) {
@@ -111,7 +111,10 @@ $(function(){
 			})
 			function successCallback(newLinkId) {
 				if(linkId.toString().indexOf("link_") > -1 ) return;
-				if(newLinkId == null || newLinkId == ""){
+				if(newLinkId == -1){
+					alert('既存のリンクを削除してから、再度リンクを新規作成してください。※１回答は１質問に繋げます。');
+					$("[data-link_id=" + linkId + "]").parent().remove();
+				}else if(newLinkId == null || newLinkId == ""){
 					alert('リンク設定が失敗しました。');
 					$("[data-link_id=" + linkId + "]").parent().remove();
 				}else if(parseInt(newLinkId)){

@@ -52,7 +52,7 @@ $(function(){
 	    }else{
 			url = url + "?questionIdLst=" + questionIdLst;
 			$('#deleteDataURL').val(url); 
-			$('.remind-msg').text('※診断質問を削除しますと、ポイント設定不足になる可能性があります。質問追加、各質問のポイント調整などで対応してください。'); 
+			$('.remind-msg').text('※診断質問を削除しますと、ポイント設定不足、若しくは質問リンク切り離しになる可能性があります。質問追加、各質問のポイントとリンク調整などを対応してください。'); 
 			$("#dataDeleteConfirmDialog").modal("show");
 		}
 	});
