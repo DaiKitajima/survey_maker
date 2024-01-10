@@ -65,7 +65,7 @@ public class SurveyCategoryController {
 		mav.addObject("surveyCategoryUpdateForm", surveyCategoryUpdateForm);
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
-		mav.setViewName("/surveyCategoryRegist");
+		mav.setViewName("surveyCategoryRegist");
 		
 		return mav;
 	}
@@ -225,7 +225,7 @@ public class SurveyCategoryController {
 		mav.addObject("surveyCategoryUpdateForm", surveyCategoryUpdateForm);
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
-		mav.setViewName("/surveyCategoryUpdate");
+		mav.setViewName("surveyCategoryUpdate");
 		
 		return mav;
 	}

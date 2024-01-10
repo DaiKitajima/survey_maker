@@ -24,7 +24,7 @@ public class SurveySummaryResultController {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.addObject("surveyResultUpdateForm", new SurveySummaryResultUpdateForm());
-		mav.setViewName("/summaryResultRegist");
+		mav.setViewName("summaryResultRegist");
 		
 		return mav;
 	}
@@ -50,7 +50,7 @@ public class SurveySummaryResultController {
 		ModelAndView mav = new ModelAndView();
 		
 		mav.addObject("surveyResultUpdateForm", new SurveySummaryResultUpdateForm());
-		mav.setViewName("/summaryResultUpdate");
+		mav.setViewName("summaryResultUpdate");
 		
 		return mav;
 	}

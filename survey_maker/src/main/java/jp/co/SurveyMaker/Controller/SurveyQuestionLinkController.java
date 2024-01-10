@@ -88,7 +88,7 @@ public class SurveyQuestionLinkController {
 		
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
-		mav.setViewName("/questionLinkRegist");
+		mav.setViewName("questionLinkRegist");
 		
 		return mav;
 	}
@@ -203,7 +203,7 @@ public class SurveyQuestionLinkController {
 		
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
-		mav.setViewName("/questionLinkUpdate");
+		mav.setViewName("questionLinkUpdate");
 		
 		return mav;
 	}
@@ -293,7 +293,7 @@ public class SurveyQuestionLinkController {
 			session.setAttribute(CommonConstants.SESSION_KEY_REFERER, request.getHeader("referer"));
 		}
 		
-		mav.setViewName("/questionFlowChart");
+		mav.setViewName("questionFlowChart");
 		
 		return mav;
 	}

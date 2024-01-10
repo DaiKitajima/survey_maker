@@ -70,8 +70,8 @@ $(function(){
 	
 	$('#dataDeleteConfirmDialogSubmit').on('click', function() {
 		location.href = $('#deleteDataURL').val();
-		$(this).prop("disabled", true);
 		$('.remind-msg').text(''); 
+		$("#dataDeleteConfirmDialog").modal('hide');
 	});
 	
 	// シミュレーションボタン押下

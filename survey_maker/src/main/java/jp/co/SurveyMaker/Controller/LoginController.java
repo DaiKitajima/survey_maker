@@ -25,7 +25,7 @@ public class LoginController {
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("loginForm", new LoginForm());
-		mav.setViewName("/login");
+		mav.setViewName("login");
 
 		return mav;
 	}
@@ -45,7 +45,7 @@ public class LoginController {
 		} catch (Exception e) {
 			// ログイン失敗
 			mav.addObject("loginForm", new LoginForm());
-			mav.setViewName("/login");
+			mav.setViewName("login");
 			mav.addObject("message", "ユーザ、パスワードでログイン失敗しました。");
 			return mav;
 		}

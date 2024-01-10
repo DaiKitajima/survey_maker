@@ -78,18 +78,18 @@ public class SurveySimulationController {
 
 		if (survey.getSurveyPatternId() == CommonConstants.PARTTERN_SINGULAR) {
 			// 単数
-			mav.setViewName("/surveySimulationForSingular");
+			mav.setViewName("surveySimulationForSingular");
 		} else if (survey.getSurveyPatternId() == CommonConstants.PARTTERN_COMPLEX_POINT
 				|| survey.getSurveyPatternId() == CommonConstants.PARTTERN_COMPLEX_TOTAL) {
 			// 複数
-			mav.setViewName("/surveySimulationForComplex");
+			mav.setViewName("surveySimulationForComplex");
 		} else { // フロー
 			// 質問リンクコンテンツフォーム設定
 			simulationForm.setQuestionLinkLst(surveyQuestionLinkService.getSurveyQuestionLinkLst(contentId));
 			mav.addObject(LinkType.NEXT_QUESTION.name(), LinkType.NEXT_QUESTION);
 			mav.addObject(LinkType.SURVEY_RESULT.name(), LinkType.SURVEY_RESULT);
 
-			mav.setViewName("/surveySimulationForFlow");
+			mav.setViewName("surveySimulationForFlow");
 		}
 
 		mav.addObject("surveySimulationForm", simulationForm);

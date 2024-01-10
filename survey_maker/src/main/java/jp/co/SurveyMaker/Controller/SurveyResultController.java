@@ -79,11 +79,11 @@ public class SurveyResultController {
 		mav.addObject("surveyResultForm", surveyResultForm);
 		
 		if(CommonConstants.PARTTERN_SINGULAR.equals(survey.getSurveyPatternId())) {
-			mav.setViewName("/surveySimulationResultForSingular");
+			mav.setViewName("surveySimulationResultForSingular");
 		}else if(CommonConstants.PARTTERN_FLOW.equals(survey.getSurveyPatternId())) {
-			mav.setViewName("/surveySimulationResultForFlow");
+			mav.setViewName("surveySimulationResultForFlow");
 		}else {
-			mav.setViewName("/surveySimulationResultForComplex");
+			mav.setViewName("surveySimulationResultForComplex");
 		}
 		
 		return mav;

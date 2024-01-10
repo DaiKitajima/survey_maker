@@ -57,7 +57,7 @@ public class SurveyContentController {
 		
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
-		mav.setViewName("/surveyContentRegist");
+		mav.setViewName("surveyContentRegist");
 		
 		return mav;
 	}
@@ -113,7 +113,7 @@ public class SurveyContentController {
 		mav.addObject("surveyContentUpdateForm", surveyContentUpdateForm);
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
-		mav.setViewName("/surveyContentUpdate");
+		mav.setViewName("surveyContentUpdate");
 		
 		return mav;
 	}

@@ -88,10 +88,10 @@ $(function(){
 		if(submitFlg){
 			$(this).unbind('submit').submit();
 			// ボタン非活性にする
-			$('#questionLinkBtn').prop("disabled",true);
+			$('#categoryBtn').prop("disabled",true);
 		}else{
 			// ボタン活性にする
-			$('#questionLinkBtn').prop("disabled",false);
+			$('#categoryBtn').prop("disabled",false);
 			return false;
 		}
 	});

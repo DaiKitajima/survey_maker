@@ -101,7 +101,7 @@ public class SurveyContentListController {
 		List<SurveyPattern> patterns = surveyPatternService.getAllPattern();
 		mav.addObject("patternLst", patterns);
 		mav.addObject("surveyContentListForm", surveyContentListForm);
-		mav.setViewName("/surveyContentList");
+		mav.setViewName("surveyContentList");
 		
 		return mav;
 	}
@@ -160,7 +160,7 @@ public class SurveyContentListController {
 		mav.addObject("patternLst", patterns);
 		
 		mav.addObject("surveyContentListForm", surveyContentListForm);
-		mav.setViewName("/surveyContentList");
+		mav.setViewName("surveyContentList");
 		
 		return mav;
 	}
@@ -213,7 +213,7 @@ public class SurveyContentListController {
 		
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
-		mav.setViewName("/surveyContentDetail");
+		mav.setViewName("surveyContentDetail");
 		
 		return mav;
 	}
