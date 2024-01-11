@@ -54,19 +54,22 @@ $(function(){
 	});
 	
 	// カテゴリー登録・更新サブミート
-	$('#categoryＦｏｒｍId').on('submit', function(e) {
+	$('#categoryFormId').on('submit', function(e) {
 		e.preventDefault();
 		var submitFlg = true;
 		var minFromVal = 100;
 		var maxToVal = 0;
+		var pointExistFlg = false;
 		// ポイント範囲チェック(FromとTo値チェック)
 		$("input[name*='pointTo']").each(function(){
+			pointExistFlg = true;
 			var pointFrom = $(this).parent().siblings().find("input[name*='pointFrom']");
 			var fromVal = parseInt(pointFrom.val());
 			var toVal = parseInt($(this).val());
 			if(fromVal >= toVal){
 				submitFlg = false;
 				alert("ポイント範囲のFROMがTOより小さい値で設定してください。");
+				return false;
 			}
 			
 			// min値取得
@@ -80,7 +83,7 @@ $(function(){
 		});
 		
 		// ポイント範囲チェック(FromとTo値チェック)
-		if(minFromVal > 0 ){
+		if(submitFlg && minFromVal > 0 && pointExistFlg ){
 			submitFlg = false;
 			alert("ポイント範囲[0-"+ maxToVal+"]の値を全て設定してください。");
 		}
