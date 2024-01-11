@@ -4,9 +4,15 @@ $(function(){
 	/* スクリプトコピーボタン押下*/
 	$("#resultUrl").val( rootPath + $("#resultUrl").val() );
 	$("#urlCopyBtn").click(function(){
-		var copyText = $("#resultUrl").val();
-		navigator.clipboard.writeText(copyText);
-		alert("クリップボードにコピーしました。");
+		$("#resultUrl").select();
+/*		var copyText = $("#resultUrl").val();
+		navigator.clipboard.writeText(copyText);*/
+		if (document.execCommand('copy')) {
+		    document.execCommand('copy');
+		    alert("クリップボードにコピーしました。");
+		}else{
+			alert("コピー失敗しました。");
+		}
 	});
 
 	$('#nextQuestion').on('click', function() {
