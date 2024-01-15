@@ -95,7 +95,43 @@ public class SurveySimulationController {
 		mav.addObject("surveySimulationForm", simulationForm);
 		return mav;
 	}
+	
+	// 診断コンテンツを外部に公開
+	@GetMapping("/api/surveyExecute")
+	public ModelAndView surveyExecute(HttpServletRequest request, HttpSession session,
+			@RequestParam(value = "contentId", required = true) Integer contentId) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		// コンテンツ情報取得
+		SurveyManagement survey = surveyContentService.getSurveyContentById(contentId);
+		mav.addObject("survey", survey);
 
+		SurveySimulationForm simulationForm = new SurveySimulationForm();
+		simulationForm.setSurveyContent(survey);
+		// 質問コンテンツフォーム設定
+		List<SurveyQuestion> questionLst = surveyQuestionService.getSurveyQuestionByContentIdOrderByOrderNo(contentId);
+		List<QuestionContentUpdateForm> questionFormLst = new ArrayList<QuestionContentUpdateForm>();
+		this.convertEntityToQuestionLstForm(questionLst, questionFormLst);
+		simulationForm.setQuestionFormLst(questionFormLst);
+
+		if (survey.getSurveyPatternId() == CommonConstants.PARTTERN_SINGULAR) {
+			// 単数
+			mav.setViewName("surveySimulationForSingular");
+		} else if (survey.getSurveyPatternId() == CommonConstants.PARTTERN_COMPLEX_POINT
+				|| survey.getSurveyPatternId() == CommonConstants.PARTTERN_COMPLEX_TOTAL) {
+			// 複数
+			mav.setViewName("surveySimulationForComplex");
+		} else { // フロー
+			// 質問リンクコンテンツフォーム設定
+			simulationForm.setQuestionLinkLst(surveyQuestionLinkService.getSurveyQuestionLinkLst(contentId));
+			mav.addObject(LinkType.NEXT_QUESTION.name(), LinkType.NEXT_QUESTION);
+			mav.addObject(LinkType.SURVEY_RESULT.name(), LinkType.SURVEY_RESULT);
+
+			mav.setViewName("surveySimulationForFlow");
+		}
+
+		mav.addObject("surveySimulationForm", simulationForm);
+		return mav;
+	}
 	// 質問コンテンツフォーム変換
 	private void convertEntityToQuestionLstForm(List<SurveyQuestion> questionLst,
 			List<QuestionContentUpdateForm> questionFormLst) {
@@ -142,10 +178,8 @@ public class SurveySimulationController {
 			SurveySimulationForm surveySimulationForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
 
-		// セッションからユーザ情報取得
-		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
-		SurveyManagement survey = surveyContentService
-				.getSurveyContentByIdAndUserId(surveySimulationForm.getSurveyContent().getId(), user.getId());
+		// コンテンツ情報取得
+		SurveyManagement survey = surveyContentService.getSurveyContentById(surveySimulationForm.getSurveyContent().getId());
 		mav.addObject("survey", survey);
 
 		// 診断結果作成及び登録
@@ -160,10 +194,8 @@ public class SurveySimulationController {
 	public ModelAndView surveySimulationForComplexResult(HttpServletRequest request, HttpSession session,
 			SurveySimulationForm surveySimulationForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		// セッションからユーザ情報取得
-		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
-		SurveyManagement survey = surveyContentService
-				.getSurveyContentByIdAndUserId(surveySimulationForm.getSurveyContent().getId(), user.getId());
+		// コンテンツ情報取得
+		SurveyManagement survey = surveyContentService.getSurveyContentById(surveySimulationForm.getSurveyContent().getId());
 		mav.addObject("survey", survey);
 
 		// 診断結果作成及び登録
@@ -180,9 +212,8 @@ public class SurveySimulationController {
 			@RequestParam(value = "linkTo", required = true) Integer linkTo) throws Exception {
 		ModelAndView mav = new ModelAndView();
 
-		// セッションからユーザ情報取得
-		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
-		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
+		// コンテンツ情報取得
+		SurveyManagement survey = surveyContentService.getSurveyContentById(contentId);
 		mav.addObject("survey", survey);
 
 		// 診断結果作成及び登録

@@ -1,4 +1,5 @@
 $(function(){
+	const rootPath = window.location.protocol + '//' + window.location.host;
 	var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
 	var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
 	  return new bootstrap.Popover(popoverTriggerEl)
@@ -97,6 +98,26 @@ $(function(){
 		window.open($('#simulationURL').val());
 		$("#simulationConfirmDialog").modal('hide');
 	});
+	
+	// 診断URLコピーボタン押下
+	$('.surveyURLCopyBtn').on('click', function(e) {
+		e.preventDefault();
+		var url = $(this).attr('href');
+		$('#surveyExecuteURL').val(rootPath + url); 
+		$("#surveyURLCopyConfirmDialog").modal("show");
+	});
+	
+	$('#surveyURLCopyConfirmDialogSubmit').on('click', function() {
+		$("#surveyExecuteURL").select();
+		if (document.execCommand('copy')) {
+		    document.execCommand('copy');
+		    alert("クリップボードにコピーしました。");
+		}else{
+			alert("コピー失敗しました。");
+		}
+		$("#surveyURLCopyConfirmDialog").modal('hide');
+	});
+	
 	
 	// ========================================================
 	// テーブルソート初期化（ディフォルト：第一列以外、全項目ソート）

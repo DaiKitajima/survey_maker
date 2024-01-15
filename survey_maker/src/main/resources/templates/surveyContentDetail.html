@@ -22,11 +22,11 @@
 				<div class="col-4" th:if="${#lists.size(surveyContentDetailForm.categoryLst)>0 && #lists.size(surveyContentDetailForm.questionFormLst)>0 }">
 					<div class="d-flex justify-content-end" th:if="${surveyContentDetailForm.surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW && #lists.size(surveyContentDetailForm.questionLinkLst)>0}">
 						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-5 simulationBtn" target="_blank">診断シミュレーション</a>
-						<a th:href="@{/surveyContentDetail/surveyScriptCreate?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success" target="_blank">埋め込みコード生成</a>
+						<a th:href="@{/api/surveyExecute?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success surveyURLCopyBtn" target="_blank">診断URLコピー </a>
 					</div>
 					<div class="d-flex justify-content-end" th:unless="${surveyContentDetailForm.surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
 						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-5 simulationBtn" target="_blank">診断シミュレーション</a>
-						<a th:href="@{/surveyContentDetail/surveyScriptCreate?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success" target="_blank">埋め込みコード生成</a>
+						<a th:href="@{/api/surveyExecute?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success surveyURLCopyBtn" target="_blank">診断URLコピー </a>
 					</div>
 				</div>
 
@@ -310,7 +310,7 @@
 					<div id="tabpanel2" class="card shadow-lg tab-pane">
 						<!-- 質問コンテンツ -->
 						<div class="card shadow-lg mb-2">
-							<div class="card-body" style="overflow-x: auto; width:90%;">
+							<div class="card-body">
 								<div class="row">
 									<div class="col-2">
 										<span class="h6">診断質問一覧</span>
@@ -343,7 +343,7 @@
 								</div>
 
 								<!-- 質問コンテンツ一覧 -->
-								<div id="questionContent" class="collapse child-nav show">
+								<div id="questionContent" class="collapse child-nav show"  style="overflow-x: auto; overflow-y: auto; width:95%;height:600px;">
 									<table class="table table-bordered table-hover mt-2 mb-4" id="questionContentTable" data-use-row-attr-func="true" data-reorderable-rows="true">
 										<thead class="table-secondary">
 											<tr>
@@ -392,28 +392,63 @@
 													</ul>
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
-													<div th:each="answer,stat1:${question.answerContentLst}">
-														<span class="h6" th:text="|回答${stat1.count}|"></span>
-														<span class="text-danger simuCk" th:if="*{#lists.size(categoryLst) == 0}"><br>※軸を登録してください。</span>
-														<ul>
-															<li th:each="category:*{categoryLst}">
-																<th:block th:if="${!#lists.isEmpty(answer.answerPointLst)}">
-																	<th:block th:if="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
-																		<span th:text="|${category.surveyCategoryName}：${answer.answerPointLst.^[categoryId==__${category.id}__].point}|"></span>
+													<!-- <div class="row">
+														<div class="col-3" th:each="answer,stat1:${question.answerContentLst}">
+															<span class="h6" th:text="|回答${stat1.count}|"></span>
+															<span class="text-danger simuCk" th:if="*{#lists.size(categoryLst) == 0}"><br>※軸を登録してください。</span>
+															<ul>
+																<li th:each="category:*{categoryLst}">
+																	<th:block th:if="${!#lists.isEmpty(answer.answerPointLst)}">
+																		<th:block th:if="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																			<span th:text="|${category.surveyCategoryName}：${answer.answerPointLst.^[categoryId==__${category.id}__].point}|"></span>
+																		</th:block>
+																		<th:block th:unless="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																			<span class="text-danger simuCk" th:text="|${category.surveyCategoryName}：-|"></span>
+																		</th:block>
 																	</th:block>
-																	<th:block th:unless="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																	<th:block th:if="${#lists.isEmpty(answer.answerPointLst)}">
 																		<span class="text-danger simuCk" th:text="|${category.surveyCategoryName}：-|"></span>
 																	</th:block>
-																</th:block>
-																<th:block th:if="${#lists.isEmpty(answer.answerPointLst)}">
-																	<span class="text-danger simuCk" th:text="|${category.surveyCategoryName}：-|"></span>
-																</th:block>
-															</li>
-														</ul>
-													</div>
+																</li>
+															</ul>
+														</div>
+													</div> -->
+													<!-- 長さを縮小するようにポイント採点内容をテーブル形式に収まる。 -->
+													<table>
+														<thead>
+														<tr>
+															<th th:each="answer,stat1:${question.answerContentLst}">
+																<span class="h6" th:text="|回答${stat1.count}|"></span>
+																<span class="text-danger simuCk" th:if="*{#lists.size(categoryLst) == 0}"><br>※軸を登録してください。</span>
+															</th>
+														</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td th:each="answer,stat1:${question.answerContentLst}">
+																	<ul>
+																		<li th:each="category:*{categoryLst}">
+																			<th:block th:if="${!#lists.isEmpty(answer.answerPointLst)}">
+																				<th:block th:if="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																					<span th:text="|${category.surveyCategoryName}：${answer.answerPointLst.^[categoryId==__${category.id}__].point}|"></span>
+																				</th:block>
+																				<th:block th:unless="${answer.answerPointLst.^[categoryId==__${category.id}__]}">
+																					<span class="text-danger simuCk" th:text="|${category.surveyCategoryName}：-|"></span>
+																				</th:block>
+																			</th:block>
+																			<th:block th:if="${#lists.isEmpty(answer.answerPointLst)}">
+																				<span class="text-danger simuCk" th:text="|${category.surveyCategoryName}：-|"></span>
+																			</th:block>
+																		</li>
+																	</ul>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;" th:if="*{surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
-													<div th:each="answer,stat1:${question.answerContentLst}">
+<!-- 													<div th:each="answer,stat1:${question.answerContentLst}">
 														<span class="h6" th:text="|回答${stat1.count}|"></span>
 														<ul>
 															<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}" th:with="answerLinkType=*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType},answerLinkTo=*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkTo}">
@@ -449,7 +484,58 @@
 																<li><span class="text-danger simuCk">リンク先：-</span></li>
 															</th:block>
 														</ul>
-													</div>
+													</div> -->
+													<!-- 長さを縮小するようにリンク内容をテーブル形式に収まる。 -->
+													<table>
+														<thead>
+														<tr>
+															<th th:each="answer,stat1:${question.answerContentLst}">
+																<span class="h6" th:text="|回答${stat1.count}|"></span>
+															</th>
+														</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td th:each="answer,stat1:${question.answerContentLst}">
+																	<ul>
+																		<th:block th:if="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}" th:with="answerLinkType=*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkType},answerLinkTo=*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__].linkTo}">
+																			<li>
+																				<span th:text="|リンク種別：${linkTypeLst.^[key == __${answerLinkType}__].value}|"></span>
+																			</li>
+																			<li>
+																				<th:block th:if="${NEXT_QUESTION.code == answerLinkType }">
+																					<th:block th:if="*{questionFormLst.^[id == __${answerLinkTo}__]}">
+																						<span th:text="|リンク先：${questionHead}*{questionFormLst.^[id == __${answerLinkTo}__].questionOrderNo}|"></span>
+																					</th:block>
+																					<th:block th:unless="*{questionFormLst.^[id == __${answerLinkTo}__]}">
+																						<span class="text-danger simuCk">リンク先：-</span>
+																					</th:block>
+																				</th:block>
+																				<th:block th:if="${SURVEY_RESULT.code == answerLinkType }">
+																					<th:block th:if="*{#lists.size(categoryLst)>0}">
+																						<th:block th:if="*{categoryLst[0].categoryContentLst.^[id == __${answerLinkTo}__]}">
+																							<span th:text="|リンク先：診断結果[*{categoryLst[0].categoryContentLst.^[id == __${answerLinkTo}__].surveyResult}]|"></span>
+																						</th:block>
+																						<th:block th:unless="*{categoryLst[0].categoryContentLst.^[id == __${answerLinkTo}__]}">
+																							<span class="text-danger simuCk">リンク先：-</span>
+																						</th:block>
+																					</th:block>
+																					<th:block th:unless="*{#lists.size(categoryLst)>0}">
+																						<span class="text-danger simuCk">リンク先：-</span>
+																					</th:block>
+																				</th:block>
+																			</li>
+																		</th:block>
+																		<th:block th:unless="*{questionLinkLst.^[questionId==__${question.id}__ && answerId== __${answer.answerId}__]}">
+																			<li><span class="text-danger simuCk">リンク種別：-</span></li>
+																			<li><span class="text-danger simuCk">リンク先：-</span></li>
+																		</th:block>
+																	</ul>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;">
 													<a th:onclick="|showimage('contentQuestionImg__${stat.index}__')|" class="btn btn-default btn-xs active">
@@ -470,5 +556,7 @@
 		<th:block th:replace="showImgModal.html" />
 		<th:block th:replace="dataDeleteConfirmDialog.html" />
 		<th:block th:replace="simulationConfirmDialog.html" />
+		<th:block th:replace="surveyURLCopyConfirmDialog.html" />
+		
 	</body>
 </html>

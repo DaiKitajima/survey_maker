@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<div class="modal fade" id="surveyURLCopyConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="surveyURLCopyConfirmDialogTitle" aria-hidden="false">
+	    <div class="modal-dialog modal-dialog-centered" role="document">
+	        <div class="modal-content">
+	        	<div class="modal-header border-0" style="background-color:#56b9b3;">
+					<h6 class="modal-title" id="surveyURLCopyConfirmDialogTitle" style="color:#ffffff;">診断URLコピー確認</h6>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+	            <div class="modal-body">
+					<div class="row mb-2">
+						<div class="col">
+							<div class="input-group">
+								<div class="input-group-text">
+									<strong>診断URL:</strong>
+								</div>
+								<input id="surveyExecuteURL" class="form-control" readonly/>
+							</div>
+						</div>
+					</div>
+					<span class="sm text-danger fubi_msg"><br>※URLを設置する前に診断シミュレーションで内容を確認してください。</span>
+	            </div>
+
+	            <div class="modal-footer justify-content-center border-0">
+	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+	                <button type="button" class="btn btn-primary" style="width:100px;" id="surveyURLCopyConfirmDialogSubmit">URLコピー</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</html>
