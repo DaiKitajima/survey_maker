@@ -371,7 +371,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="question,stat: *{questionFormLst}">
+											<tr class="questionContentDetail" th:each="question,stat: *{questionFormLst}">
 												<td class="align-middle" th:onclick="|getElementById('recordData${question.id}').click();|">
 													<input type="checkbox" class="checkboxesStyle ml-2 checkItems" th:id="recordData__${question.id}__" th:value="${question.id}" onclick="this.click()">
 												</td>

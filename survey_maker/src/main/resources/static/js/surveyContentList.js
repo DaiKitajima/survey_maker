@@ -160,7 +160,7 @@ $(function(){
 	$("#questionOrderUpdateForm").on('submit', function(e) {
 		e.preventDefault();
 		var orderArray = [];
-		$("table#questionContentTable tbody tr").each(function(index){
+		$("table#questionContentTable tbody tr.questionContentDetail").each(function(index){
 			var questionId = -1;
 			$(this).find(".checkItems").each(function(){
 				questionId = $(this).prop("value");
