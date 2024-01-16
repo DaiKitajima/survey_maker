@@ -99,10 +99,11 @@ public class SurveySimulationController {
 	// 診断コンテンツを外部に公開
 	@GetMapping("/api/surveyExecute")
 	public ModelAndView surveyExecute(HttpServletRequest request, HttpSession session,
-			@RequestParam(value = "contentId", required = true) Integer contentId) throws Exception {
+			@RequestParam(value = "contentId", required = true) Integer contentId,
+			@RequestParam(value = "userId", required = true) Integer userId) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		// コンテンツ情報取得
-		SurveyManagement survey = surveyContentService.getSurveyContentById(contentId);
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId,userId);
 		mav.addObject("survey", survey);
 
 		SurveySimulationForm simulationForm = new SurveySimulationForm();
