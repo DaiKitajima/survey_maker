@@ -173,7 +173,7 @@ public class SurveySimulationController {
 		questionContentUpdateForm.setAnswerContentLst(answerContentLst);
 	}
 
-	@PostMapping("/surveyContentDetail/surveySimulationForSingular/result")
+	@PostMapping("/api/surveySimulationForSingular/result")
 	public ModelAndView surveySimulationForSingularResult(HttpServletRequest request, HttpSession session,
 			SurveySimulationForm surveySimulationForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -190,7 +190,7 @@ public class SurveySimulationController {
 		return mav;
 	}
 
-	@PostMapping("/surveyContentDetail/surveySimulationForComplex/result")
+	@PostMapping("/api/surveySimulationForComplex/result")
 	public ModelAndView surveySimulationForComplexResult(HttpServletRequest request, HttpSession session,
 			SurveySimulationForm surveySimulationForm) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -206,7 +206,7 @@ public class SurveySimulationController {
 		return mav;
 	}
 
-	@GetMapping("/surveyContentDetail/surveySimulationForFlow/result")
+	@GetMapping("/api/surveySimulationForFlow/result")
 	public ModelAndView surveySimulationForFlowResult(HttpServletRequest request, HttpSession session,
 			@RequestParam(value = "contentId", required = true) Integer contentId,
 			@RequestParam(value = "linkTo", required = true) Integer linkTo) throws Exception {
@@ -223,4 +223,5 @@ public class SurveySimulationController {
 		mav.setViewName("redirect:/api/surveyResult?key=" + result.getSurveyKey());
 		return mav;
 	}
+	
 }

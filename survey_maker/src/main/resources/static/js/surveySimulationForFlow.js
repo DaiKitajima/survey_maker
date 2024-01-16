@@ -1,7 +1,7 @@
 $(function(){
 	const rootPath = window.location.protocol + '//' + window.location.host;
-	const toNextQestion = "/internalApi/getSurveyQuestionContent";
-	const toResult = "/surveyContentDetail/surveySimulationForFlow/result";
+	const toNextQestion = "/api/getSurveyQuestionContent";
+	const toResult = "/api/surveySimulationForFlow/result";
 	
 	/* スクリプトコピーボタン押下*/
 	$("#resultUrl").val( rootPath + $("#resultUrl").val() );

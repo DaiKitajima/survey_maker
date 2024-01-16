@@ -22,7 +22,7 @@
 
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
-					<form action="/surveyContentDetail/surveySimulationForComplex/result" method="post" id="submitFormId">
+					<form action="/api/surveySimulationForComplex/result" method="post" id="submitFormId">
 						<input type="hidden" th:field="*{surveyContent.id}">
 						<input type="hidden" th:field="*{surveyContent.userId}">
 						<input type="hidden" th:value="*{#lists.size(questionFormLst)}" id="questionCnt">
