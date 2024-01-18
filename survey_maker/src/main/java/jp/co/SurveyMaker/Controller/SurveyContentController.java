@@ -82,7 +82,7 @@ public class SurveyContentController {
 	}
 	
 	private void convertSurveyContentFormToEnt(SurveyContentUpdateForm surveyContentUpdateForm,
-			SurveyManagement surveyContent) {
+			SurveyManagement surveyContent) throws Exception{
 		surveyContent.setId(surveyContentUpdateForm.getId());
 		surveyContent.setUserId(surveyContentUpdateForm.getUserId());
 		surveyContent.setSurveyColor(surveyContentUpdateForm.getSurveyColor());
@@ -90,7 +90,7 @@ public class SurveyContentController {
 		if(surveyContentUpdateForm.getSurveyImgFile() != null && StringUtil.isNotEmpty(surveyContentUpdateForm.getSurveyImgFile().getOriginalFilename()) ) {
 			String uploadFileName = surveyContentUpdateForm.getSurveyImgFile().getOriginalFilename();
 			String externalKey = uploadFileName.substring(uploadFileName.lastIndexOf("."));
-			surveyContent.setSurveyImage(surveyContentUpdateForm.getSurveyName() + externalKey);
+			surveyContent.setSurveyImage(FileUtil.forbiddenCharacterReplace(surveyContentUpdateForm.getSurveyName() + externalKey));
 		}else {
 			surveyContent.setSurveyImage(surveyContentUpdateForm.getSurveyImage());
 		}

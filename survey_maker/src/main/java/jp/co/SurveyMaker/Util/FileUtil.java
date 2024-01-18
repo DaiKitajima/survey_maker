@@ -192,7 +192,7 @@ public class FileUtil {
 		if(StringUtil.isNotEmpty(uploadFile.getOriginalFilename())) {
 			String fileName = uploadFile.getOriginalFilename();
 			String externalKey = fileName.substring(fileName.lastIndexOf("."));
-			targetFileName = targetFileName + externalKey;
+			targetFileName = FileUtil.forbiddenCharacterReplace(targetFileName + externalKey);
 			
 			File fileSaveDir = new File(targetDirStr);
 

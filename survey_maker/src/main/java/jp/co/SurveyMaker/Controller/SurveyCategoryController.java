@@ -141,7 +141,7 @@ public class SurveyCategoryController {
 		if(surveyCategoryUpdateForm.getSurveySummaryImageAboveFile() != null && StringUtil.isNotEmpty(surveyCategoryUpdateForm.getSurveySummaryImageAboveFile().getOriginalFilename()) ) {
 			String uploadFileName = surveyCategoryUpdateForm.getSurveySummaryImageAboveFile().getOriginalFilename();
 			String externalKey = uploadFileName.substring(uploadFileName.lastIndexOf("."));
-			category.setSurveySummaryImageAbove(surveyCategoryUpdateForm.getSurveySummaryTitleAbove() + externalKey);
+			category.setSurveySummaryImageAbove(FileUtil.forbiddenCharacterReplace(surveyCategoryUpdateForm.getSurveySummaryTitleAbove() + externalKey));
 		}else {
 			category.setSurveySummaryImageAbove(surveyCategoryUpdateForm.getSurveySummaryImageAbove());
 		}
@@ -149,7 +149,7 @@ public class SurveyCategoryController {
 		if(surveyCategoryUpdateForm.getSurveySummaryImageBelowFile() != null && StringUtil.isNotEmpty(surveyCategoryUpdateForm.getSurveySummaryImageBelowFile().getOriginalFilename()) ) {
 			String uploadFileName = surveyCategoryUpdateForm.getSurveySummaryImageBelowFile().getOriginalFilename();
 			String externalKey = uploadFileName.substring(uploadFileName.lastIndexOf("."));
-			category.setSurveySummaryImageBelow(surveyCategoryUpdateForm.getSurveySummaryTitleBelow() + externalKey);
+			category.setSurveySummaryImageBelow(FileUtil.forbiddenCharacterReplace(surveyCategoryUpdateForm.getSurveySummaryTitleBelow() + externalKey));
 		}else {
 			category.setSurveySummaryImageBelow(surveyCategoryUpdateForm.getSurveySummaryImageBelow());
 		}
@@ -192,7 +192,7 @@ public class SurveyCategoryController {
 				if(content.getSurveyResultImageFile() != null && StringUtil.isNotEmpty(content.getSurveyResultImageFile().getOriginalFilename()) ) {
 					String uploadFileName = content.getSurveyResultImageFile().getOriginalFilename();
 					String externalKey = uploadFileName.substring(uploadFileName.lastIndexOf("."));
-					contentDto.setSurveyResultImage(content.getSurveyResult() + externalKey);
+					contentDto.setSurveyResultImage(FileUtil.forbiddenCharacterReplace(content.getSurveyResult() + externalKey));
 				}else {
 					contentDto.setSurveyResultImage(content.getSurveyResultImage()!= null ? content.getSurveyResultImage() : "");
 				}
