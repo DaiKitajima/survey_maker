@@ -96,6 +96,7 @@ $(function(){
 			return true;
 		},
 		onLinkCreate: function(linkId,linkData){
+			if(linkId.toString().indexOf("link_") > -1 ) return true;
 			linkData["contentId"] = $("#contentId").val();
 			$.ajax({
 			  async: true,
@@ -110,7 +111,6 @@ $(function(){
 			  complete: completeCallback
 			})
 			function successCallback(newLinkId) {
-				if(linkId.toString().indexOf("link_") > -1 ) return;
 				if(newLinkId == -1){
 					alert('既存のリンクを削除してから、再度リンクを新規作成してください。※１回答は１質問に繋げます。');
 					$("[data-link_id=" + linkId + "]").parent().remove();
@@ -127,13 +127,14 @@ $(function(){
 							// 内部システム上に新規データのID追加
 							delete linkData.contentId;
 							$flowchart.flowchart('createLink', createId, linkData);
-							// 自動生成されたID情報削除
-							var data = $flowchart.flowchart('getData');
-							delete data.links[linkId];
-							$flowchart.flowchart('setData', data);
 						}
 					});
 				}
+				
+				// 自動生成されたID情報削除
+				var data = $flowchart.flowchart('getData');
+				delete data.links[linkId];
+				$flowchart.flowchart('setData', data);
 			}
 			function errorCallback(xhr, status){
 			    console.log('error: ' + status);
