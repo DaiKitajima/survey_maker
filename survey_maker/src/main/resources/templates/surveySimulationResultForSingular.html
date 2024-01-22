@@ -67,7 +67,7 @@
 										</div>
 										<div class="row mb-2">
 											<div class="col">
-												<span th:text="*{surveySummaryDetail}"></span>
+												<span th:utext="*{surveySummaryDetail}"></span>
 											</div>
 										</div>
 									</div>
@@ -93,7 +93,7 @@
 									<h6>結果詳細:</h6>
 								</div>
 								<div class="col d-flex justify-content-start">
-									<span th:text="${categoryResult.categoryResultDetail}"></span>
+									<span th:utext="${categoryResult.categoryResultDetail}"></span>
 								</div>
 							</div>
 						</div>
