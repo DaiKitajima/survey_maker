@@ -89,11 +89,20 @@ public class SurveyContentListController {
 
 		// 検索条件設定
 		SurveyManagement condition = new SurveyManagement();
-		condition.setUserId(user.getId());
-		condition.setSurveyName(null);
-		condition.setSurveyPatternId(null);
+		if(	session.getAttribute("contentSearchCondition") == null ) {
+			condition.setUserId(user.getId());
+			condition.setSurveyName(null);
+			condition.setSurveyPatternId(null);
+		}else {
+			condition = (SurveyManagement) session.getAttribute("contentSearchCondition");
+		}
 
 		SurveyContentListForm surveyContentListForm = new SurveyContentListForm();
+		// 診断名
+		surveyContentListForm.setSurveyNameForSearch(condition.getSurveyName());
+		// パターンID
+		surveyContentListForm.setSurveyPatternIdForSearch(condition.getSurveyPatternId());
+		// 検索結果
 		List<SurveyContentUpdateForm> surveyContentList = new ArrayList<SurveyContentUpdateForm>();
 		this.convertEntityToForm(surveyContentList, surveyContentListService.surveyContentSearch(condition));
 		surveyContentListForm.setSurveyContentList(surveyContentList) ;
@@ -151,15 +160,8 @@ public class SurveyContentListController {
 		condition.setSurveyName(surveyContentListForm.getSurveyNameForSearch());
 		condition.setSurveyPatternId(surveyContentListForm.getSurveyPatternIdForSearch());
 
-		List<SurveyContentUpdateForm> surveyContentList = new ArrayList<SurveyContentUpdateForm>();
-		this.convertEntityToForm(surveyContentList, surveyContentListService.surveyContentSearch(condition));
-		surveyContentListForm.setSurveyContentList(surveyContentList) ;
-
-		List<SurveyPattern> patterns = surveyPatternService.getAllPattern();
-		mav.addObject("patternLst", patterns);
-
-		mav.addObject("surveyContentListForm", surveyContentListForm);
-		mav.setViewName("surveyContentList");
+		session.setAttribute("contentSearchCondition", condition);
+		mav.setViewName("redirect:/surveyContentList");
 		return mav;
 	}
 
