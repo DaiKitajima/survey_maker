@@ -78,7 +78,7 @@ $(function(){
 		$('.remind-msg').text(''); 
 		var url = $(this).attr('href');
 		$('#deleteDataURL').val(url); 
-		$('.remind-msg').text('※診断軸を削除しますと、質問のポイント採点/リンクの更新が必要になります。且つ、実施済みの診断結果にこの軸の結果が取得できなくなります。'); 
+		$('.remind-msg').text('※診断軸を削除しますと、質問のポイント採点/リンクの更新が必要になります。また、診断済みの診断結果データも削除されます。'); 
 		
 		$("#dataDeleteConfirmDialog").modal("show");
 	});
