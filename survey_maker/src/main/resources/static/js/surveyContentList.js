@@ -27,7 +27,21 @@ $(function(){
 			$('#checkAll').prop('checked', false);
 	    }
 	});
+	
+	// 検索条件クリアボタン押下
+	$('.searchConditionClear').on('click', function(e) {
+		e.preventDefault();
+		$('#surveyNameForSearch').val("");
+		$('#surveyPatternIdForSearch').val(-1);
+	});
 
+	// コンテンツ検索押下
+	$('.searchConditionExec').on('click', function() {
+		// ボタン非活性にする
+		$(this).prop("disabled",true);
+		$('#submitFormIdForSearch').submit();
+	});
+	
 	// データ削除確認
 	$("[id^='contentDelBtn']").on('click', function(e) {
 		e.preventDefault();
