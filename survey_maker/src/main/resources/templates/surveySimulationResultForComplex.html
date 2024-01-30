@@ -81,7 +81,9 @@
 							th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 							<div class="col-2 d-flex justify-content-end">
 								<div>
-									<h6 class="bg-success text-light" th:text="${categoryResult.categoryName}" >身体の調査</h6>
+									<u th:style="|color:${categoryResult.categoryColor};|">
+										<h6 class="text-dark" th:text="${categoryResult.categoryName}">身体の調査</h6>
+									</u>
 								</div>
 							</div>
 							<div class="col-10 d-flex justify-content-start">
@@ -120,7 +122,10 @@
 						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && __${categoryResult.categoryId}__ == __*{topCategoryId}__ }" >
 							<div class="col-2 d-flex justify-content-end">
 								<div>
-									<h6 class="bg-success text-light" th:text="${categoryResult.categoryName}" >身体の調査</h6>
+									<u th:style="|color:${categoryResult.categoryColor};|">
+										<h6 class="text-dark" th:text="${categoryResult.categoryName}">身体の調査</h6>
+									</u>
+									
 								</div>
 							</div>
 							<div class="col-10 d-flex justify-content-start">
