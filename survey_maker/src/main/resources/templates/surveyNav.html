@@ -1,16 +1,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
+		<!-- コンテンツヘッダ画像 -->
+		<div class="row mb-1">
+			<div class="col-1"></div>
+			<div class="col d-flex justify-content-center">
+				<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" height="80" width="100%" th:alt="${survey.surveyHeaderImage}" class="img-responsive img-thumbnail" style="border: none;">
+			</div>
+			<div class="col-1"></div>
+		</div>
 		<!-- ナビ START -->
 		<nav class="navbar navbar-expand-lg navbar-dark nav-fill bg-info mb-2 pt-0 pb-0" >
-			<div class="container-fluid" th:style="|background-color:${survey.surveyColor}|">
-				<a class="navbar-brand ms-3 me-5">
+			<div class="container-fluid d-flex justify-content-center" th:style="|background-color:${survey.surveyColor}|">
+				<div class="navbar-brand ms-3 me-5">
 					<span class="h5" th:text="${survey.surveyName}">高齢者健康調査</span>
-				</a>
-
-				<div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
-					<div class="">
-					</div>
 				</div>
-
+<!-- 				<div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
+					<div class="">
+						
+					</div>
+				</div> -->
 			</div>
 		</nav>
 		<!-- ナビ END -->

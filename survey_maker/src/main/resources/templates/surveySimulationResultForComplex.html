@@ -9,26 +9,28 @@
 	</head>
 
 	<body style="background: #EEEEEE;">
-		<!-- 共通ナビヘッダー -->
-		<th:block th:replace="surveyNav.html" />
+
 
 		<div class="container-fluid mb-5">
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
+					<!-- 共通ナビヘッダー -->
+					<th:block th:replace="surveyNav.html" />
+					
 					<th:block th:object="${surveyResultForm}" >
 						<input type="hidden" th:field="*{id}">
 						
-						<div class="row mb-2">
+						<div class="row mt-4 mb-2">
 							<div class="col d-flex justify-content-center">
-								<h5>診断結果</h5><br>
+								<h5>＜診断結果＞</h5><br>
 							</div>
 						</div>
 
-						<div class="row mb-5" th:if="*{survey.surveyImageBase64}">
+<!-- 						<div class="row mb-5" th:if="*{survey.surveyImageBase64}">
 							<div class="col d-flex justify-content-center">
 								<img id="contentImg" th:src="*{survey.surveyImageBase64}" height="200" width="250" th:alt="*{survey.surveyImage}" class="img-thumbnail">
 							</div>
-						</div>
+						</div> -->
 
 						<!-- 総合評価 -->
 						<div th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">

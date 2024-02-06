@@ -32,6 +32,13 @@
 								<span class="h6 text-danger">※コンテンツパターン変更不可</span>
 							</div>
 							<div class="col-4 mt-2 mb-2">
+								<span class="h6">誘導URL</span>
+								<input th:field="*{surveyInduceUrl}" class="form-control" maxlength="250" required />
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ画像</span>
 								<div class="input-group mb-3 previewContentImg">
 									<input th:field="*{surveyImage}"  class="form-control" th:value="高齢者健康調査.jpg" readonly />
@@ -47,9 +54,32 @@
 									</div>
 								</div>
 							</div>
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツヘッダ画像</span>
+								<div class="input-group mb-3 previewHeaderImg">
+									<input th:field="*{surveyHeaderImage}"  class="form-control" th:value="高齢者健康調査.jpg" readonly />
+									<div class="input-group-append">
+										<button class="btn btn-primary" type="button" id="previewHeaderImg" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='__*{surveyHeaderImageBase64}__' height='150' width='200'>|" >プレビュー</button> 
+										<button class="btn btn-danger" type="button" id="changeHeaderImg">変更</button>  
+									</div>
+								</div>
+								<div class="input-group mb-3 fileChangeHeaderImg" style="display:none;">
+									<input class="form-control" type="file" th:field="*{surveyHeaderImgFile}" accept=".jpg,.jpeg,.png,.gif" disabled>
+									<div class="input-group-append">  
+										<button class="btn btn-primary" type="button" id="modoruHeaderImg">戻る</button>  
+									</div>
+								</div>
+							</div>
 							<div class="col-2 mt-2 mb-2">
 								<span class="h6">コンテンツカラー</span>
 								<input type="color" th:field="*{surveyColor}" class="form-control form-control-color" value="#198754" required/>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-10 mt-2 mb-2">
+								<span class="h6">コンテンツ説明</span>
+								<textarea class="form-control" rows="3" th:field="*{surveyDescription}" required></textarea>
 							</div>
 						</div>
 						

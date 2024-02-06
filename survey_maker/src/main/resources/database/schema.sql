@@ -34,6 +34,8 @@ create table IF NOT EXISTS `survey_management` (
 `survey_image` varchar(256) COMMENT 'コンテンツ画像',
 `survey_color` varchar(256) COMMENT 'コンテンツカラー',
 `survey_pattern_id` int COMMENT 'パターンID',
+`survey_content_header_image` varchar(256) COMMENT 'コンテンツ画像ヘッダ',
+`survey_content_description` text COMMENT 'コンテンツ説明',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='診断コンテンツ管理テーブル';

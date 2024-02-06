@@ -11,17 +11,17 @@
 	</head>
 
 	<body style="background: #EEEEEE;" th:object="${surveySimulationForm}">
-		<!-- 共通ナビヘッダー -->
-		<th:block th:replace="surveyNav.html" />
-
 		<div class="container-fluid mb-5">
-			<!-- 進捗欄 -->
-			<div class="ymtr--progress-bar mb-2" th:with="progressWidth=*{100/#lists.size(questionFormLst)}">
-				<div class="ymtr--progress-bar__item" th:style="|background-color: *{surveyContent.surveyColor} !important;width:${progressWidth}%;|" th:each="question,stat:*{questionFormLst}" th:id="${stat.index}" th:classappend="${stat.first?'--current':''}">　　</div>
-			</div>
-
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
+					<!-- 共通ナビヘッダー -->
+					<th:block th:replace="surveyNav.html" />
+				
+					<!-- 進捗欄 -->
+					<div class="ymtr--progress-bar mb-2" th:with="progressWidth=*{100/#lists.size(questionFormLst)}">
+						<div class="ymtr--progress-bar__item" th:style="|background-color: *{surveyContent.surveyColor} !important;width:${progressWidth}%;|" th:each="question,stat:*{questionFormLst}" th:id="${stat.index}" th:classappend="${stat.first?'--current':''}">　　</div>
+					</div>
+					
 					<form action="/api/surveySimulationForSingular/result" method="post" id="submitFormId">
 						<input type="hidden" th:field="*{surveyContent.id}">
 						<input type="hidden" th:field="*{surveyContent.userId}">
@@ -31,11 +31,23 @@
 							<div class="row mt-5 mb-3">
 								<div class="col d-flex justify-content-center">
 									<input type="hidden" th:name="answerResultLst[__${stat.index}__].questionId" th:value="${question.id}">
-									<span th:text="|質問__${question.questionOrderNo}__、__${question.questionTitle}__|"></span><br>
+									<div>
+										<span class="h2" th:text="|Q__${question.questionOrderNo}__|"></span><br>
+										<p class="text-muted h3" th:text="${question.questionTitle}"></p>
+										<img th:id="questionImg__${stat.index}__" th:src="${question.questionImageBase64}" height="100" width="100%" th:alt="${question.questionImage}" class="pull-left img-thumbnail border-0">
+										<div class="mt-4" th:classappend="answerContent__${stat.index}__">
+											<div class="mb-1 form-check bg-light text-dark border pt-1 pb-1" style="padding-left:2.0rem;" th:each="answer,stat1:${question.answerContentLst}">
+												<input class="mr-5 form-check-input" type="radio" th:name="answerResultLst[__${stat.index}__].answerId" th:id="|answerResultId__${stat.index + '_' + stat1.index}__|" th:value="${answer.answerId}">
+												<label class="form-check-label h6" th:for="|answerResultId__${stat.index + '_' + stat1.index}__|">
+													[[${answer.answer}]]
+												</label>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 	
-							<div class="row mb-5">
+<!-- 							<div class="row mb-5">
 								<div class="col d-flex justify-content-center">
 									<img th:id="questionImg__${stat.index}__" th:src="${question.questionImageBase64}" height="200" width="300" th:alt="${question.questionImage}" class="img-thumbnail">
 								</div>
@@ -47,12 +59,12 @@
 										<div class="form-check" th:each="answer,stat1:${question.answerContentLst}">
 										  <input class="form-check-input" type="radio" th:name="answerResultLst[__${stat.index}__].answerId" th:id="|answerResultId__${stat.index + '_' + stat1.index}__|" th:value="${answer.answerId}">
 										  <label class="form-check-label" th:for="|answerResultId__${stat.index + '_' + stat1.index}__|">
-										    [[${answer.answer}]]
+										    ${answer.answer}
 										  </label>
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 						</div>
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">

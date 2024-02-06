@@ -61,15 +61,33 @@
 									<span th:text="${pattern.surveyPatternName}">単数</span>
 								</th:block>
 							</div>
-							<div class="col-4">
+							<div class="col-3">
 								<span class="h6">コンテンツ画像</span><br>
 								<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyImageBase64}">
 									<img id="contentImg" th:src="*{surveyContent.surveyImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyImage}" class="img-thumbnail">
 								</a>
 							</div>
+							<div class="col-3">
+								<span class="h6">コンテンツヘッダ画像</span><br>
+								<a onclick="showimage('headerImg')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyHeaderImageBase64}">
+									<img id="headerImg" th:src="*{surveyContent.surveyHeaderImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyHeaderImage}" class="img-thumbnail">
+								</a>
+							</div>
 							<div class="col-2">
 								<span class="h6">コンテンツカラー</span>
 								<input type="color" name="surveyColor" class="form-control form-control-color" th:value="*{surveyContent.surveyColor}" disabled/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-10">
+								<span class="h6">誘導URL</span>
+								<input class="form-control" th:field="*{surveyContent.surveyInduceUrl}" disabled></input>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-10">
+								<span class="h6">コンテンツ説明</span>
+								<textarea class="form-control" rows="3" th:field="*{surveyContent.surveyDescription}" disabled></textarea>
 							</div>
 						</div>
 					</div>

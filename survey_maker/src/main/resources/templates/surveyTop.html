@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- 共通Topインクルード -->
+		<th:block th:replace="commonTop.html" />
+
+		<script th:src="@{/js/surveySimulation.js}"></script>
+		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
+	</head>
+
+	<body style="background: #EEEEEE;">
+		<div class="container-fluid mb-5">
+			<div class="card shadow-lg mb-2">
+				<div class="card-body">
+
+					<div class="row mb-1">
+						<div class="col-1">
+						</div>
+						<div class="col d-flex justify-content-center">
+							<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" height="80" width="100%" th:alt="${survey.surveyHeaderImage}" class="img-responsive img-thumbnail" style="border: none;">
+						</div>
+						<div class="col-1">
+						</div>
+					</div>
+					<div class="row mb-5">
+						<div class="col-1">
+						</div>
+						<div class="col d-flex justify-content-center">
+							<img id="contentImg" th:src="${survey.surveyImageBase64}" height="500" width="100%" th:alt="${survey.surveyImage}" class="img-responsive img-thumbnail" style="border: none;">
+						</div>
+						<div class="col-1">
+						</div>
+					</div>
+					<div class="row mt-2 mb-5">
+						<div class="col-1">
+						</div>
+						<div class="col d-flex justify-content-start">
+							<span th:utext="${survey.surveyDescription}" class="display-6 text-muted"></span>
+						</div>
+						<div class="col-1">
+						</div>
+					</div>
+					<div class="row mt-4 mb-5">
+						<div class="col d-flex justify-content-center">
+							<a th:href="@{/api/surveyExecute?contentId=__${survey.id}__&userId=__${survey.userId}__}" class="btn btn-warning btn-lg text-light" style="width:300px;border-radius: 40px;" ><h2>　診断スタート　▶</h2></a>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			
+		</div>
+
+	</body>
+</html>

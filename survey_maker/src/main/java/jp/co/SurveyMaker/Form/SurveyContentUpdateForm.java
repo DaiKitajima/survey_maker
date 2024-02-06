@@ -23,6 +23,17 @@ public class SurveyContentUpdateForm {
 	// base64の画像表示
 	private String surveyImageBase64;
 	
+	private MultipartFile surveyHeaderImgFile;
+	
+	private String surveyHeaderImage;
+	
+	// base64の画像表示
+	private String surveyHeaderImageBase64;
+	
+	private String surveyDescription;
+	
+	private String surveyInduceUrl;
+	
 	private String surveyColor;
 	
 	private Integer surveyPatternId;

@@ -25,6 +25,7 @@ import jp.co.SurveyMaker.Constants.CommonConstants;
 import jp.co.SurveyMaker.Constants.LinkType;
 import jp.co.SurveyMaker.Dto.AnswerContentDto;
 import jp.co.SurveyMaker.Form.QuestionContentUpdateForm;
+import jp.co.SurveyMaker.Form.SurveyContentUpdateForm;
 import jp.co.SurveyMaker.Form.SurveySimulationForm;
 import jp.co.SurveyMaker.Service.SurveyCategoryService;
 import jp.co.SurveyMaker.Service.SurveyContentService;
@@ -66,7 +67,9 @@ public class SurveySimulationController {
 		// セッションからユーザ情報取得
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
 		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId, user.getId());
-		mav.addObject("survey", survey);
+		 SurveyContentUpdateForm surveyContentUpdateForm = new SurveyContentUpdateForm();
+		this.convertSurveyContentEntityToForm(survey, surveyContentUpdateForm);
+		mav.addObject("survey", surveyContentUpdateForm);
 
 		SurveySimulationForm simulationForm = new SurveySimulationForm();
 		simulationForm.setSurveyContent(survey);
@@ -96,6 +99,22 @@ public class SurveySimulationController {
 		return mav;
 	}
 	
+	// フロントTop画面
+	@GetMapping("/api/top")
+	public ModelAndView surveyTop(HttpServletRequest request, HttpSession session,
+			@RequestParam(value = "contentId", required = true) Integer contentId,
+			@RequestParam(value = "userId", required = true) Integer userId) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		// コンテンツ情報取得
+		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId,userId);
+		SurveyContentUpdateForm surveyContentUpdateForm = new SurveyContentUpdateForm();
+		this.convertSurveyContentEntityToForm(survey, surveyContentUpdateForm);
+		mav.addObject("survey", surveyContentUpdateForm);
+		
+		mav.setViewName("surveyTop");
+		return mav;
+	}
+	
 	// 診断コンテンツを外部に公開
 	@GetMapping("/api/surveyExecute")
 	public ModelAndView surveyExecute(HttpServletRequest request, HttpSession session,
@@ -104,7 +123,9 @@ public class SurveySimulationController {
 		ModelAndView mav = new ModelAndView();
 		// コンテンツ情報取得
 		SurveyManagement survey = surveyContentService.getSurveyContentByIdAndUserId(contentId,userId);
-		mav.addObject("survey", survey);
+		SurveyContentUpdateForm surveyContentUpdateForm = new SurveyContentUpdateForm();
+		this.convertSurveyContentEntityToForm(survey, surveyContentUpdateForm);
+		mav.addObject("survey", surveyContentUpdateForm);
 
 		SurveySimulationForm simulationForm = new SurveySimulationForm();
 		simulationForm.setSurveyContent(survey);
@@ -225,4 +246,39 @@ public class SurveySimulationController {
 		return mav;
 	}
 	
+	// 診断コンテンツをフォームに詰める
+	private void convertSurveyContentEntityToForm(SurveyManagement surveyContent,
+			SurveyContentUpdateForm surveyContentUpdateForm) {
+		surveyContentUpdateForm.setId(surveyContent.getId());
+		surveyContentUpdateForm.setUserId(surveyContent.getUserId());
+		surveyContentUpdateForm.setSurveyColor(surveyContent.getSurveyColor());
+
+		try {
+			String imgFileName = surveyContent.getSurveyImage();
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContent.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+					+ Base64.getEncoder().encodeToString(imgByte);
+			surveyContentUpdateForm.setSurveyImageBase64(encodedImage);
+		} catch (IOException e) {
+			log.error("コンテンツ画像ファイル取得にエラーが発生しました。",e);
+		}
+		
+		try {
+			String imgFileName = surveyContent.getSurveyHeaderImage();
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContent.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+					+ Base64.getEncoder().encodeToString(imgByte);
+			surveyContentUpdateForm.setSurveyHeaderImageBase64(encodedImage);
+		} catch (IOException e) {
+			log.error("コンテンツヘッダ画像ファイル取得にエラーが発生しました。",e);
+		}
+		surveyContentUpdateForm.setSurveyHeaderImage(surveyContent.getSurveyHeaderImage());
+		surveyContentUpdateForm.setSurveyImage(surveyContent.getSurveyImage());
+		surveyContentUpdateForm.setSurveyDescription(surveyContent.getSurveyDescription());
+		surveyContentUpdateForm.setSurveyInduceUrl(surveyContent.getSurveyInduceUrl());
+		surveyContentUpdateForm.setSurveyName(surveyContent.getSurveyName());
+		surveyContentUpdateForm.setSurveyPatternId(surveyContent.getSurveyPatternId());
+	}
 }

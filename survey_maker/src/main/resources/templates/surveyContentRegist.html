@@ -25,11 +25,11 @@
 						<input type="hidden" th:field="*{userId}">
 
 						<div class="row">
-							<div class="col-3 mt-2 mb-2">
+							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ名</span>
 								<input th:field="*{surveyName}" class="form-control" maxlength="50" required />
 							</div>
-							<div class="col-3 mt-2 mb-2">
+							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツパターン</span>
 								<select class="form-control" th:field="*{surveyPatternId}" required>
 									<option value="">未選択</option>
@@ -37,12 +37,28 @@
 								</select>
 							</div>
 							<div class="col-4 mt-2 mb-2">
+								<span class="h6">誘導URL</span>
+								<input th:field="*{surveyInduceUrl}" class="form-control" maxlength="250" required />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ画像</span>
 								<input class="form-control" type="file" th:field="*{surveyImgFile}" accept=".jpg,.jpeg,.png,.gif">
+							</div>
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツヘッダ画像</span>
+								<input class="form-control" type="file" th:field="*{surveyHeaderImgFile}" accept=".jpg,.jpeg,.png,.gif">
 							</div>
 							<div class="col-2 mt-2 mb-2">
 								<span class="h6">コンテンツカラー</span>
 								<input type="color" th:name="surveyColor" class="form-control form-control-color" value="#ff0000" required/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-10 mt-2 mb-2">
+								<span class="h6">コンテンツ説明</span>
+								<textarea class="form-control" rows="3" th:field="*{surveyDescription}" required></textarea>
 							</div>
 						</div>
 						

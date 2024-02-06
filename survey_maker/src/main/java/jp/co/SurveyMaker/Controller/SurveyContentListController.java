@@ -134,7 +134,21 @@ public class SurveyContentListController {
 					log.error("コンテンツ画像ファイル取得にエラーが発生しました。",e);
 				}
 
+				try {
+					String imgFileName = content.getSurveyHeaderImage();
+					String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + content.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+					byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+					String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64,"
+							+ Base64.getEncoder().encodeToString(imgByte);
+					form.setSurveyHeaderImageBase64(encodedImage);
+				} catch (IOException e) {
+					log.error("コンテンツヘッダ画像ファイル取得にエラーが発生しました。",e);
+				}
+				
 				form.setSurveyImage(content.getSurveyImage());
+				form.setSurveyHeaderImage(content.getSurveyHeaderImage());
+				form.setSurveyDescription(content.getSurveyDescription());
+				form.setSurveyInduceUrl(content.getSurveyInduceUrl());
 				form.setSurveyName(content.getSurveyName());
 				form.setSurveyPatternId(content.getSurveyPatternId());
 
@@ -382,7 +396,22 @@ public class SurveyContentListController {
 		} catch (IOException e) {
 			log.error("コンテンツ画像ファイル取得にエラーが発生しました。",e);
 		}
+		
+		try {
+			String imgFileName = surveyContent.getSurveyHeaderImage();
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContent.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64,"
+					+ Base64.getEncoder().encodeToString(imgByte);
+			surveyContentUpdateForm.setSurveyHeaderImageBase64(encodedImage);
+		} catch (IOException e) {
+			log.error("コンテンツヘッダ画像ファイル取得にエラーが発生しました。",e);
+		}
+		
 		surveyContentUpdateForm.setSurveyImage(surveyContent.getSurveyImage());
+		surveyContentUpdateForm.setSurveyHeaderImage(surveyContent.getSurveyHeaderImage());
+		surveyContentUpdateForm.setSurveyDescription(surveyContent.getSurveyDescription());
+		surveyContentUpdateForm.setSurveyInduceUrl(surveyContent.getSurveyInduceUrl());
 		surveyContentUpdateForm.setSurveyName(surveyContent.getSurveyName());
 		surveyContentUpdateForm.setSurveyPatternId(surveyContent.getSurveyPatternId());
 	}

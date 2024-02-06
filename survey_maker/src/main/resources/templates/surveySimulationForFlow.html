@@ -9,12 +9,12 @@
 	</head>
 
 	<body style="background: #EEEEEE;">
-		<!-- 共通ナビヘッダー -->
-		<th:block th:replace="surveyNav.html" />
-
 		<div class="container-fluid mb-5">
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
+					<!-- 共通ナビヘッダー -->
+					<th:block th:replace="surveyNav.html" />
+					
 					<th:block th:object="${surveySimulationForm}">
 						<input type="hidden" th:field="*{surveyContent.id}">
 						<input type="hidden" th:field="*{surveyContent.userId}">
@@ -24,13 +24,13 @@
 						<div th:each="question,stat:*{questionFormLst}" th:if="${stat.first}">
 							<div class="row mt-5 mb-3">
 								<div class="col d-flex justify-content-center">
-									<span id="questionContent" th:text="|質問__${question.questionOrderNo}__、__${question.questionTitle}__|"></span><br>
+									<span id="questionContent" th:text="|Q__${question.questionOrderNo}__、__${question.questionTitle}__|"></span><br>
 								</div>
 							</div>
 	
 							<div class="row mb-5">
 								<div class="col d-flex justify-content-center">
-									<img id="questionImg" th:src="${question.questionImageBase64}" height="200" width="300" th:alt="${question.questionImage}" class="img-thumbnail">
+									<img id="questionImg" th:src="${question.questionImageBase64}" height="200" width="300" th:alt="${question.questionImage}" class="img-thumbnail border-0">
 								</div>
 							</div>
 	
