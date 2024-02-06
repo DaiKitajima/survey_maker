@@ -137,6 +137,8 @@ public class SurveyCategoryController {
 		category.setSurveySummaryDetailAbove(surveyCategoryUpdateForm.getSurveySummaryDetailAbove());
 		category.setSurveySummaryTitleBelow(surveyCategoryUpdateForm.getSurveySummaryTitleBelow());
 		category.setSurveySummaryDetailBelow(surveyCategoryUpdateForm.getSurveySummaryDetailBelow());
+		category.setSurveySummaryInduceAbove(surveyCategoryUpdateForm.getSurveySummaryInduceAbove());
+		category.setSurveySummaryInduceBelow(surveyCategoryUpdateForm.getSurveySummaryInduceBelow());
 		// 総合評価画像(Above)
 		if(surveyCategoryUpdateForm.getSurveySummaryImageAboveFile() != null && StringUtil.isNotEmpty(surveyCategoryUpdateForm.getSurveySummaryImageAboveFile().getOriginalFilename()) ) {
 			String uploadFileName = surveyCategoryUpdateForm.getSurveySummaryImageAboveFile().getOriginalFilename();
@@ -242,9 +244,11 @@ public class SurveyCategoryController {
 			surveyCategoryUpdateForm.setSurveySummaryTitleAbove(category.getSurveySummaryTitleAbove());
 			surveyCategoryUpdateForm.setSurveySummaryDetailAbove(category.getSurveySummaryDetailAbove());
 			surveyCategoryUpdateForm.setSurveySummaryImageAbove(category.getSurveySummaryImageAbove());
+			surveyCategoryUpdateForm.setSurveySummaryInduceAbove(category.getSurveySummaryInduceAbove());
 			surveyCategoryUpdateForm.setSurveySummaryTitleBelow(category.getSurveySummaryTitleBelow());
 			surveyCategoryUpdateForm.setSurveySummaryDetailBelow(category.getSurveySummaryDetailBelow());
 			surveyCategoryUpdateForm.setSurveySummaryImageBelow(category.getSurveySummaryImageBelow());
+			surveyCategoryUpdateForm.setSurveySummaryInduceBelow(category.getSurveySummaryInduceBelow());
 			// 総合評価画像(Above)
 			try {
 				String imgFileName = category.getSurveySummaryImageAbove();

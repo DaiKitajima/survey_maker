@@ -34,6 +34,10 @@ create table IF NOT EXISTS `survey_management` (
 `survey_image` varchar(256) COMMENT 'コンテンツ画像',
 `survey_color` varchar(256) COMMENT 'コンテンツカラー',
 `survey_pattern_id` int COMMENT 'パターンID',
+`survey_content_header_image` varchar(256) COMMENT 'コンテンツ画像ヘッダ',
+`survey_content_description` text COMMENT 'コンテンツ説明',
+`survey_induce_area` text COMMENT '誘導エリア',
+`summary_display_flg` tinyint(1) COMMENT '軸評価表示フラグ',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='診断コンテンツ管理テーブル';
@@ -47,9 +51,11 @@ create table IF NOT EXISTS `survey_category` (
 `survey_summary_title_above` varchar(256) COMMENT '総合評価タイトル（判定点数以上）',
 `survey_summary_image_above` varchar(256) COMMENT '総合評価画像（判定点数以上）',
 `survey_summary_detail_above` text COMMENT '総合評価詳細（判定点数以上）',
+`survey_summary_induce_above` text COMMENT '総合評価誘導エリア（判定点数以上）',
 `survey_summary_title_below` varchar(256) COMMENT '総合評価タイトル（判定点数以下）',
 `survey_summary_image_below` varchar(256) COMMENT '総合評価画像（判定点数以下）',
 `survey_summary_detail_below` text COMMENT '総合評価詳細（判定点数以下）',
+`survey_summary_induce_below` text COMMENT '総合評価誘導エリア（判定点数以下）',
 `survey_category_content` json COMMENT '診断軸コンテンツ',
 `survey_category_position` json COMMENT 'フローチャート軸位置',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',

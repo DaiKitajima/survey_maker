@@ -83,6 +83,8 @@ public class CommonConstants {
 	public static final String SAVA_IMG_PATH_SUMMARY_BELOW = "summary_result_below";
 	/** 質問順番使用 */
 	public static final String ORDER_NO_QUESTION = "Question";
+	/** コンテンツヘッダ画像保存時、名前使用 */
+	public static final String SAVA_IMG_HEADER_NAME = "_HEADER";
 	
 	//==========================================================
 	// 診断軸パターン種別

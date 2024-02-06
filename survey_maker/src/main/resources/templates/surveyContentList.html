@@ -5,7 +5,7 @@
 		<th:block th:replace="commonTop.html" />
 
 		<!-- オリジナルJS start -->
-		<script th:src="@{/js/surveyContentList.js?params=202401301549}"></script>
+		<script th:src="@{/js/surveyContentList.js?params=202402071738}"></script>
 		<!-- オリジナルJS end -->
 
 		<title>コンテンツ一覧画面</title>
@@ -77,8 +77,17 @@
 										<th class="align-middle" style="white-space: nowrap;">
 											パターン
 										</th>
+										<th class="align-middle">
+											誘導エリア
+										</th>
+										<th class="align-middle">
+											コンテンツ説明
+										</th>
 										<th class="align-middle" style="white-space: nowrap;">
 											コンテンツ画像
+										</th>
+										<th class="align-middle" style="white-space: nowrap;">
+											コンテンツヘッダ画像
 										</th>
 										<th class="align-middle" style="white-space: nowrap;">
 											コンテンツカラー
@@ -103,9 +112,20 @@
 												<span th:if="${pattern.id == survey.surveyPatternId}" th:text="${pattern.surveyPatternName}"></span>
 											</th:block>
 										</td>
+										<td class="align-middle text-left" >
+											<span class="dd" style="width: 200px;" th:text="${survey.surveyInduceArea}"></span>
+										</td>
+										<td class="align-middle text-left" >
+											<span class="dd" style="width: 200px;" th:text="${survey.surveyDescription}"></span>
+										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
 											<a th:onclick="|showimage('contentImg${stat.index}')|" class="btn btn-default btn-xs active" th:if="${survey.surveyImageBase64}">
 												<img th:id="contentImg__${stat.index}__" th:src="${survey.surveyImageBase64}" height="40" width="50" th:alt="${survey.surveyImage}" class="img-thumbnail">
+											</a>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
+											<a th:onclick="|showimage('headerImg${stat.index}')|" class="btn btn-default btn-xs active" th:if="${survey.surveyHeaderImageBase64}">
+												<img th:id="headerImg__${stat.index}__" th:src="${survey.surveyHeaderImageBase64}" height="40" width="50" th:alt="${survey.surveyHeaderImage}" class="img-thumbnail">
 											</a>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">

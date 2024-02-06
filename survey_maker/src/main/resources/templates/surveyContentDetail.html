@@ -4,7 +4,7 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveyContentList.js?params=202401301549}"></script>
+		<script th:src="@{/js/surveyContentList.js?params=202402071738}"></script>
 
 		<title>診断コンテンツ詳細画面</title>
 	</head>
@@ -16,17 +16,17 @@
 		<div class="container-fluid mb-5">
 			<!-- タイトル -->
 			<div class="row mt-3 mb-2">
-				<div class="col-8">
+				<div class="col-7">
 					<span class="h5" th:text="|「${surveyContentDetailForm.surveyContent.surveyName}」コンテンツ詳細|"> 「高齢者健康調査」コンテンツ詳細</span>
 				</div>
-				<div class="col-4" th:if="${#lists.size(surveyContentDetailForm.categoryLst)>0 && #lists.size(surveyContentDetailForm.questionFormLst)>0 }">
+				<div class="col-5" th:if="${#lists.size(surveyContentDetailForm.categoryLst)>0 && #lists.size(surveyContentDetailForm.questionFormLst)>0 }">
 					<div class="d-flex justify-content-end" th:if="${surveyContentDetailForm.surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW && #lists.size(surveyContentDetailForm.questionLinkLst)>0}">
-						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-5 simulationBtn" target="_blank">診断シミュレーション</a>
-						<a th:href="@{/api/surveyExecute?contentId=__${surveyContentDetailForm.contentId}__&userId=__${surveyContentDetailForm.surveyContent.userId}__}" class="btn btn-sm btn-success surveyURLCopyBtn" target="_blank">診断URLコピー </a>
+						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-4 simulationBtn" target="_blank">診断シミュレーション</a>
+						<a th:href="@{/api/surveyExecute?contentId=__${surveyContentDetailForm.contentId}__&userId=__${surveyContentDetailForm.surveyContent.userId}__}" class="btn btn-sm btn-success me-4 surveyURLCopyBtn" target="_blank">診断URLコピー </a>
 					</div>
 					<div class="d-flex justify-content-end" th:unless="${surveyContentDetailForm.surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW}">
-						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-5 simulationBtn" target="_blank">診断シミュレーション</a>
-						<a th:href="@{/api/surveyExecute?contentId=__${surveyContentDetailForm.contentId}__&userId=__${surveyContentDetailForm.surveyContent.userId}__}" class="btn btn-sm btn-success surveyURLCopyBtn" target="_blank">診断URLコピー </a>
+						<a th:href="@{/surveyContentDetail/surveySimulation?contentId=__${surveyContentDetailForm.contentId}__}" class="btn btn-sm btn-success me-4 simulationBtn" target="_blank">診断シミュレーション</a>
+						<a th:href="@{/api/surveyExecute?contentId=__${surveyContentDetailForm.contentId}__&userId=__${surveyContentDetailForm.surveyContent.userId}__}" class="btn btn-sm btn-success me-4 surveyURLCopyBtn" target="_blank">診断URLコピー </a>
 					</div>
 				</div>
 
@@ -61,15 +61,33 @@
 									<span th:text="${pattern.surveyPatternName}">単数</span>
 								</th:block>
 							</div>
-							<div class="col-4">
+							<div class="col-3">
 								<span class="h6">コンテンツ画像</span><br>
 								<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyImageBase64}">
 									<img id="contentImg" th:src="*{surveyContent.surveyImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyImage}" class="img-thumbnail">
 								</a>
 							</div>
+							<div class="col-3">
+								<span class="h6">コンテンツヘッダ画像</span><br>
+								<a onclick="showimage('headerImg')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyHeaderImageBase64}">
+									<img id="headerImg" th:src="*{surveyContent.surveyHeaderImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyHeaderImage}" class="img-thumbnail">
+								</a>
+							</div>
 							<div class="col-2">
 								<span class="h6">コンテンツカラー</span>
 								<input type="color" name="surveyColor" class="form-control form-control-color" th:value="*{surveyContent.surveyColor}" disabled/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-10">
+								<span class="h6">誘導エリア</span>
+								<textarea class="form-control" rows="3" th:field="*{surveyContent.surveyInduceArea}" disabled></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-10">
+								<span class="h6">コンテンツ説明</span>
+								<textarea class="form-control" rows="3" th:field="*{surveyContent.surveyDescription}" disabled></textarea>
 							</div>
 						</div>
 					</div>
@@ -184,6 +202,18 @@
 															<div class="row">
 																<div class="col-3">
 																	<span class="h6">
+																		誘導エリア
+																	</span>
+																</div>
+																<div class="col-9">
+																	<span class="dd" th:text="${category.surveySummaryInduceAbove}">
+																		フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。 フレンドリーかつエネルギ・・・
+																	</span>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-3">
+																	<span class="h6">
 																		画像
 																	</span>
 																</div>
@@ -223,6 +253,18 @@
 																</div>
 																<div class="col-9">
 																	<span class="dd" th:text="${category.surveySummaryDetailBelow}">
+																		フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。 フレンドリーかつエネルギ・・・
+																	</span>
+																</div>
+															</div>
+															<div class="row">
+																<div class="col-3">
+																	<span class="h6">
+																		誘導エリア
+																	</span>
+																</div>
+																<div class="col-9">
+																	<span class="dd" th:text="${category.surveySummaryInduceBelow}">
 																		フレンドリーかつエネルギッシュに行動できる「愛され自由人型」です。 フレンドリーかつエネルギ・・・
 																	</span>
 																</div>
@@ -351,6 +393,9 @@
 													<input type="checkbox" class="checkboxesStyle ml-2" id="checkAll" name="checkAll" value="-1" onclick="this.click()">
 												</th>
 												<th class="align-middle" style="white-space: nowrap;">
+													プレビュー
+												</th>
+												<th class="align-middle" style="white-space: nowrap;">
 													編集
 												</th>
 												<th class="align-middle" style="white-space: nowrap;">
@@ -374,6 +419,11 @@
 											<tr class="questionContentDetail" th:each="question,stat: *{questionFormLst}">
 												<td class="align-middle" th:onclick="|getElementById('recordData${question.id}').click();|">
 													<input type="checkbox" class="checkboxesStyle ml-2 checkItems" th:id="recordData__${question.id}__" th:value="${question.id}" onclick="this.click()">
+												</td>
+												<td class="align-middle text-center" style="white-space: nowrap;">
+													<a th:href="@{/surveyContentDetail/questionPreView?contentId=__*{contentId}__&questionId=__${question.id}__}" target="_blank">
+														<span class="text-secondary h5"><i class="bi bi-file-earmark-text"></i></span>
+													</a>
 												</td>
 												<td class="align-middle text-center" style="white-space: nowrap;">
 													<a th:href="@{/surveyContentDetail/questionContentUpdate?questionId=__${question.id}__}">

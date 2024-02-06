@@ -66,13 +66,15 @@ public class SurveyResultController {
 		SurveyResult result = surveySimulationService.getSurveyResultByKey(key);
 		
 		SurveyManagement survey = surveyContentService.getSurveyContentById(result.getSurveyManagementId());
-		mav.addObject("survey", survey);
+		SurveyContentUpdateForm surveyContentUpdateForm = new SurveyContentUpdateForm();
+		this.convertSurveyContentEntityToForm(survey,surveyContentUpdateForm);
+		mav.addObject("survey", surveyContentUpdateForm);
 		
 		// 診断結果画面フォーム設定
 		SurveyResultForm surveyResultForm = new SurveyResultForm();
 		surveyResultForm.setId(result.getId());
 		surveyResultForm.setKey(result.getSurveyKey());
-		surveyResultForm.setSurvey(this.convertSurveyContentEntityToForm(survey));
+		surveyResultForm.setSurvey(surveyContentUpdateForm);
 		// 総合評価とカテゴリー別の評価結果設定
 		this.setSurveySummaryAndCategoryResult(surveyResultForm, result, survey.getSurveyPatternId());
 		
@@ -89,9 +91,9 @@ public class SurveyResultController {
 		return mav;
 	}
 	
-	// Survey Entityからフォームへ設定
-	private SurveyContentUpdateForm convertSurveyContentEntityToForm(SurveyManagement surveyContent) {
-		SurveyContentUpdateForm surveyContentUpdateForm = new SurveyContentUpdateForm();
+	// 診断コンテンツをフォームに詰める
+	private void convertSurveyContentEntityToForm(SurveyManagement surveyContent,
+			SurveyContentUpdateForm surveyContentUpdateForm) {
 		surveyContentUpdateForm.setId(surveyContent.getId());
 		surveyContentUpdateForm.setUserId(surveyContent.getUserId());
 		surveyContentUpdateForm.setSurveyColor(surveyContent.getSurveyColor());
@@ -107,10 +109,22 @@ public class SurveyResultController {
 			log.error("コンテンツ画像ファイル取得にエラーが発生しました。",e);
 		}
 		
+		try {
+			String imgFileName = surveyContent.getSurveyHeaderImage();
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContent.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+					+ Base64.getEncoder().encodeToString(imgByte);
+			surveyContentUpdateForm.setSurveyHeaderImageBase64(encodedImage);
+		} catch (IOException e) {
+			log.error("コンテンツヘッダ画像ファイル取得にエラーが発生しました。",e);
+		}
+		surveyContentUpdateForm.setSurveyHeaderImage(surveyContent.getSurveyHeaderImage());
 		surveyContentUpdateForm.setSurveyImage(surveyContent.getSurveyImage());
+		surveyContentUpdateForm.setSurveyDescription(surveyContent.getSurveyDescription());
+		surveyContentUpdateForm.setSurveyInduceArea(surveyContent.getSurveyInduceArea());
 		surveyContentUpdateForm.setSurveyName(surveyContent.getSurveyName());
 		surveyContentUpdateForm.setSurveyPatternId(surveyContent.getSurveyPatternId());
-		return surveyContentUpdateForm;
 	}
 	
 	// 総合評価とカテゴリー別の評価結果設定

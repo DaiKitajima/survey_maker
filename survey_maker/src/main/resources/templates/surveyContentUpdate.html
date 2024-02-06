@@ -4,7 +4,8 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveyContentList.js?params=202401301549}"></script>
+		<script th:src="@{/js/surveyContentList.js?params=202402071738}"></script>
+		<script th:src="@{/js/surveyTagCreate.js}"></script>
 		<title>診断コンテンツ編集画面</title>
 	</head>
 
@@ -31,6 +32,10 @@
 								<input th:field="*{surveyName}" class="form-control" th:value="高齢者健康調査" maxlength="50" required/>
 								<span class="h6 text-danger">※コンテンツパターン変更不可</span>
 							</div>
+
+						</div>
+						
+						<div class="row">
 							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ画像</span>
 								<div class="input-group mb-3 previewContentImg">
@@ -47,12 +52,59 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-2 mt-2 mb-2">
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツヘッダ画像</span>
+								<div class="input-group mb-3 previewHeaderImg">
+									<input th:field="*{surveyHeaderImage}"  class="form-control" th:value="高齢者健康調査.jpg" readonly />
+									<div class="input-group-append">
+										<button class="btn btn-primary" type="button" id="previewHeaderImg" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='__*{surveyHeaderImageBase64}__' height='150' width='200'>|" >プレビュー</button> 
+										<button class="btn btn-danger" type="button" id="changeHeaderImg">変更</button>  
+									</div>
+								</div>
+								<div class="input-group mb-3 fileChangeHeaderImg" style="display:none;">
+									<input class="form-control" type="file" th:field="*{surveyHeaderImgFile}" accept=".jpg,.jpeg,.png,.gif" disabled>
+									<div class="input-group-append">  
+										<button class="btn btn-primary" type="button" id="modoruHeaderImg">戻る</button>  
+									</div>
+								</div>
+							</div>
+							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツカラー</span>
-								<input type="color" th:field="*{surveyColor}" class="form-control form-control-color" value="#198754" required/>
+								<div class="row">
+									<div class="col-2">
+										<input type="color" th:field="*{surveyColor}" class="form-control form-control-color" value="#198754" required/>
+									</div>
+									<div class="col-4">
+										<input id="inputColorCode" class="form-control" th:value="*{surveyColor}" readonly/>
+									</div>
+								</div>
+								
 							</div>
 						</div>
 						
+						<div class="row">
+							<div class="col-10 mt-2 mb-2">
+								<div class="row">
+									<div class="col-4">
+										<span class="h6">誘導エリア</span>
+									</div>
+									<div class="col d-flex justify-content-end mb-1">
+										<a class="btn btn-sm btn-warning me-2" style="width:80px;" id="mainTitleTag">大見出し</a>
+										<a class="btn btn-sm btn-warning me-2" style="width:80px;" id="subTitleTag">小見出し</a>
+										<a class="btn btn-sm btn-warning me-1" style="width:150px;" id="induceBtnTag">誘導ボタンコピー</a>
+									</div>
+								</div>
+								<textarea th:field="*{surveyInduceArea}" class="form-control" rows="3"></textarea>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-10 mt-2 mb-2">
+								<span class="h6">コンテンツ説明</span>
+								<textarea class="form-control" rows="3" th:field="*{surveyDescription}" required></textarea>
+							</div>
+						</div>
+
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">
 								<button type="submit" class="btn btn-sm btn-primary me-5" data-target="submitFormId" style="width:150px;" id="surveyContentUpdateBtn">更新</button>
@@ -63,5 +115,9 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- ダイアログのインクルード -->
+		<th:block th:replace="surveyTagCreateDialog.html" />
+		
 	</body>
 </html>

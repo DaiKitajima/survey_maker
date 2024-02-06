@@ -117,7 +117,9 @@ $(function(){
 	$('.surveyURLCopyBtn').on('click', function(e) {
 		e.preventDefault();
 		var url = $(this).attr('href');
+		var param = url.substring(url.indexOf('?'));
 		$('#surveyExecuteURL').val(rootPath + url); 
+		$('#surveyExecuteTopURL').val(rootPath + '/api/top' + param); 
 		$("#surveyURLCopyConfirmDialog").modal("show");
 	});
 	
@@ -132,6 +134,16 @@ $(function(){
 		$("#surveyURLCopyConfirmDialog").modal('hide');
 	});
 	
+	$('#surveyTopURLCopyConfirmDialogSubmit').on('click', function() {
+		$("#surveyExecuteTopURL").select();
+		if (document.execCommand('copy')) {
+		    document.execCommand('copy');
+		    alert("クリップボードにコピーしました。");
+		}else{
+			alert("コピー失敗しました。");
+		}
+		$("#surveyURLCopyConfirmDialog").modal('hide');
+	});
 	
 	// ========================================================
 	// テーブルソート初期化（ディフォルト：第一列以外、全項目ソート）

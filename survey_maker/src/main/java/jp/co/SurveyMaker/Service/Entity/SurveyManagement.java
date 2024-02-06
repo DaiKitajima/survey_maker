@@ -38,6 +38,18 @@ public class SurveyManagement {
 	    @Column(name = "survey_pattern_id")
 	    private Integer surveyPatternId;
 	    
+	    @Column(name = "survey_header_image")
+	    private String surveyHeaderImage;
+	    
+	    @Column(name = "survey_description")
+	    private String surveyDescription;
+	    
+	    @Column(name = "survey_induce_area")
+	    private String surveyInduceArea;
+	    
+	    @Column(name = "summary_display_flg")
+	    private Integer summaryDisplayFlg;
+	    
 	    @Column(name = "delete_flg")
 	    private boolean deleteFlg;
 	

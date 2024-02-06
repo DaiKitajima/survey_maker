@@ -47,6 +47,9 @@ public class SurveyCategory {
 	    @Column(name = "survey_summary_detail_above")
 	    private String surveySummaryDetailAbove;
 	    
+	    @Column(name = "survey_summary_induce_above")
+	    private String surveySummaryInduceAbove;
+	    
 	    @Column(name = "survey_summary_title_below")
 	    private String surveySummaryTitleBelow;
 	    
@@ -55,6 +58,9 @@ public class SurveyCategory {
 	    
 	    @Column(name = "survey_summary_detail_below")
 	    private String surveySummaryDetailBelow;
+	    
+	    @Column(name = "survey_summary_induce_below")
+	    private String surveySummaryInduceBelow;
 	    
 	    @Column(name = "survey_category_position")
 	    private String surveyCategoryPosition;

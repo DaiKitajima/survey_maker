@@ -33,6 +33,10 @@ public class ManuallyImplementedSurveyManagementRepositoryImpl implements Manual
 		sql.append("    , survey_image                         ");    // コンテンツ画像 
 		sql.append("    , survey_color                         ");    // コンテンツカラー 
 		sql.append("    , survey_pattern_id                    ");    // パターンID 
+		sql.append("    , survey_header_image                    ");    // コンテンツヘッダ画像
+		sql.append("    , survey_description                    ");    // コンテンツ説明
+		sql.append("    , survey_induce_area                    ");    // 誘導エリア
+		sql.append("    , summary_display_flg                    ");    // 軸評価表示フラグ
 		sql.append("    , delete_flg                           ");    // 削除フラグ 
 		sql.append("FROM ");
 		sql.append("    survey_management ");

@@ -9,12 +9,13 @@
 	</head>
 
 	<body style="background: #EEEEEE;">
-		<!-- 共通ナビヘッダー -->
-		<th:block th:replace="surveyNav.html" />
 
 		<div class="container-fluid mb-5">
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
+					<!-- 共通ナビヘッダー -->
+					<th:block th:replace="surveyNav.html" />
+				
 					<th:block th:object="${surveyResultForm}" >
 						<input type="hidden" th:field="*{id}">
 						

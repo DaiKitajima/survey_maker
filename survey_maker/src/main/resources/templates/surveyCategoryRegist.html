@@ -5,6 +5,7 @@
 		<th:block th:replace="commonTop.html" />
 
 		<script th:src="@{/js/surveyContentDetail.js}"></script>
+		<script th:src="@{/js/surveyTagCreate.js}"></script>
 		<title>診断軸コンテンツ登録画面</title>
 	</head>
 
@@ -30,9 +31,16 @@
 								<span class="h6">診断軸名</span><br>
 								<input th:field="*{surveyCategoryName}" class="form-control" maxlength="100" required/>
 							</div>
-							<div class="col-2 mt-2 mb-2">
+							<div class="col-4 mt-2 mb-2">
 								<span class="h6">診断軸カラー</span><br>
-								<input type="color" th:name="surveyCategoryColor" class="form-control form-control-color" value="#ff0000" required/>
+								<div class="row">
+									<div class="col-2">
+										<input type="color" id="surveyColor" name="surveyCategoryColor" class="form-control form-control-color" value="#ff0000" required/>
+									</div>
+									<div class="col-4">
+										<input id="inputColorCode" class="form-control" th:value="*{surveyCategoryColor}" readonly/>
+									</div>
+								</div>
 							</div>
 						</div>
 						
@@ -71,6 +79,12 @@
 										<div class="row mb-1">
 											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailAbove}" required></textarea></div>
 										</div>
+										<div class="row">
+											<span class="small">総合評価誘導エリア</span>
+										</div>
+										<div class="row mb-1">
+											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryInduceAbove}">誘導ボタン</textarea></div>
+										</div>
 									</div>
 									<div class="col-6 mt-2 mb-2">
 										<span class="h6">判定点数以下の場合</span><br>
@@ -92,6 +106,13 @@
 										<div class="row mb-1">
 											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryDetailBelow}" required></textarea></div>
 										</div>
+										<div class="row">
+											<span class="small">総合評価誘導エリア</span>
+										</div>
+										<div class="row mb-1">
+											<div class="col"><textarea class="form-control" rows="3" th:field="*{surveySummaryInduceBelow}">誘導ボタン</textarea></div>
+										</div>
+
 									</div>
 								</div>
 							</div>
@@ -99,7 +120,14 @@
 						
 						<!-- カテゴリーコンテンツ -->
 						<div class="row">
-							<span class="h6">診断軸コンテンツ</span>
+							<div class="col-4">
+								<span class="h6">診断軸コンテンツ</span>
+							</div>
+							<div class="col-7 d-flex justify-content-end mb-1">
+								<a class="btn btn-sm btn-warning me-2" style="width:80px;" id="mainTitleTag">大見出し</a>
+								<a class="btn btn-sm btn-warning me-2" style="width:80px;" id="subTitleTag">小見出し</a>
+								<a class="btn btn-sm btn-warning me-1" style="width:150px;" id="induceBtnTag">誘導ボタンコピー</a>
+							</div>
 						</div>
 						<div class="categoryContent mb-2 ms-2 container" style="background-color:rgb(220,235,250);" >
 							<div class="row">
@@ -155,5 +183,8 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- ダイアログのインクルード -->
+		<th:block th:replace="surveyTagCreateDialog.html" />
 	</body>
 </html>

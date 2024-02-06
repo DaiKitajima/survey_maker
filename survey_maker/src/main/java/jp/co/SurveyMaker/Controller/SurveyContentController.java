@@ -72,9 +72,13 @@ public class SurveyContentController {
 		SurveyManagement surveyContent = new SurveyManagement ();
 		this.convertSurveyContentFormToEnt(surveyContentUpdateForm, surveyContent);
 		
+		// コンテンツ画像登録
 		Integer contentId = surveyContentService.surveyContentRegist(surveyContent);
 		String savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + contentId;
 		FileUtil.registTargetFile(savePath, surveyContentUpdateForm.getSurveyName(), surveyContentUpdateForm.getSurveyImgFile());
+		
+		// コンテンツヘッダ画像登録
+		FileUtil.registTargetFile(savePath, surveyContentUpdateForm.getSurveyName() + CommonConstants.SAVA_IMG_HEADER_NAME, surveyContentUpdateForm.getSurveyHeaderImgFile());
 		
 		mav.setViewName("redirect:/surveyContentList");
 		
@@ -86,7 +90,7 @@ public class SurveyContentController {
 		surveyContent.setId(surveyContentUpdateForm.getId());
 		surveyContent.setUserId(surveyContentUpdateForm.getUserId());
 		surveyContent.setSurveyColor(surveyContentUpdateForm.getSurveyColor());
-		// アップロードファイル名取得
+		// アップロードファイル名取得(コンテンツ画像)
 		if(surveyContentUpdateForm.getSurveyImgFile() != null && StringUtil.isNotEmpty(surveyContentUpdateForm.getSurveyImgFile().getOriginalFilename()) ) {
 			String uploadFileName = surveyContentUpdateForm.getSurveyImgFile().getOriginalFilename();
 			String externalKey = uploadFileName.substring(uploadFileName.lastIndexOf("."));
@@ -94,6 +98,17 @@ public class SurveyContentController {
 		}else {
 			surveyContent.setSurveyImage(surveyContentUpdateForm.getSurveyImage());
 		}
+		
+		// アップロードファイル名取得(コンテンツヘッダ画像)
+		if(surveyContentUpdateForm.getSurveyHeaderImgFile() != null && StringUtil.isNotEmpty(surveyContentUpdateForm.getSurveyHeaderImgFile().getOriginalFilename()) ) {
+			String uploadFileName = surveyContentUpdateForm.getSurveyHeaderImgFile().getOriginalFilename();
+			String externalKey = uploadFileName.substring(uploadFileName.lastIndexOf("."));
+			surveyContent.setSurveyHeaderImage(FileUtil.forbiddenCharacterReplace(surveyContentUpdateForm.getSurveyName() + CommonConstants.SAVA_IMG_HEADER_NAME + externalKey));
+		}else {
+			surveyContent.setSurveyHeaderImage(surveyContentUpdateForm.getSurveyHeaderImage());
+		}
+		surveyContent.setSurveyInduceArea(surveyContentUpdateForm.getSurveyInduceArea());
+		surveyContent.setSurveyDescription(surveyContentUpdateForm.getSurveyDescription());
 		surveyContent.setSurveyName(surveyContentUpdateForm.getSurveyName());
 		surveyContent.setSurveyPatternId(surveyContentUpdateForm.getSurveyPatternId());
 		}
@@ -135,7 +150,20 @@ public class SurveyContentController {
 			log.error("コンテンツ画像ファイル取得にエラーが発生しました。",e);
 		}
 		
+		try {
+			String imgFileName = surveyContent.getSurveyHeaderImage();
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContent.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+					+ Base64.getEncoder().encodeToString(imgByte);
+			surveyContentUpdateForm.setSurveyHeaderImageBase64(encodedImage);
+		} catch (IOException e) {
+			log.error("コンテンツヘッダ画像ファイル取得にエラーが発生しました。",e);
+		}
+		surveyContentUpdateForm.setSurveyHeaderImage(surveyContent.getSurveyHeaderImage());
 		surveyContentUpdateForm.setSurveyImage(surveyContent.getSurveyImage());
+		surveyContentUpdateForm.setSurveyDescription(surveyContent.getSurveyDescription());
+		surveyContentUpdateForm.setSurveyInduceArea(surveyContent.getSurveyInduceArea());
 		surveyContentUpdateForm.setSurveyName(surveyContent.getSurveyName());
 		surveyContentUpdateForm.setSurveyPatternId(surveyContent.getSurveyPatternId());
 	}
@@ -154,6 +182,11 @@ public class SurveyContentController {
 		if(surveyContentUpdateForm.getSurveyImgFile() != null ) {
 			String savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContentUpdateForm.getId();
 			FileUtil.registTargetFile(savePath, surveyContentUpdateForm.getSurveyName(), surveyContentUpdateForm.getSurveyImgFile());
+		}
+		
+		if(surveyContentUpdateForm.getSurveyHeaderImgFile() != null ) {
+			String savePath = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContentUpdateForm.getId();
+			FileUtil.registTargetFile(savePath, surveyContentUpdateForm.getSurveyName() +CommonConstants.SAVA_IMG_HEADER_NAME , surveyContentUpdateForm.getSurveyHeaderImgFile());
 		}
 		
 		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + surveyContentUpdateForm.getId() );

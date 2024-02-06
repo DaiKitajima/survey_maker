@@ -34,6 +34,8 @@ public class SurveyCategoryUpdateForm {
     
     private String surveySummaryDetailAbove;
     
+    private String surveySummaryInduceAbove;
+    
     private String surveySummaryTitleBelow;
     
     private String surveySummaryImageBelow;
@@ -43,6 +45,8 @@ public class SurveyCategoryUpdateForm {
     private MultipartFile surveySummaryImageBelowFile;
     
     private String surveySummaryDetailBelow;
+    
+    private String surveySummaryInduceBelow;
     
     private String surveyCategoryContent;
     

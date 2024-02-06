@@ -17,12 +17,12 @@
 					<!-- 共通ナビヘッダー -->
 					<th:block th:replace="surveyNav.html" />
 				
-					<!-- 進捗欄 -->
-					<div class="ymtr--progress-bar mb-2" th:with="progressWidth=*{100/#lists.size(questionFormLst)}">
-						<div class="ymtr--progress-bar__item" th:style="|background-color: *{surveyContent.surveyColor} !important;width:${progressWidth}%;|" th:each="question,stat:*{questionFormLst}" th:id="${stat.index}" th:classappend="${stat.first?'--current':''}">　　</div>
+					<!-- 進捗欄(固定20問あり) -->
+					<div class="ymtr--progress-bar mb-2" th:with="progressWidth=5">
+						<div class="ymtr--progress-bar__item" th:style="|background-color: *{surveyContent.surveyColor} !important;width:${progressWidth}%;|" th:each="num,stat:${#numbers.sequence(1,20)}" th:id="${stat.index}" th:classappend="${stat.first?'--current':''}">　　</div>
 					</div>
 					
-					<form action="/api/surveySimulationForSingular/result" method="post" id="submitFormId">
+					<div  id="formContent">
 						<input type="hidden" th:field="*{surveyContent.id}">
 						<input type="hidden" th:field="*{surveyContent.userId}">
 						<input type="hidden" th:value="*{#lists.size(questionFormLst)}" id="questionCnt">
@@ -68,10 +68,10 @@
 						</div>
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">
-								<button class="btn btn-sm btn-success" style="width:150px;" id="nextQuestion">次へ</button>
+								<button class="btn btn-sm btn-success" style="width:150px;" id="nextQuestion" disabled>次へ</button>
 							</div>
 						</div>
-					</form>
+					</div>
 				</div>
 			</div>
 			

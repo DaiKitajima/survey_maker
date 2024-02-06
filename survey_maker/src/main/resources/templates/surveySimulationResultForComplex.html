@@ -9,26 +9,28 @@
 	</head>
 
 	<body style="background: #EEEEEE;">
-		<!-- 共通ナビヘッダー -->
-		<th:block th:replace="surveyNav.html" />
+
 
 		<div class="container-fluid mb-5">
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
+					<!-- 共通ナビヘッダー -->
+					<th:block th:replace="surveyNav.html" />
+					
 					<th:block th:object="${surveyResultForm}" >
 						<input type="hidden" th:field="*{id}">
 						
-						<div class="row mb-2">
+						<div class="row mt-4 mb-2">
 							<div class="col d-flex justify-content-center">
-								<h5>診断結果</h5><br>
+								<h5>＜診断結果＞</h5><br>
 							</div>
 						</div>
 
-						<div class="row mb-5" th:if="*{survey.surveyImageBase64}">
+<!-- 						<div class="row mb-5" th:if="*{survey.surveyImageBase64}">
 							<div class="col d-flex justify-content-center">
 								<img id="contentImg" th:src="*{survey.surveyImageBase64}" height="200" width="250" th:alt="*{survey.surveyImage}" class="img-thumbnail">
 							</div>
-						</div>
+						</div> -->
 
 						<!-- 総合評価 -->
 						<div th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">
@@ -120,31 +122,28 @@
 						
 						<!-- 複数（結果加算型） -->
 						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && __${categoryResult.categoryId}__ == __*{topCategoryId}__ }" >
-							<div class="col-2 d-flex justify-content-end">
-								<div>
-									<u th:style="|color:${categoryResult.categoryColor};|">
-										<h6 class="text-dark" th:text="${categoryResult.categoryName}">身体の調査</h6>
-									</u>
-									
-								</div>
-							</div>
-							<div class="col-10 d-flex justify-content-start">
+							<div class="col d-flex justify-content-center">
 								<div class="categoryResult" >
 									<div class="row mb-2">
-										<div class="col">
+										<div class="col d-flex justify-content-center">
 											<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" height="200" width="250" alt="診断軸評価画像" class="img-thumbnail">
 										</div>
 									</div>
-									<div class="row mb-2">
+<!-- 									<div class="row mb-2">
 										<div class="col">
 											<h6>評価結果:</h6>
 											<span th:text="${categoryResult.categoryResultTitle}"></span>
 										</div>
+									</div> -->
+									<!-- 結果詳細 -->
+									<div class="row mb-2">
+										<div class="col summaryCont" th:utext="${categoryResult.categoryResultDetail}">
+											
+										</div>
 									</div>
 									<div class="row mb-2">
-										<div class="col">
-											<h6>結果詳細:</h6>
-											<span th:utext="${categoryResult.categoryResultDetail}"></span>
+										<div class="col summaryCont" th:utext="${survey.surveyInduceArea}">
+											
 										</div>
 									</div>
 								</div>
@@ -152,13 +151,13 @@
 						</div>
 						
 						<div class="row mb-2">
-							<div class="col-2 mt-2 d-flex justify-content-end">
+							<div class="col-3 mt-2 d-flex justify-content-end">
 								<h6>結果URL:</h6>
 							</div>
 							<div class="col-8">
 								<div class="input-group">
 								    <input id="resultUrl" class="form-control" th:value="@{/api/surveyResult?key=__*{key}__}" readonly/>
-								    <button type="button" class="input-group-text btn btn-success" style="width:150px;" id="urlCopyBtn">URLコピー</button>
+								    <button type="button" class="input-group-text btn btn-success" style="width:30%;" id="urlCopyBtn">URLコピー</button>
 								</div>
 							</div>
 						</div>

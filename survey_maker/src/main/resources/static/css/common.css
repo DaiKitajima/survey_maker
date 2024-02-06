@@ -47,6 +47,8 @@
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-line-clamp:2;
+    word-wrap: break-all;
+    line-height:20px;
 }
 
 /** テーブルのドラッグ クラス */
@@ -63,4 +65,16 @@
     -webkit-box-shadow: 1px 8px 6px -4px #555, 0 1px 0 #ccc inset, 0 -1px 0 #ccc inset;
     -moz-box-shadow: 0 9px 4px -4px #555, 0 1px 0 #ccc inset, 0 -1px 0 #ccc inset, -1px 0 0 #ccc inset;
     -box-shadow: 0 9px 4px -4px #555, 0 1px 0 #ccc inset, 0 -1px 0 #ccc inset, -1px 0 0 #ccc inset;
+}
+
+.title{
+	font-size:14px;
+}
+
+.subTitle{
+	font-size:12px;
+}
+
+.summaryCont{
+	font-size:10px;
 }
