@@ -414,6 +414,7 @@ public class SurveyContentListController {
 		surveyContentUpdateForm.setSurveyHeaderImage(surveyContent.getSurveyHeaderImage());
 		surveyContentUpdateForm.setSurveyDescription(surveyContent.getSurveyDescription());
 		surveyContentUpdateForm.setSurveyInduceArea(surveyContent.getSurveyInduceArea());
+		surveyContentUpdateForm.setSummaryDisplayFlg(surveyContent.getSummaryDisplayFlg());
 		surveyContentUpdateForm.setSurveyName(surveyContent.getSurveyName());
 		surveyContentUpdateForm.setSurveyPatternId(surveyContent.getSurveyPatternId());
 	}

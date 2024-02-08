@@ -32,7 +32,6 @@
 								<input th:field="*{surveyName}" class="form-control" th:value="高齢者健康調査" maxlength="50" required/>
 								<span class="h6 text-danger">※コンテンツパターン変更不可</span>
 							</div>
-
 						</div>
 						
 						<div class="row">
@@ -104,7 +103,16 @@
 								<textarea class="form-control" rows="3" th:field="*{surveyDescription}" required></textarea>
 							</div>
 						</div>
-
+						
+						<div class="row" th:if="*{surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">
+							<div class="col-4 mt-2 mb-2 d-flex align-items-center">
+								<div>
+									<input type="checkbox" class="checkboxesStyle ml-2" th:field="*{summaryDisplayFlg}" value="1">
+									<span class="h6">軸評価内容非表示</span>
+								</div>
+							</div>
+						</div>
+						
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">
 								<button type="submit" class="btn btn-sm btn-primary me-5" data-target="submitFormId" style="width:150px;" id="surveyContentUpdateBtn">更新</button>

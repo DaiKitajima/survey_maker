@@ -27,6 +27,8 @@ public class SurveyResultForm {
     private String surveySummaryImageBase64;
     // 総合評価詳細
     private String surveySummaryDetail;
+    // 総合評価誘導エリア
+    private String summaryInduceArea;
     
 	// 診断軸結果リスト
 	private List<CategoryResultForm> categoryResultLst;

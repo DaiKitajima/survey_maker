@@ -123,6 +123,7 @@ public class SurveyResultController {
 		surveyContentUpdateForm.setSurveyImage(surveyContent.getSurveyImage());
 		surveyContentUpdateForm.setSurveyDescription(surveyContent.getSurveyDescription());
 		surveyContentUpdateForm.setSurveyInduceArea(surveyContent.getSurveyInduceArea());
+		surveyContentUpdateForm.setSummaryDisplayFlg(surveyContent.getSummaryDisplayFlg());
 		surveyContentUpdateForm.setSurveyName(surveyContent.getSurveyName());
 		surveyContentUpdateForm.setSurveyPatternId(surveyContent.getSurveyPatternId());
 	}
@@ -146,6 +147,7 @@ public class SurveyResultController {
 			if( summaryResult.getTotalPoint() >= topCategory.getSurveySummaryDecidePoint() ) {
 				surveyResultForm.setSurveySummaryTitle(topCategory.getSurveySummaryTitleAbove());
 				surveyResultForm.setSurveySummaryDetail(topCategory.getSurveySummaryDetailAbove());
+				surveyResultForm.setSummaryInduceArea(topCategory.getSurveySummaryInduceAbove());
 				// Above画像設定
 				try {
 					String imgFileName = topCategory.getSurveySummaryImageAbove();
@@ -162,6 +164,7 @@ public class SurveyResultController {
 			}else { // Belowの場合
 				surveyResultForm.setSurveySummaryTitle(topCategory.getSurveySummaryTitleBelow());
 				surveyResultForm.setSurveySummaryDetail(topCategory.getSurveySummaryDetailBelow());
+				surveyResultForm.setSummaryInduceArea(topCategory.getSurveySummaryInduceBelow());
 				// Below画像設定
 				try {
 					String imgFileName = topCategory.getSurveySummaryImageBelow();

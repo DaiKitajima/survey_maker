@@ -109,9 +109,10 @@ public class SurveyContentController {
 		}
 		surveyContent.setSurveyInduceArea(surveyContentUpdateForm.getSurveyInduceArea());
 		surveyContent.setSurveyDescription(surveyContentUpdateForm.getSurveyDescription());
+		surveyContent.setSummaryDisplayFlg(surveyContentUpdateForm.getSummaryDisplayFlg());
 		surveyContent.setSurveyName(surveyContentUpdateForm.getSurveyName());
 		surveyContent.setSurveyPatternId(surveyContentUpdateForm.getSurveyPatternId());
-		}
+	}
 
 	@GetMapping("/surveyContentDetail/surveyContentUpdate")
 	public ModelAndView surveyContentUpdate(
@@ -164,6 +165,7 @@ public class SurveyContentController {
 		surveyContentUpdateForm.setSurveyImage(surveyContent.getSurveyImage());
 		surveyContentUpdateForm.setSurveyDescription(surveyContent.getSurveyDescription());
 		surveyContentUpdateForm.setSurveyInduceArea(surveyContent.getSurveyInduceArea());
+		surveyContentUpdateForm.setSummaryDisplayFlg(surveyContent.getSummaryDisplayFlg());
 		surveyContentUpdateForm.setSurveyName(surveyContent.getSurveyName());
 		surveyContentUpdateForm.setSurveyPatternId(surveyContent.getSurveyPatternId());
 	}

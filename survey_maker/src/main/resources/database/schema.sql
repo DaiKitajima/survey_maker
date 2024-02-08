@@ -37,7 +37,7 @@ create table IF NOT EXISTS `survey_management` (
 `survey_content_header_image` varchar(256) COMMENT 'コンテンツ画像ヘッダ',
 `survey_content_description` text COMMENT 'コンテンツ説明',
 `survey_induce_area` text COMMENT '誘導エリア',
-`summary_display_flg` tinyint(1) COMMENT '軸評価表示フラグ',
+`summary_display_flg` tinyint(1) COMMENT '軸評価非表示フラグ',
 `delete_flg` tinyint(1) NOT NULL COMMENT '削除フラグ',
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='診断コンテンツ管理テーブル';

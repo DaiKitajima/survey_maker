@@ -79,7 +79,7 @@
 						</div>
 						
 						<!-- 複数（ポイント型） -->
-						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}" 
+						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT && survey.summaryDisplayFlg != 1}" 
 							th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 							<div class="col-2 d-flex justify-content-end">
 								<div>
@@ -119,7 +119,21 @@
 								</div>
 							</div>
 						</div>
-						
+						<!-- 共通誘導エリア -->
+						<div class="row mb-2" th:if="${survey.surveyInduceArea}">
+							<div class="col-2"></div>
+							<div class="col-8">
+								<span th:utext="${survey.surveyInduceArea}"></span>
+							</div>
+						</div>
+						<!-- 総合評価誘導エリア -->
+						<div class="row mb-2" th:if="*{summaryInduceArea}">
+							<div class="col-2"></div>
+							<div class="col-8">
+								<span th:utext="*{summaryInduceArea}"></span>
+							</div>
+						</div>
+									
 						<!-- 複数（結果加算型） -->
 						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && __${categoryResult.categoryId}__ == __*{topCategoryId}__ }" >
 							<div class="col d-flex justify-content-center">

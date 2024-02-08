@@ -90,6 +90,12 @@
 								<textarea class="form-control" rows="3" th:field="*{surveyContent.surveyDescription}" disabled></textarea>
 							</div>
 						</div>
+						<div class="row mt-2" th:if="*{surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">
+							<div class="col-10">
+								<span class="text-danger" th:if="*{surveyContent.summaryDisplayFlg == 1}">※軸評価内容非表示</span>
+								<span class="text-danger" th:if="*{surveyContent.summaryDisplayFlg != 1}">※軸評価内容表示</span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<!-- コンテンツ基本情報 END -->

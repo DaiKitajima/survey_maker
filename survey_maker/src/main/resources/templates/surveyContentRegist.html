@@ -36,6 +36,12 @@
 									<option	th:value="${pattern.id}" th:each="pattern,stat: ${patternLst}" >[[${pattern.surveyPatternName}]]</option>
 								</select>
 							</div>
+							<div class="col-4 mt-2 mb-2 d-flex align-items-center">
+								<div>
+									<input type="checkbox" class="checkboxesStyle ml-2" th:field="*{summaryDisplayFlg}" value="1">
+									<span class="h6">軸評価内容非表示</span>
+								</div>
+							</div>
 						</div>
 						<div class="row">
 							<div class="col-4 mt-2 mb-2">
@@ -78,6 +84,14 @@
 							<div class="col-10 mt-2 mb-2">
 								<span class="h6">コンテンツ説明</span>
 								<textarea class="form-control" rows="3" th:field="*{surveyDescription}" required></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-4 mt-2 mb-2 d-flex align-items-center">
+								<div>
+									<input type="checkbox" class="checkboxesStyle ml-2" th:field="*{summaryDisplayFlg}" value="1" required>
+									<span class="h6">軸評価内容非表示</span>
+								</div>
 							</div>
 						</div>
 						
