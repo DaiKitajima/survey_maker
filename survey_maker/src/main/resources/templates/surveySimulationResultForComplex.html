@@ -5,6 +5,9 @@
 		<th:block th:replace="commonTop.html" />
 
 		<script th:src="@{/js/surveySimulation.js}"></script>
+		<script th:src="@{/js/Chart.bundle.min.js}"></script>
+		<script th:src="@{/js/pointChart.js}"></script>
+		
 		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 	</head>
 
@@ -19,6 +22,8 @@
 					
 					<th:block th:object="${surveyResultForm}" >
 						<input type="hidden" th:field="*{id}">
+						<input type="hidden" id="categoryLst" th:value="${categoryLst}">
+						<input type="hidden" id="pointLst" th:value="${pointLst}">
 						
 						<div class="row mt-4 mb-2">
 							<div class="col d-flex justify-content-center">
@@ -34,26 +39,16 @@
 
 						<!-- 総合評価 -->
 						<div th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">
-							<div class="row mb-4" >
-								<div class="col d-flex justify-content-center">
-									<h3>
-										<span class="badge rounded-pill bg-info" th:text="*{surveySummaryTitle}">タイトル</span>
-									</h3>
-								</div>
-							</div>
 							<div class="row mb-4">
-								<div class="col-2 d-flex justify-content-end">
-									<div>
-										<h6 class="bg-warning text-light">総合評価:</h6>
-									</div>
-								</div>
-								<div class="col ">
+								<div class="col d-flex justify-content-center">
 									<div class="summaryResult">
 										<div class="row mb-2">
-											<div class="col-4">
-												<img id="surveyResultImg" th:src="*{surveySummaryImageBase64}" height="300" width="350" alt="総合評価画像" class="img-thumbnail">
+											<div class="col">
+												<img id="surveyResultImg" th:src="*{surveySummaryImageBase64}" height="300" width="100%" alt="総合評価画像" class="img-thumbnail">
 											</div>
-											<div class="col-5 shadow-lg">
+											<!-- 軸別の統計図 -->
+<!-- 											<div id="point-chart" class="col-5">
+												<canvas id="point-chart" style="width: 100%; height:300px;"></canvas>
 												<div class="categoryResultProgress">
 													<div class="row mb-2" th:each="categoryResult,stat:*{categoryResultLst}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 														<div class="col">
@@ -65,15 +60,26 @@
 														</div>
 													</div>
 												</div>
-											</div>
+											</div> -->
 										</div>
-										<div class="row mb-2">
-											<div class="col-9">
-												<h6>評価詳細:</h6>
-												<span th:utext="*{surveySummaryDetail}"></span>
+										<div class="row mb-2 ">
+											<!-- 軸別の統計図 -->
+											<div id="point-chart" class="col shadow-lg">
 											</div>
 										</div>
 									</div>
+								</div>
+							</div>
+							<div class="row mb-4" >
+								<div class="col d-flex justify-content-center">
+									<div class="og_underline-bottom-border mt-2 mb-2" th:style="|border-bottom-color:${survey.surveyColor};|">
+										<span class="h6 title" th:text="*{surveySummaryTitle}">大見出し</span>
+									</div>
+								</div>
+							</div>
+							<div class="row mb-4 " >
+								<div class="col d-flex justify-content-center">
+									<span th:utext="*{surveySummaryDetail}"></span>
 								</div>
 							</div>
 						</div>
@@ -81,24 +87,25 @@
 						<!-- 複数（ポイント型） -->
 						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT && survey.summaryDisplayFlg != 1}" 
 							th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
-							<div class="col-2 d-flex justify-content-end">
-								<div>
-									<u th:style="|color:${categoryResult.categoryColor};|">
-										<h6 class="text-dark" th:text="${categoryResult.categoryName}">身体の調査</h6>
-									</u>
-								</div>
-							</div>
-							<div class="col-10 d-flex justify-content-start">
+							<div class="col d-flex justify-content-center">
 								<div class="categoryResult" >
-									<div class="row mb-2">
+									<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+									<div class="progress" style="width:100%;">
+										<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
+										</div>
+									</div>
+									<span class="h6" th:utext="${categoryResult.categoryResultTitle}"></span><br>
+									<span th:utext="${categoryResult.categoryResultDetail}"></span>
+<!-- 									<div class="row mb-2">
 										<div class="col-8">
 											<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" height="200" width="250" alt="診断軸評価画像" class="img-thumbnail">
 										</div>
-									</div>
-									<div class="row mb-2">
+									</div> -->
+									
+<!-- 									<div class="row mb-2">
 										<div class="col-8">
-											<h6 th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
-											<div class="progress" style="width:400px;">
+											<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+											<div class="progress" style="width:100%;">
 												<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 												</div>
 											</div>
@@ -106,33 +113,32 @@
 									</div>
 									<div class="row mb-2">
 										<div class="col-8">
-											<h6>評価結果:</h6>
-											<span th:utext="${categoryResult.categoryResultTitle}"></span>
+											<span class="h6" th:utext="${categoryResult.categoryResultTitle}"></span>
 										</div>
 									</div>
 									<div class="row mb-2">
 										<div class="col-8">
-											<h6>結果詳細:</h6>
 											<span th:utext="${categoryResult.categoryResultDetail}"></span>
 										</div>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</div>
-						<!-- 共通誘導エリア -->
-						<div class="row mb-2" th:if="${survey.surveyInduceArea}">
-							<div class="col-2"></div>
-							<div class="col-8">
-								<span th:utext="${survey.surveyInduceArea}"></span>
+						
+						<th:block th:if="${survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">
+							<!-- 共通誘導エリア -->
+							<div class="row mb-2" th:if="${survey.surveyInduceArea != ''}">
+								<div class="col" th:utext="${survey.surveyInduceArea}">
+									<!-- <span th:utext="${survey.surveyInduceArea}"></span> -->
+								</div>
 							</div>
-						</div>
-						<!-- 総合評価誘導エリア -->
-						<div class="row mb-2" th:if="*{summaryInduceArea}">
-							<div class="col-2"></div>
-							<div class="col-8">
-								<span th:utext="*{summaryInduceArea}"></span>
+							<!-- 総合評価誘導エリア -->
+							<div class="row mb-2" th:if="*{summaryInduceArea != '' }">
+								<div class="col d-flex justify-content-center" th:utext="*{summaryInduceArea}">
+									<!-- <span th:utext="*{summaryInduceArea}"></span> -->
+								</div>
 							</div>
-						</div>
+						</th:block>
 									
 						<!-- 複数（結果加算型） -->
 						<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && __${categoryResult.categoryId}__ == __*{topCategoryId}__ }" >
@@ -143,20 +149,15 @@
 											<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" height="200" width="250" alt="診断軸評価画像" class="img-thumbnail">
 										</div>
 									</div>
-<!-- 									<div class="row mb-2">
-										<div class="col">
-											<h6>評価結果:</h6>
-											<span th:text="${categoryResult.categoryResultTitle}"></span>
-										</div>
-									</div> -->
-									<!-- 結果詳細 -->
+									<!-- 軸の結果詳細 -->
 									<div class="row mb-2">
-										<div class="col summaryCont" th:utext="${categoryResult.categoryResultDetail}">
+										<div class="col" th:utext="${categoryResult.categoryResultDetail}">
 											
 										</div>
 									</div>
+									<!-- 共通誘導エリア -->
 									<div class="row mb-2">
-										<div class="col summaryCont" th:utext="${survey.surveyInduceArea}">
+										<div class="col" th:utext="${survey.surveyInduceArea}">
 											
 										</div>
 									</div>
@@ -165,16 +166,31 @@
 						</div>
 						
 						<div class="row mb-2">
-							<div class="col-3 mt-2 d-flex justify-content-end">
-								<h6>結果URL:</h6>
-							</div>
+							<div class="col-2"></div>
 							<div class="col-8">
-								<div class="input-group">
-								    <input id="resultUrl" class="form-control" th:value="@{/api/surveyResult?key=__*{key}__}" readonly/>
-								    <button type="button" class="input-group-text btn btn-success" style="width:30%;" id="urlCopyBtn">URLコピー</button>
+								<div class="row mb-2">
+									<div class="col-4 d-flex justify-content-center">
+										<a id="facebookShare" href="http://www.facebook.com/share.php?u={URL}" class="btn btn-danger" rel="nofollow noopener" target="_blank" style="width:100%;">Facebookにシェア</a>
+									</div>
+									<div class="col-4 d-flex justify-content-center">
+										<a id="twiterShare" href="https://twiter.com/share?url={URL}" class="btn btn-danger" rel="nofollow noopener" target="_blank" style="width:100%;">X（Twitter）にシェア</a>
+									</div>
+									<div class="col-4 d-flex justify-content-center">
+										<a id="lineShare" href="http://line.me/R/msg/text/?{URL}" class="btn btn-danger" rel="nofollow noopener" target="_blank" style="width:100%;">LINEにシェア</a>
+									</div>
+								</div>
+								<div class="row mb-2">
+									<div class="col">
+										<div class="input-group">
+										    <input id="resultUrl" class="form-control" th:value="@{/api/surveyResult?key=__*{key}__}" readonly/>
+										    <button type="button" class="input-group-text btn btn-danger" style="width:30%;" id="urlCopyBtn">URLコピー</button>
+										</div>
+									</div>
 								</div>
 							</div>
+							<div class="col-2"></div>
 						</div>
+
 					</th:block>
 				</div>
 			</div>

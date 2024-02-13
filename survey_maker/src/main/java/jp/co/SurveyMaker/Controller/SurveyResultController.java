@@ -79,6 +79,8 @@ public class SurveyResultController {
 		this.setSurveySummaryAndCategoryResult(surveyResultForm, result, survey.getSurveyPatternId());
 		
 		mav.addObject("surveyResultForm", surveyResultForm);
+		mav.addObject("categoryLst", surveyResultForm.getCategoryResultLst().stream().map(CategoryResultForm::getCategoryName).toList());
+		mav.addObject("pointLst", surveyResultForm.getCategoryResultLst().stream().map(CategoryResultForm::getCategoryPoint).toList());
 		
 		if(CommonConstants.PARTTERN_SINGULAR.equals(survey.getSurveyPatternId())) {
 			mav.setViewName("surveySimulationResultForSingular");

@@ -3,6 +3,13 @@ $(function(){
 	
 	/* スクリプトコピーボタン押下*/
 	$("#resultUrl").val( rootPath + $("#resultUrl").val() );
+	var facebookUrl = $("#facebookShare").prop("href");
+	$("#facebookShare").prop("href", facebookUrl.replace("{URL}",$("#resultUrl").val()));
+	var twiterUrl = $("#twiterShare").prop("href");
+	$("#twiterShare").prop("href", twiterUrl.replace("{URL}",$("#resultUrl").val()));
+	var lineUrl = $("#lineShare").prop("href");
+	$("#lineShare").prop("href", lineUrl.replace("{URL}",$("#resultUrl").val()));
+	
 	$("#urlCopyBtn").click(function(){
 		$("#resultUrl").select();
 /*		var copyText = $("#resultUrl").val();
