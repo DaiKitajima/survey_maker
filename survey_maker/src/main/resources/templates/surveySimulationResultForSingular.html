@@ -25,90 +25,95 @@
 							</div>
 						</div>
 
-<!-- 						<div class="row mb-5" th:if="*{survey.surveyImageBase64}">
-							<div class="col d-flex justify-content-center">
-								<img id="contentImg" th:src="*{survey.surveyImageBase64}" height="200" width="250" th:alt="*{survey.surveyImage}" class="img-thumbnail">
-							</div>
-						</div> -->
-
 						<!-- 総合評価 -->
-						<div>
-							<div class="row mb-4" >
-								<div class="col d-flex justify-content-center">
-									<h3>
-										<span class="badge rounded-pill bg-info" th:text="*{surveySummaryTitle}">タイトル</span>
-									</h3>
-								</div>
-							</div>
-							<div class="row mb-4">
-								<div class="col-2 d-flex justify-content-end">
-									<div>
-										<h6>総合評価:</h6>
-									</div>
-								</div>
-								<div class="col ">
-									<div class="summaryResult">
-										<div class="row mb-2">
-											<div class="col-4">
-												<img id="surveyResultImg" th:src="*{surveySummaryImageBase64}" height="300" width="350" alt="総合評価画像" class="img-thumbnail">
-											</div>
-											<div class="col-5 shadow-lg">
-												<div class="categoryResultProgress">
-													<div class="row mb-2" th:each="categoryResult,stat:*{categoryResultLst}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
-														<div class="col">
-															<h6 th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
-															<div class="progress" >
-																<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="row mb-2">
-											<div class="col">
-												<span th:utext="*{surveySummaryDetail}"></span>
-											</div>
+						<div class="row mb-4">
+							<div class="col d-flex justify-content-center">
+								<div class="summaryResult">
+									<div class="row mb-2">
+										<div class="col">
+											<img id="surveyResultImg" th:src="*{surveySummaryImageBase64}" height="300" width="350" alt="総合評価画像" class="img-thumbnail">
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						<div class="row mb-2" >
+							<div class="col-1"></div>
+							<div class="col-10 d-flex justify-content-start">
+								<div class="og_underline-bottom-border mt-2 mb-2" th:style="|border-bottom-color:${survey.surveyColor};|">
+									<span class="h6 title" th:text="*{surveySummaryTitle}">大見出し</span>
+								</div>
+							</div>
+							<div class="col-1"></div>
+						</div>
+						<div class="row mb-4 " >
+							<div class="col-1"></div>
+							<div class="col-10 d-flex justify-content-start">
+								<span th:utext="*{surveySummaryDetail}"></span>
+							</div>
+							<div class="col-1"></div>
+						</div>
 						
-						<div th:each="categoryResult,stat:*{categoryResultLst}" th:if="${stat.first}">
+						<!-- 軸の評価詳細 -->
+						<div th:each="categoryResult,stat:*{categoryResultLst}" th:if="${stat.first}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 							<div class="row mt-5 mb-5">
-								<div class="col-2 d-flex justify-content-end">
-									<h6>評価結果:</h6>
+								<div class="col-1"></div>
+								<div class="col-10 d-flex justify-content-start">
+									<div class="categoryResult" >
+										<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+										<div class="progress" style="width:300px;">
+											<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
+											</div>
+										</div>
+										<span class="h6 mb-2" th:utext="${categoryResult.categoryResultTitle}"></span><br>
+										<span th:utext="${categoryResult.categoryResultDetail}"></span>
+									</div>
 								</div>
-								<div class="col-1 d-flex justify-content-start">
-									<span th:text="${categoryResult.categoryResultTitle}"></span><br>
-								</div>
-								<div class="col d-flex justify-content-start">
-									<img th:id="categoryResultImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" height="150" width="200" alt="診断軸評価画像" class="img-thumbnail">
-								</div>
-							</div>
-							
-							<div class="row mb-5">
-								<div class="col-2 d-flex justify-content-end">
-									<h6>結果詳細:</h6>
-								</div>
-								<div class="col d-flex justify-content-start">
-									<span th:utext="${categoryResult.categoryResultDetail}"></span>
-								</div>
+								<div class="col-1"></div>
 							</div>
 						</div>
-						
-						<div class="row mb-5">
-							<div class="col-2 mt-2 d-flex justify-content-end">
-								<h6>結果URL:</h6>
+					
+						<!-- 共通誘導エリア -->
+						<div class="row mb-2" th:if="${survey.surveyInduceArea != ''}">
+							<div class="col-1"></div>
+							<div class="col-10 d-flex justify-content-start">
+								<span th:utext="${survey.surveyInduceArea}"></span>
 							</div>
-							<div class="col-8">
-								<div class="input-group">
-								    <input id="resultUrl" class="form-control" th:value="@{/api/surveyResult?key=__*{key}__}" readonly/>
-								    <button type="button" class="input-group-text btn btn-success" style="width:150px;" id="urlCopyBtn">URLコピー</button>
+							<div class="col-1"></div>
+						</div>
+						<!-- 総合評価誘導エリア -->
+						<div class="row mb-2" th:if="*{summaryInduceArea != '' }">
+							<div class="col-1"></div>
+							<div class="col-10 d-flex justify-content-start">
+								<span th:utext="*{summaryInduceArea}"></span>
+							</div>
+							<div class="col-1"></div>
+						</div>
+						
+						<!-- コンテンツシェア -->
+						<div class="row mt-4 mb-2">
+							<div class="col-1"></div>
+							<div class="col d-flex justify-content-center">
+								<div>
+									<div class="row mb-2 ">
+										<div class="col ">
+											<a id="facebookShare" href="http://www.facebook.com/share.php?u={URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">Facebookにシェア</a>
+											<a id="twiterShare" href="https://twiter.com/share?url={URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">X（Twitter）にシェア</a>
+											<a id="lineShare" href="http://line.me/R/msg/text/?{URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">LINEにシェア</a>
+										</div>
+									</div>
+									<div class="row mb-2">
+										<div class="col">
+											<div class="input-group">
+											    <input id="resultUrl" class="form-control" th:value="@{/api/surveyResult?key=__*{key}__}" readonly/>
+											    <button type="button" class="input-group-text btn btn-danger" style="width:80px;" id="urlCopyBtn">URLコピー</button>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
+								
+							<div class="col-1"></div>
 						</div>
 					</th:block>
 				</div>
