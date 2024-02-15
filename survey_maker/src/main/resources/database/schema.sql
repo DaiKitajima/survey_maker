@@ -108,3 +108,18 @@ create table IF NOT EXISTS `survey_result` (
 PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='診断結果管理テーブル';
 
+--　初期マスタデータ
+-- システム管理者：kitajima@w-bridge.co.jp：webridge
+DELETE FROM surveymaker.`user` WHERE id = 1;
+insert into surveymaker.`user`(id, company_id,name,login_id,password,mail,delete_flg) values (1, 1,'システム管理者','kitajima@w-bridge.co.jp','1JASMdMbrT5S0fa0qLWJxAbb','kitajima@w-bridge.co.jp','0');
+
+-- 診断パターンマスタ
+DELETE FROM surveymaker.m_survey_pattern WHERE id = 1;
+DELETE FROM surveymaker.m_survey_pattern WHERE id = 2;
+DELETE FROM surveymaker.m_survey_pattern WHERE id = 3;
+DELETE FROM surveymaker.m_survey_pattern WHERE id = 4;
+insert into surveymaker.m_survey_pattern(id, survey_pattern_name,delete_flg) values
+    (1, '単数','0')
+  , (2, '複数（ポイント型）','0')
+  , (3, '複数（加算結果型）','0')
+  , (4, 'フロー','0');
