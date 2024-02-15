@@ -83,7 +83,7 @@
 							<div class="row mb-4 " >
 								<div class="col-1"></div>
 								<div class="col-10 d-flex justify-content-start">
-									<span th:utext="*{surveySummaryDetail}"></span>
+									<span class="summaryCont" th:utext="*{surveySummaryDetail}"></span>
 								</div>
 								<div class="col-1"></div>
 							</div>
@@ -107,7 +107,7 @@
 										</div>
 									</div>
 									<span class="h6 mb-2" th:utext="${categoryResult.categoryResultTitle}"></span><br>
-									<span th:utext="${categoryResult.categoryResultDetail}"></span>
+									<span class="summaryCont" th:utext="${categoryResult.categoryResultDetail}"></span>
 									
  <!-- 									<div class="row mb-2">
 										<div class="col d-flex justify-content-center">
@@ -138,7 +138,7 @@
 							<div class="row mb-2" th:if="${survey.surveyInduceArea != ''}">
 								<div class="col-1"></div>
 								<div class="col-10 d-flex justify-content-start">
-									<span th:utext="${survey.surveyInduceArea}"></span>
+									<span class="summaryCont" th:utext="${survey.surveyInduceArea}"></span>
 								</div>
 								<div class="col-1"></div>
 							</div>
@@ -146,7 +146,7 @@
 							<div class="row mb-2" th:if="*{summaryInduceArea != '' }">
 								<div class="col-1"></div>
 								<div class="col-10 d-flex justify-content-start">
-									<span th:utext="*{summaryInduceArea}"></span>
+									<span class="summaryCont" th:utext="*{summaryInduceArea}"></span>
 								</div>
 								<div class="col-1"></div>
 							</div>
@@ -163,13 +163,13 @@
 									</div>
 									<!-- 軸の結果詳細 -->
 									<div class="row mb-2">
-										<div class="col" th:utext="${categoryResult.categoryResultDetail}">
+										<div class="col summaryCont" th:utext="${categoryResult.categoryResultDetail}">
 											
 										</div>
 									</div>
 									<!-- 共通誘導エリア -->
 									<div class="row mb-2">
-										<div class="col" th:utext="${survey.surveyInduceArea}">
+										<div class="col summaryCont" th:utext="${survey.surveyInduceArea}">
 											
 										</div>
 									</div>
