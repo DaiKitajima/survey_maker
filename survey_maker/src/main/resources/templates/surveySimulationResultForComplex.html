@@ -45,7 +45,7 @@
 									<div class="summaryResult">
 										<div class="row mb-2">
 											<div class="col">
-												<img id="surveyResultImg" th:src="*{surveySummaryImageBase64}" height="300" width="100%" alt="総合評価画像" class="img-thumbnail">
+												<img id="surveyResultImg" th:src="*{surveySummaryImageBase64}" width="500" alt="総合評価画像" class="img-thumbnail">
 											</div>
 											<!-- 軸別の統計図 -->
 <!-- 											<div id="point-chart" class="col-5">
@@ -101,12 +101,12 @@
 										</div>
 									</div> -->
 									
-									<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+									<h6 class="og_headline-left-border subTitle" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
 									<div class="progress" style="width:300px;">
 										<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 										</div>
 									</div>
-									<span class="h6 mb-2" th:utext="${categoryResult.categoryResultTitle}"></span><br>
+									<span class="h6 summaryCont mb-2" th:utext="${categoryResult.categoryResultTitle}"></span><br>
 									<span class="summaryCont" th:utext="${categoryResult.categoryResultDetail}"></span>
 									
  <!-- 									<div class="row mb-2">

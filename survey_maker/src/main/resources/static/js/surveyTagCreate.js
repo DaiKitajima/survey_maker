@@ -8,7 +8,7 @@ $(function(){
 	$('#mainTitleTag').on('click', function() {
 		var colorCD = $('#inputColorCode').val(); 
 		var content = "";
-		content = content + "<div class=\"og_underline-bottom-border mt-2 mb-2\" style=\"border-bottom-color:" + colorCD + ";\">\n";
+		content = content + "<div class=\"mt-2 mb-2\" style=\"border-bottom:solid 2px;background-color: white;border-bottom-color:" + colorCD + ";\">\n";
 		content = content + "	<span class=\"h6 title\">大見出し</span>\n";
 		content = content + "</div>";
 		$("#surveyTagContent").val(content);
@@ -19,7 +19,7 @@ $(function(){
 	$('#subTitleTag').on('click', function() {
 		var colorCD = $('#inputColorCode').val(); 
 		var content = "";
-		content = content + "<div class=\"og_headline-left-border mt-2 mb-2\" style=\"border-left-color:" + colorCD + ";\">\n";
+		content = content + "<div class=\"mt-2 mb-2\" style=\"border-left:solid 5px;background-color: white;border-left-color:" + colorCD + ";\">\n";
 		content = content + "	<span class=\"h6 subTitle\">小見出し</span>\n";
 		content = content + "</div>";
 		$("#surveyTagContent").val(content);
@@ -30,8 +30,8 @@ $(function(){
 	$("#induceBtnTag").on('click', function() {
 		var content = "";
 		content = content + "<div class=\"row mt-2 mb-2\">\n";
-		content = content + "	<div class=\"col d-flex justify-content-center\">\n";
-		content = content + "		<a href=\"#\" class=\"btn btn-warning btn-lg text-light\" style=\"border-radius: 40px;\" ><h6>専門家に相談する　▶</h6></a>\n";
+		content = content + "	<div class=\"col d-flex justify-content-center h6\">\n";
+		content = content + "		<a href=\"#\" class=\"btn btn-warning btn-lg text-light\" style=\"width:250px;border-radius:40px;\" ><span class=\"h5\">専門家に相談する　▶</span></a>\n";
 		content = content + "	</div>\n";
 		content = content + "</div>";
 		$("#surveyTagContent").val(content);

@@ -34,7 +34,7 @@
 									<div>
 										<span class="h2" th:text="|Q__${question.questionOrderNo}__|"></span><br>
 										<p class="text-muted h3" th:text="${question.questionTitle}"></p>
-										<img th:id="questionImg__${stat.index}__" th:src="${question.questionImageBase64}" height="100" width="90%" th:alt="${question.questionImage}" class="pull-left img-thumbnail border-0">
+										<img th:id="questionImg__${stat.index}__" th:src="${question.questionImageBase64}" width="600" th:alt="${question.questionImage}" class="pull-left img-thumbnail border-0">
 										<div class="mt-4" th:classappend="answerContent__${stat.index}__">
 											<div class="mb-1 form-check bg-light text-dark border pt-1 pb-1" style="padding-left:2.0rem;" th:each="answer,stat1:${question.answerContentLst}">
 												<input class="mr-5 form-check-input" type="radio" th:name="answerResultLst[__${stat.index}__].answerId" th:id="|answerResultId__${stat.index + '_' + stat1.index}__|" th:value="${answer.answerId}">
