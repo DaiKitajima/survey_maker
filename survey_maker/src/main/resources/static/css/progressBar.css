@@ -30,7 +30,7 @@
 
 @media screen and (max-width: 767px) {
      .ymtr--progress-bar .ymtr--progress-bar__item:nth-of-type(n+2) {
-        margin-left:.5333333333vw!important
+        margin-left:0.5%!important
     }
 }
 

@@ -8,6 +8,19 @@
 		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 		<!-- progress bar -->
 		<link rel="stylesheet" th:href="@{/css/progressBar.css}"/>
+		<style th:inline="text">
+			@media print,screen and (min-width: 768px) {
+			     .progress-bar-item-width {
+			        width:[[${100.00/#lists.size(surveySimulationForm.questionFormLst)}]]% !important;
+			    }
+			}
+			
+			@media screen and (max-width: 767px) {
+			     .progress-bar-item-width{
+			        width:[[${(100.00-0.5*#lists.size(surveySimulationForm.questionFormLst))/#lists.size(surveySimulationForm.questionFormLst)}]]% !important;
+			    }
+			}
+		</style>
 	</head>
 
 	<body style="background: #EEEEEE;" th:object="${surveySimulationForm}">
@@ -18,8 +31,8 @@
 					<th:block th:replace="surveyNav.html" />
 				
 					<!-- 進捗欄 -->
-					<div class="ymtr--progress-bar mb-2" th:with="progressWidth=*{100/#lists.size(questionFormLst)}">
-						<div class="ymtr--progress-bar__item" th:style="|background-color: *{surveyContent.surveyColor} !important;width:${progressWidth}%;|" th:each="question,stat:*{questionFormLst}" th:id="${stat.index}" th:classappend="${stat.first?'--current':''}">　　</div>
+					<div class="ymtr--progress-bar mb-2">
+						<div class="progress-bar-item-width ymtr--progress-bar__item" th:style="|background-color: *{surveyContent.surveyColor} !important;|" th:each="question,stat:*{questionFormLst}" th:id="${stat.index}" th:classappend="${stat.first?'--current':''}">　　</div>
 					</div>
 					
 					<form action="/api/surveySimulationForSingular/result" method="post" id="submitFormId">
