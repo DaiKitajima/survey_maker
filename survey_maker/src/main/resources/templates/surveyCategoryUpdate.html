@@ -183,7 +183,7 @@
 									<span class="h6">評価結果</span><br>
 									<input th:name="|categoryContentLst[${stat.index}].surveyResult|" class="form-control categoryContentLst" th:value="${category.surveyResult}" required/>
 								</div>
-								<div class="col-3 mt-2 mb-2">
+								<div class="col-3 mt-2 mb-2" th:if="${survey.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">
 									<span class="h6">診断結果画像</span>
 									<div class="input-group mb-3" th:classappend="|previewResultImg${stat.index}|">
 										<input th:name="|categoryContentLst[${stat.index}].surveyResultImage|" class="form-control" th:value="${category.surveyResultImage}" readonly />

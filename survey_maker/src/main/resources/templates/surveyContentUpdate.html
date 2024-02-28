@@ -32,9 +32,6 @@
 								<input th:field="*{surveyName}" class="form-control" th:value="高齢者健康調査" maxlength="50" required/>
 								<span class="h6 text-danger">※コンテンツパターン変更不可</span>
 							</div>
-						</div>
-						
-						<div class="row">
 							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ画像</span>
 								<div class="input-group mb-3 previewContentImg">
@@ -48,6 +45,25 @@
 									<input class="form-control" type="file" th:field="*{surveyImgFile}" accept=".jpg,.jpeg,.png,.gif" disabled>
 									<div class="input-group-append">  
 										<button class="btn btn-primary" type="button" id="modoruContentImg">戻る</button>  
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツ画像(SP)</span>
+								<div class="input-group mb-3 previewContentImgSP">
+									<input th:field="*{surveyImageSp}"  class="form-control" th:value="高齢者健康調査.jpg" readonly />
+									<div class="input-group-append">
+										<button class="btn btn-primary" type="button" id="previewContentImgSP" data-bs-toggle="popover" data-bs-trigger="focus" title="画像プレビュー" data-bs-html="true" th:data-bs-content="|<img src='__*{surveyImageSpBase64}__' height='150' width='200'>|" >プレビュー</button> 
+										<button class="btn btn-danger" type="button" id="changeContentImgSP">変更</button>  
+									</div>
+								</div>
+								<div class="input-group mb-3 fileChangeContentImgSP" style="display:none;">
+									<input class="form-control" type="file" th:field="*{surveyImgSpFile}" accept=".jpg,.jpeg,.png,.gif" disabled>
+									<div class="input-group-append">  
+										<button class="btn btn-primary" type="button" id="modoruContentImgSP">戻る</button>  
 									</div>
 								</div>
 							</div>

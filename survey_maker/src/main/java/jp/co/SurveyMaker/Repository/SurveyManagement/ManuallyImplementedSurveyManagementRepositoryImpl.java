@@ -31,6 +31,7 @@ public class ManuallyImplementedSurveyManagementRepositoryImpl implements Manual
 		sql.append("    , user_id                              ");    // ユーザID 
 		sql.append("    , survey_name                          ");    // コンテンツ名 
 		sql.append("    , survey_image                         ");    // コンテンツ画像 
+		sql.append("    , survey_image_sp                         ");    // コンテンツSP画像 
 		sql.append("    , survey_color                         ");    // コンテンツカラー 
 		sql.append("    , survey_pattern_id                    ");    // パターンID 
 		sql.append("    , survey_header_image                    ");    // コンテンツヘッダ画像

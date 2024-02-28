@@ -61,13 +61,19 @@
 									<span th:text="${pattern.surveyPatternName}">単数</span>
 								</th:block>
 							</div>
-							<div class="col-3">
+							<div class="col-2">
 								<span class="h6">コンテンツ画像</span><br>
 								<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyImageBase64}">
 									<img id="contentImg" th:src="*{surveyContent.surveyImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyImage}" class="img-thumbnail">
 								</a>
 							</div>
-							<div class="col-3">
+							<div class="col-2">
+								<span class="h6">コンテンツ画像(SP)</span><br>
+								<a onclick="showimage('contentImgSP')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyImageSpBase64}">
+									<img id="contentImgSP" th:src="*{surveyContent.surveyImageSpBase64}" height="30" width="40" th:alt="*{surveyContent.surveyImageSp}" class="img-thumbnail">
+								</a>
+							</div>
+							<div class="col-2">
 								<span class="h6">コンテンツヘッダ画像</span><br>
 								<a onclick="showimage('headerImg')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyHeaderImageBase64}">
 									<img id="headerImg" th:src="*{surveyContent.surveyHeaderImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyHeaderImage}" class="img-thumbnail">
@@ -92,8 +98,8 @@
 						</div>
 						<div class="row mt-2" th:if="*{surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">
 							<div class="col-10">
-								<span class="text-danger" th:if="*{surveyContent.summaryDisplayFlg == 1}">※軸評価内容非表示</span>
-								<span class="text-danger" th:if="*{surveyContent.summaryDisplayFlg != 1}">※軸評価内容表示</span>
+								<span class="text-danger" th:if="*{surveyContent.summaryDisplayFlg == 1}">※診断結果に軸評価内容非表示</span>
+								<span class="text-danger" th:if="*{surveyContent.summaryDisplayFlg != 1}">※診断結果に軸評価内容表示</span>
 							</div>
 						</div>
 					</div>
@@ -312,7 +318,7 @@
 															<th th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW }" style="width:10%;">ポイント範囲</th>
 															<th style="width:15%;">タイトル</th>
 															<th style="width:60%;">評価内容</th>
-															<th >画像</th>
+															<th th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">画像</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -337,7 +343,7 @@
 																	エネルギーバランスがとれています。
 																</span>
 															</td>
-															<td class="align-middle">
+															<td class="align-middle" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">
 																<a th:onclick="|showimage('contentResultImg${stat.index}_${stat1.index}')|" class="btn btn-default btn-xs active">
 																	<img th:id="|contentResultImg${stat.index}_${stat1.index}|" th:src="${result.surveyResultImgBase64}" height="30" width="40" th:alt="${result.surveyResultImage}" class="img-thumbnail">
 																</a>

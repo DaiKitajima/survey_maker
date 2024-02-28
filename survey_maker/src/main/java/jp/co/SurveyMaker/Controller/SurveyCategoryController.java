@@ -293,13 +293,15 @@ public class SurveyCategoryController {
 				
 				// 評価結果画像
 				try {
-					String imgFileName = content.getSurveyResultImage();
-					String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
-											+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + content.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
-					byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
-					String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
-							+ Base64.getEncoder().encodeToString(imgByte);
-					dto.setSurveyResultImgBase64(encodedImage);
+					if(patternId !=CommonConstants.PARTTERN_COMPLEX_POINT ) {
+						String imgFileName = content.getSurveyResultImage();
+						String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
+												+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + content.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+						byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+						String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+								+ Base64.getEncoder().encodeToString(imgByte);
+						dto.setSurveyResultImgBase64(encodedImage);
+					}
 				} catch (IOException e) {
 					log.error("診断軸の評価結果画像ファイル取得にエラーが発生しました。",e);
 				}

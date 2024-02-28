@@ -113,6 +113,16 @@ $(function(){
 		$("#simulationConfirmDialog").modal('hide');
 	});
 	
+	// パターンドロップダウン選択時
+	$('#surveyPatternId').on('change', function() {
+		// パターンが複数ポイント型の場合のみ、「軸評価内容非表示」を表示
+		if($(this).val() == 2 ){
+			$('[name=summaryDisplayFlg]').parent().show();
+		}else{
+			$('[name=summaryDisplayFlg]').parent().hide();
+		}
+	});
+	
 	// 診断URLコピーボタン押下
 	$('.surveyURLCopyBtn').on('click', function(e) {
 		e.preventDefault();

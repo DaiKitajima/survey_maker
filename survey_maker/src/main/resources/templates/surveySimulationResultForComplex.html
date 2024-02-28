@@ -7,7 +7,32 @@
 		<script th:src="@{/js/surveySimulation.js}"></script>
 		<script th:src="@{/js/Chart.bundle.min.js}"></script>
 		<script th:src="@{/js/pointChart.js}"></script>
-		
+		<style th:inline="text">
+			@media print,screen and (min-width: 768px) {
+			     .flexbox{
+							display: flex;
+							flex-direction: row;
+			    		}
+			    		
+				.flex-item {
+				  width: 50%;
+				  justify-content: flex-center;
+				  padding: 2px;
+				}
+			}
+			
+			@media screen and (max-width: 767px) {
+			     .flexbox{
+							display: flex;
+							flex-direction: column;
+			    }
+				.flex-item {
+				  width: 100%;
+				  justify-content: flex-center;
+				  padding: 2px;
+				}
+			}
+		</style>
 		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 	</head>
 
@@ -40,15 +65,25 @@
 
 						<!-- 総合評価 -->
 						<div th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">
-							<div class="row mb-4">
-								<div class="col d-flex justify-content-center">
-									<div class="summaryResult">
-										<div class="row mb-2">
+							<div class="row mb-2">
+								<div class="col-1"></div>
+								<div class="col-10 d-flex justify-content-center" >
+									<div class="flexbox">
+										<div class="flex-item">
+											<img id="surveyResultImg" class="img-thumbnail" th:src="*{surveySummaryImageBase64}" alt="総合評価画像">
+										</div>
+										<div id="point-chart" class="border flex-item">
+										</div>
+									</div>
+								</div>
+<!-- 										<div class="row mb-2">
 											<div class="col">
 												<img id="surveyResultImg" th:src="*{surveySummaryImageBase64}" width="500" alt="総合評価画像" class="img-thumbnail">
+												<div id="point-chart" class="border">
+												</div>
 											</div>
-											<!-- 軸別の統計図 -->
-<!-- 											<div id="point-chart" class="col-5">
+											
+ 											<div id="point-chart" class="col-5">
 												<canvas id="point-chart" style="width: 100%; height:300px;"></canvas>
 												<div class="categoryResultProgress">
 													<div class="row mb-2" th:each="categoryResult,stat:*{categoryResultLst}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
@@ -61,15 +96,10 @@
 														</div>
 													</div>
 												</div>
-											</div> -->
-										</div>
-										<div class="row mb-2 ">
-											<!-- 軸別の統計図 -->
-											<div id="point-chart" class="col shadow-lg">
-											</div>
-										</div>
-									</div>
-								</div>
+											</div> 
+										</div> -->
+
+								<div class="col-1"></div>
 							</div>
 							<div class="row mb-2" >
 								<div class="col-1"></div>

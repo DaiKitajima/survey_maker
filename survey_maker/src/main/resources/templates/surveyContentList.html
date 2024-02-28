@@ -87,6 +87,9 @@
 											コンテンツ画像
 										</th>
 										<th class="align-middle" style="white-space: nowrap;">
+											コンテンツ画像(SP)
+										</th>
+										<th class="align-middle" style="white-space: nowrap;">
 											コンテンツヘッダ画像
 										</th>
 										<th class="align-middle" style="white-space: nowrap;">
@@ -124,12 +127,17 @@
 											</a>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
+											<a th:onclick="|showimage('contentImgSP${stat.index}')|" class="btn btn-default btn-xs active" th:if="${survey.surveyImageSpBase64}">
+												<img th:id="contentImgSP__${stat.index}__" th:src="${survey.surveyImageSpBase64}" height="40" width="50" th:alt="${survey.surveyImageSp}" class="img-thumbnail">
+											</a>
+										</td>
+										<td class="align-middle text-left" style="white-space: nowrap;">
 											<a th:onclick="|showimage('headerImg${stat.index}')|" class="btn btn-default btn-xs active" th:if="${survey.surveyHeaderImageBase64}">
 												<img th:id="headerImg__${stat.index}__" th:src="${survey.surveyHeaderImageBase64}" height="40" width="50" th:alt="${survey.surveyHeaderImage}" class="img-thumbnail">
 											</a>
 										</td>
 										<td class="align-middle text-left" style="white-space: nowrap;">
-											<span th:style="|background:${survey.surveyColor};|" >　　　　　　　</span>
+											<span th:style="|background:${survey.surveyColor};|" >　　　　　</span>
 										</td>
 										<td class="align-middle text-center" style="white-space: nowrap;">
 											<a th:href="@{/surveyContentList/contentDelete?contentId=__${survey.id}__}" th:id="contentDelBtn__${stat.index}__" class="text-dark">

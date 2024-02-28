@@ -112,6 +112,17 @@ public class SurveyResultController {
 		}
 		
 		try {
+			String imgFileName = surveyContent.getSurveyImageSp();
+			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContent.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+			String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+					+ Base64.getEncoder().encodeToString(imgByte);
+			surveyContentUpdateForm.setSurveyImageSpBase64(encodedImage);
+		} catch (IOException e) {
+			log.error("コンテンツSP画像ファイル取得にエラーが発生しました。",e);
+		}
+		
+		try {
 			String imgFileName = surveyContent.getSurveyHeaderImage();
 			String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + surveyContent.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
 			byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
@@ -123,6 +134,7 @@ public class SurveyResultController {
 		}
 		surveyContentUpdateForm.setSurveyHeaderImage(surveyContent.getSurveyHeaderImage());
 		surveyContentUpdateForm.setSurveyImage(surveyContent.getSurveyImage());
+		surveyContentUpdateForm.setSurveyImageSp(surveyContent.getSurveyImageSp());
 		surveyContentUpdateForm.setSurveyDescription(surveyContent.getSurveyDescription());
 		surveyContentUpdateForm.setSurveyInduceArea(surveyContent.getSurveyInduceArea());
 		surveyContentUpdateForm.setSummaryDisplayFlg(surveyContent.getSummaryDisplayFlg());

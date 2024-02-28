@@ -36,18 +36,16 @@
 									<option	th:value="${pattern.id}" th:each="pattern,stat: ${patternLst}" >[[${pattern.surveyPatternName}]]</option>
 								</select>
 							</div>
-							<div class="col-4 mt-2 mb-2 d-flex align-items-center">
-								<div>
-									<input type="checkbox" class="checkboxesStyle ml-2" th:field="*{summaryDisplayFlg}" value="1">
-									<span class="h6">軸評価内容非表示</span>
-								</div>
-							</div>
-
-						</div>
-						<div class="row">
 							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツ画像</span>
 								<input class="form-control" type="file" th:field="*{surveyImgFile}" accept=".jpg,.jpeg,.png,.gif">
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツ画像(SP)</span>
+								<input class="form-control" type="file" th:field="*{surveyImgSpFile}" accept=".jpg,.jpeg,.png,.gif">
 							</div>
 							<div class="col-4 mt-2 mb-2">
 								<span class="h6">コンテンツヘッダ画像</span>
@@ -65,6 +63,7 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="row">
 							<div class="col-10 mt-2 mb-2">
 								<div class="row">
@@ -89,8 +88,8 @@
 						</div>
 						<div class="row">
 							<div class="col-4 mt-2 mb-2 d-flex align-items-center">
-								<div>
-									<input type="checkbox" class="checkboxesStyle ml-2" th:field="*{summaryDisplayFlg}" value="1" required>
+								<div style="display: none;">
+									<input type="checkbox" class="checkboxesStyle ml-2" th:field="*{summaryDisplayFlg}" value="1">
 									<span class="h6">軸評価内容非表示</span>
 								</div>
 							</div>
