@@ -6,6 +6,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jp.co.SurveyMaker.Constants.CommonConstants;
+import jp.co.SurveyMaker.Dto.AnswerContentDto;
+import jp.co.SurveyMaker.Dto.AnswerPointDto;
 import jp.co.SurveyMaker.Dto.CategoryContentDto;
 import jp.co.SurveyMaker.Dto.SummaryResultDto;
 import jp.co.SurveyMaker.Dto.SurveyCategoryResultDto;
@@ -34,6 +37,7 @@ import jp.co.SurveyMaker.Service.SurveyQuestionService;
 import jp.co.SurveyMaker.Service.SurveySimulationService;
 import jp.co.SurveyMaker.Service.Entity.SurveyCategory;
 import jp.co.SurveyMaker.Service.Entity.SurveyManagement;
+import jp.co.SurveyMaker.Service.Entity.SurveyQuestion;
 import jp.co.SurveyMaker.Service.Entity.SurveyResult;
 import jp.co.SurveyMaker.Util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +85,20 @@ public class SurveyResultController {
 		mav.addObject("surveyResultForm", surveyResultForm);
 		mav.addObject("categoryLst", surveyResultForm.getCategoryResultLst().stream().map(CategoryResultForm::getCategoryName).toList());
 		mav.addObject("pointLst", surveyResultForm.getCategoryResultLst().stream().map(CategoryResultForm::getCategoryPoint).toList());
+		mav.addObject("maxPoint", surveyResultForm.getCategoryResultLst().stream().max(Comparator.comparing(CategoryResultForm::getCategoryMaxPoint)).get().getCategoryMaxPoint());
+		// 1質問の最大得点数をチャート図の目盛りの間隔として設定
+		List<SurveyQuestion> questionLst = surveyQuestionService.getSurveyQuestionByContentIdOrderByOrderNo(survey.getId());
+		// 質問内の回答ポイント情報取得
+		List<AnswerPointDto> answerPointLstInQuestion = new ArrayList<AnswerPointDto>(); 
+		Type listType = new TypeToken<ArrayList<AnswerContentDto>>(){}.getType();
+		List<AnswerContentDto> answerLst = (new Gson()).fromJson(questionLst.get(0).getAnswerContent(), listType);
+		answerLst.forEach(answer ->{
+			if(answer.getAnswerPointLst() != null ) {
+				answerPointLstInQuestion.addAll(answer.getAnswerPointLst());
+			}
+		});
+		// 設定ポイントの最大値を目盛りの間隔に設定
+		mav.addObject("stepSize", answerPointLstInQuestion.stream().max(Comparator.comparing(AnswerPointDto::getPoint)).get().getPoint());
 		
 		if(CommonConstants.PARTTERN_SINGULAR.equals(survey.getSurveyPatternId())) {
 			mav.setViewName("surveySimulationResultForSingular");
@@ -217,13 +235,15 @@ public class SurveyResultController {
 					resultForm.setCategoryResultDetail(content.getSurveyResultDetail());
 					// 評価結果画像
 					try {
-						String imgFileName = content.getSurveyResultImage();
-						String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
-												+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + content.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
-						byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
-						String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
-								+ Base64.getEncoder().encodeToString(imgByte);
-						resultForm.setCategoryResultImgBase64(encodedImage);
+						if(!CommonConstants.PARTTERN_COMPLEX_POINT.equals(patternId) && !CommonConstants.PARTTERN_SINGULAR.equals(patternId)) {
+							String imgFileName = content.getSurveyResultImage();
+							String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
+													+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + content.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;
+							byte[] imgByte = Files.readAllBytes( new File(imgFile).toPath());
+							String encodedImage = "data:image/" + imgFileName.substring(imgFileName.lastIndexOf(".") +1 ) + ";base64," 
+									+ Base64.getEncoder().encodeToString(imgByte);
+							resultForm.setCategoryResultImgBase64(encodedImage);
+						}
 					} catch (IOException e) {
 						log.error("診断軸の評価結果画像ファイル取得にエラーが発生しました。",e);
 					}

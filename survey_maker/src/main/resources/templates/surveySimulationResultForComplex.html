@@ -5,7 +5,7 @@
 		<th:block th:replace="commonTop.html" />
 
 		<script th:src="@{/js/surveySimulation.js}"></script>
-		<script th:src="@{/js/Chart.bundle.min.js}"></script>
+		<script th:src="@{/js/chart.js}"></script>
 		<script th:src="@{/js/pointChart.js}"></script>
 		<style th:inline="text">
 			@media print,screen and (min-width: 768px) {
@@ -49,6 +49,8 @@
 						<input type="hidden" th:field="*{id}">
 						<input type="hidden" id="categoryLst" th:value="${categoryLst}">
 						<input type="hidden" id="pointLst" th:value="${pointLst}">
+						<input type="hidden" id="maxPoint" th:value="${maxPoint}">
+						<input type="hidden" id="stepSize" th:value="${stepSize}">
 						<input type="hidden" id="patternId" th:value="*{survey.surveyPatternId}">
 						
 						<div class="row mt-4 mb-2">

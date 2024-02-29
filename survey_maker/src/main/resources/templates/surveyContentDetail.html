@@ -4,7 +4,7 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveyContentList.js?params=202402071738}"></script>
+		<script th:src="@{/js/surveyContentList.js?params=202402291738}"></script>
 
 		<title>診断コンテンツ詳細画面</title>
 	</head>
@@ -318,7 +318,7 @@
 															<th th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_FLOW }" style="width:10%;">ポイント範囲</th>
 															<th style="width:15%;">タイトル</th>
 															<th style="width:60%;">評価内容</th>
-															<th th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">画像</th>
+															<th th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT && surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_SINGULAR}">画像</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -343,7 +343,7 @@
 																	エネルギーバランスがとれています。
 																</span>
 															</td>
-															<td class="align-middle" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">
+															<td class="align-middle" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT && surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_SINGULAR }">
 																<a th:onclick="|showimage('contentResultImg${stat.index}_${stat1.index}')|" class="btn btn-default btn-xs active">
 																	<img th:id="|contentResultImg${stat.index}_${stat1.index}|" th:src="${result.surveyResultImgBase64}" height="30" width="40" th:alt="${result.surveyResultImage}" class="img-thumbnail">
 																</a>

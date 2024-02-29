@@ -293,7 +293,7 @@ public class SurveyCategoryController {
 				
 				// 評価結果画像
 				try {
-					if(patternId !=CommonConstants.PARTTERN_COMPLEX_POINT ) {
+					if(patternId !=CommonConstants.PARTTERN_COMPLEX_POINT  && patternId != CommonConstants.PARTTERN_SINGULAR ) {
 						String imgFileName = content.getSurveyResultImage();
 						String imgFile = imgSavePath + FileUtil.FILE_DIRECTORY_DELIMITER + category.getSurveyManagementId() + FileUtil.FILE_DIRECTORY_DELIMITER +CommonConstants.SAVA_IMG_PATH_CATEGORY + FileUtil.FILE_DIRECTORY_DELIMITER 
 												+ category.getId() +  FileUtil.FILE_DIRECTORY_DELIMITER + content.getId() + FileUtil.FILE_DIRECTORY_DELIMITER + imgFileName;

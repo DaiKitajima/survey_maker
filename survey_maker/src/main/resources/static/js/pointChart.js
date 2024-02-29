@@ -3,6 +3,8 @@ $(function(){
 	// 画面ロード時、チャット生成
 	var categoryLst = $("#categoryLst").val().replace("[","").replace("]","").split(",");
 	var pointLst = $("#pointLst").val().replace("[","").replace("]","").split(",");
+	var maxPoint = ($("#maxPoint").val() == "" ? 100:$("#maxPoint").val());
+	var stepSize = ($("#stepSize").val() == "" ? 10:$("#stepSize").val());
 	// var myCanvas = "<canvas id='myCanvas' width='" + screen.availWidth + "px' height='"+ screen.availHeight + "px'></canvas>";
 	var myCanvas = "<canvas id='myCanvas' width='100%' height='100%'></canvas>";
 	var chartElement = $("#point-chart");
@@ -12,15 +14,15 @@ $(function(){
 	const data = {
 				  labels:categoryLst,
 				  datasets: [{
-				    label: 'ポイント図',
+				    label: '得点',
 				    data: pointLst,
 				    fill: true,
-				    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 				    borderColor: 'rgb(255, 99, 132)',
+/*				    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 				    pointBackgroundColor: 'rgb(255, 99, 132)',
 				    pointBorderColor: '#fff',
 				    pointHoverBackgroundColor: '#fff',
-				    pointHoverBorderColor: 'rgb(255, 99, 132)'
+				    pointHoverBorderColor: 'rgb(255, 99, 132)'*/
 				  }]
 				};
 				
@@ -29,11 +31,35 @@ $(function(){
 				  type: 'radar',
 				  data: data,
 				  options: {
-				    elements: {
-				      line: {
-				        borderWidth: 3
-				      }
-				    }
+			        scales: {
+						  r: {
+							beginAtZero: true,
+						    //グラフの最小値・最大値
+						    min: 0,
+						    max: parseInt(maxPoint),
+						    
+						    //背景色
+						    backgroundColor: 'snow',
+						    //グリッドライン
+						    grid: {
+						      color: 'pink',
+						    },
+						    //アングルライン
+						    angleLines: {
+						      color: 'green',
+						    },
+						    //各軸のラベル
+						    pointLabels: {
+						      color: 'blue',
+						    },
+						    //ポイントのラベル
+						    ticks: {
+								display: true,
+								showLabelBackdrop: false,
+								stepSize: stepSize,
+							},
+						  },
+					},
 				  },
 				};
 				

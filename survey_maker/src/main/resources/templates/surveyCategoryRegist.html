@@ -150,7 +150,7 @@
 									<span class="h6">評価結果</span><br>
 									<input name="categoryContentLst[0].surveyResult" class="form-control categoryContentLst" required/>
 								</div>
-								<div class="col-3 mt-2 mb-2" th:if="${survey.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">
+								<div class="col-3 mt-2 mb-2" th:if="${survey.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT && survey.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_SINGULAR }">
 									<span class="h6">診断結果画像</span><br>
 									<input class="form-control categoryContentLst" type="file" name="categoryContentLst[0].surveyResultImageFile" accept=".jpg,.jpeg,.png,.gif">
 								</div>
