@@ -14,7 +14,7 @@ $(function(){
 	const data = {
 				  labels:categoryLst,
 				  datasets: [{
-				    label: '得点',
+				    label: '',
 				    data: pointLst,
 				    fill: true,
 				    borderColor: 'rgb(255, 99, 132)',
@@ -31,6 +31,11 @@ $(function(){
 				  type: 'radar',
 				  data: data,
 				  options: {
+					plugins: {
+						legend: {
+								display: false,
+							},
+						},
 			        scales: {
 						  r: {
 							beginAtZero: true,
@@ -54,7 +59,7 @@ $(function(){
 						    },
 						    //ポイントのラベル
 						    ticks: {
-								display: true,
+								display: false,
 								showLabelBackdrop: false,
 								stepSize: stepSize,
 							},
