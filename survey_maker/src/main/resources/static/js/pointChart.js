@@ -18,8 +18,8 @@ $(function(){
 				    data: pointLst,
 				    fill: true,
 				    borderColor: 'rgb(255, 99, 132)',
-/*				    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-				    pointBackgroundColor: 'rgb(255, 99, 132)',
+				    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+/*				    pointBackgroundColor: 'rgb(255, 99, 132)',
 				    pointBorderColor: '#fff',
 				    pointHoverBackgroundColor: '#fff',
 				    pointHoverBorderColor: 'rgb(255, 99, 132)'*/
@@ -55,7 +55,7 @@ $(function(){
 						    },
 						    //各軸のラベル
 						    pointLabels: {
-						      color: 'blue',
+						      color: '#212529',
 						    },
 						    //ポイントのラベル
 						    ticks: {

@@ -5,6 +5,30 @@
 		<th:block th:replace="commonTop.html" />
 
 		<script th:src="@{/js/surveySimulation.js}"></script>
+		<style th:inline="text">
+			@media print,screen and (min-width: 768px) {
+			     .flexbox{
+							display: flex;
+							flex-direction: row;
+			    		}
+			    		
+				.flex-item {
+				  width: 50%;
+				  justify-content: flex-center;
+				}
+			}
+			
+			@media screen and (max-width: 767px) {
+			     .flexbox{
+							display: flex;
+							flex-direction: column;
+			    }
+				.flex-item {
+				  width: 100%;
+				  justify-content: flex-center;
+				}
+			}
+		</style>
 		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 	</head>
 
@@ -96,10 +120,10 @@
 							<div class="col d-flex justify-content-center">
 								<div>
 									<div class="row mb-2 ">
-										<div class="col ">
-											<a id="facebookShare" href="http://www.facebook.com/share.php?u={URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">Facebookにシェア</a>
-											<a id="twiterShare" href="https://twiter.com/share?url={URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">X（Twitter）にシェア</a>
-											<a id="lineShare" href="http://line.me/R/msg/text/?{URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">LINEにシェア</a>
+										<div class="col flexbox">
+											<a id="facebookShare" href="http://www.facebook.com/share.php?u={URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">Facebookにシェア</a>
+											<a id="twiterShare" href="https://twiter.com/share?url={URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">X（Twitter）にシェア</a>
+											<a id="lineShare" href="http://line.me/R/msg/text/?{URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">LINEにシェア</a>
 										</div>
 									</div>
 									<div class="row mb-2">

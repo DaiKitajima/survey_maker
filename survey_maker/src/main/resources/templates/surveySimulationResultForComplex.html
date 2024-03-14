@@ -17,19 +17,26 @@
 				.flex-item {
 				  width: 50%;
 				  justify-content: flex-center;
-				  padding: 2px;
+				}
+				.flex-item-chat {
+				  margin-bottom: 2.0rem !important;
+				  margin-right: 0.5rem !important;
+				  margin-left: 0.5rem !important;
+				  margin-top: 2.0rem !important;
 				}
 			}
 			
 			@media screen and (max-width: 767px) {
 			     .flexbox{
-							display: flex;
+							display:flex;
 							flex-direction: column;
 			    }
 				.flex-item {
 				  width: 100%;
 				  justify-content: flex-center;
-				  padding: 2px;
+				}
+				.flex-item-chat {
+					padding: 2vw;
 				}
 			}
 		</style>
@@ -67,15 +74,19 @@
 
 						<!-- 総合評価 -->
 						<div th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">
-							<div class="row mb-2">
+							<div class="row mb-4">
 								<div class="col-1"></div>
 								<div class="col-10 d-flex justify-content-center" >
-									<div class="flexbox">
+									<div class="flexbox" style="background-color:rgba(234, 238, 88, 0.4);">
 										<div class="flex-item">
-											<img id="surveyResultImg" class="img-thumbnail" th:src="*{surveySummaryImageBase64}" alt="総合評価画像">
+											<!-- <img id="surveyResultImg" class="img-thumbnail" th:src="*{surveySummaryImageBase64}" alt="総合評価画像"> -->
+											<img id="surveyResultImg" style="max-width:100%;" th:src="*{surveySummaryImageBase64}" alt="総合評価画像">
 										</div>
-										<div id="point-chart" class="border flex-item">
-										</div>
+										<div class="flex-item flex-item-chat" >
+											<div id="point-chart" style="background-color: white;border-radius: 30px;" >
+											</div>
+										</div >
+										
 									</div>
 								</div>
 <!-- 										<div class="row mb-2">
@@ -105,10 +116,8 @@
 							</div>
 							<div class="row mb-2" >
 								<div class="col-1"></div>
-								<div class="col-10 d-flex justify-content-start">
-									<div class="og_underline-bottom-border mt-2 mb-2" th:style="|border-bottom-color:${survey.surveyColor};|">
-										<span class="h6 title" th:text="*{surveySummaryTitle}">大見出し</span>
-									</div>
+								<div class="col-10 d-flex justify-content-start og_underline-bottom-border" th:style="|border-bottom-color:${survey.surveyColor};|">
+									<span class="h6 title" th:text="*{surveySummaryTitle}">大見出し</span>
 								</div>
 								<div class="col-1"></div>
 							</div>
@@ -214,10 +223,10 @@
 							<div class="col d-flex justify-content-center">
 								<div>
 									<div class="row mb-2 ">
-										<div class="col">
-											<a id="facebookShare" href="http://www.facebook.com/share.php?u={URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">Facebookにシェア</a>
-											<a id="twiterShare" href="https://twiter.com/share?url={URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">X（Twitter）にシェア</a>
-											<a id="lineShare" href="http://line.me/R/msg/text/?{URL}" class="btn btn-danger mb-2" rel="nofollow noopener" style="width:250px;" target="_blank">LINEにシェア</a>
+										<div class="col flexbox">
+											<a id="facebookShare" href="http://www.facebook.com/share.php?u={URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">Facebookにシェア</a>
+											<a id="twiterShare" href="https://twiter.com/share?url={URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">X（Twitter）にシェア</a>
+											<a id="lineShare" href="http://line.me/R/msg/text/?{URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">LINEにシェア</a>
 										</div>
 									</div>
 									<div class="row mb-2">
