@@ -6,9 +6,13 @@ $(function(){
 	var maxPoint = ($("#maxPoint").val() == "" ? 100:$("#maxPoint").val());
 	var stepSize = ($("#stepSize").val() == "" ? 10:$("#stepSize").val());
 	// var myCanvas = "<canvas id='myCanvas' width='" + screen.availWidth + "px' height='"+ screen.availHeight + "px'></canvas>";
-	var myCanvas = "<canvas id='myCanvas' width='100%' height='100%'></canvas>";
-	var chartElement = $("#point-chart");
-	chartElement.append(myCanvas);
+	var myCanvasPC = "<canvas id='myCanvasPC' width='100%' height='100%'></canvas>";
+	var myCanvasSP = "<canvas id='myCanvasSP' width='100%' height='100%'></canvas>";
+	
+	var chartElementPC = $("#point-chart-pc");
+	chartElementPC.append(myCanvasPC);
+	var chartElementSP = $("#point-chart-sp");
+	chartElementSP.append(myCanvasSP);
 	
 	// チャットのデータ設定
 	const data = {
@@ -70,7 +74,8 @@ $(function(){
 				
 	// チャット生成(ポイント複数軸（ポイント型）の場合のみ)
 	if($("#patternId").val() == "2"){
-		new Chart($("#myCanvas"), config);
+		new Chart($("#myCanvasPC"), config);
+		new Chart($("#myCanvasSP"), config);
 	}
 	
 })
