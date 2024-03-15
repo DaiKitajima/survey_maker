@@ -20,7 +20,7 @@
 				}
 				.flex-item-chat {
 					padding-bottom: 2% !important;
-					padding-top: 8% !important;
+					padding-top: 6% !important;
 					padding-right: 2% !important;
 					padding-left: 2% !important;
 /* 				  margin-bottom: 5% !important;
@@ -89,7 +89,7 @@
 													<!-- <img id="surveyResultImg" class="img-thumbnail" th:src="*{surveySummaryImageBase64}" alt="総合評価画像"> -->
 													<img id="surveyResultImg" style="width:100%;height:100%;" th:src="*{surveySummaryImageBase64}" alt="総合評価画像">
 												</div>
-												<div class="flex-item flex-item-chat" style="background-color:rgba(254, 250, 80);">
+												<div class="flex-item flex-item-chat" th:style="|background-color:__${survey.surveyResultColor}__;|">
 													<div id="point-chart-pc" style="background-color: white;border-radius: 30px;" >
 													</div>
 												</div>
@@ -150,7 +150,7 @@
 											<!-- <img id="surveyResultImg" class="img-thumbnail" th:src="*{surveySummaryImageBase64}" alt="総合評価画像"> -->
 											<img id="surveyResultImg" style="width:100%;height:100%;" th:src="*{surveySummaryImageBase64}" alt="総合評価画像">
 										</div>
-										<div class="flex-item flex-item-chat" style="background-color:rgba(254, 250, 80);">
+										<div class="flex-item flex-item-chat" th:style="|background-color:__${survey.surveyResultColor}__;|">
 											<div id="point-chart-sp" style="background-color: white;border-radius: 30px;" >
 											</div>
 										</div >

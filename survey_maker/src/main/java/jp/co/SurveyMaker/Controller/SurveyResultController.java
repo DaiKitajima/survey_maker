@@ -117,6 +117,7 @@ public class SurveyResultController {
 		surveyContentUpdateForm.setId(surveyContent.getId());
 		surveyContentUpdateForm.setUserId(surveyContent.getUserId());
 		surveyContentUpdateForm.setSurveyColor(surveyContent.getSurveyColor());
+		surveyContentUpdateForm.setSurveyResultColor(surveyContent.getSurveyResultColor());
 
 		try {
 			String imgFileName = surveyContent.getSurveyImage();

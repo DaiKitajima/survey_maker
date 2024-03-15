@@ -79,9 +79,15 @@
 									<img id="headerImg" th:src="*{surveyContent.surveyHeaderImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyHeaderImage}" class="img-thumbnail">
 								</a>
 							</div>
+						</div>
+						<div class="row">
 							<div class="col-2">
 								<span class="h6">コンテンツカラー</span>
 								<input type="color" name="surveyColor" class="form-control form-control-color" th:value="*{surveyContent.surveyColor}" disabled/>
+							</div>
+							<div class="col-2">
+								<span class="h6">診断結果メイン画像背景カラー</span>
+								<input type="color" name="surveyResultColor" class="form-control form-control-color" th:value="*{surveyContent.surveyResultColor}" disabled/>
 							</div>
 						</div>
 						<div class="row">

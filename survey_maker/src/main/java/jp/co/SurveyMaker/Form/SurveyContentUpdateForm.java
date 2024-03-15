@@ -43,6 +43,8 @@ public class SurveyContentUpdateForm {
 	
 	private String surveyColor;
 	
+	private String surveyResultColor;
+	
 	private Integer surveyPatternId;
 	
     private Integer summaryDisplayFlg;

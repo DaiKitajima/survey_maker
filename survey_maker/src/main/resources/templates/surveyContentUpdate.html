@@ -48,6 +48,18 @@
 									</div>
 								</div>
 							</div>
+							<div class="col-4 mt-2 mb-2">
+								<span class="h6">コンテンツカラー</span>
+								<div class="row">
+									<div class="col-2">
+										<input type="color" th:field="*{surveyColor}" class="form-control form-control-color" value="#198754" required/>
+									</div>
+									<div class="col-4">
+										<input id="inputColorCode" class="form-control" th:value="*{surveyColor}" readonly/>
+									</div>
+								</div>
+								
+							</div>
 						</div>
 						
 						<div class="row">
@@ -84,16 +96,15 @@
 								</div>
 							</div>
 							<div class="col-4 mt-2 mb-2">
-								<span class="h6">コンテンツカラー</span>
+								<span class="h6">診断結果メイン画像背景カラー</span>
 								<div class="row">
 									<div class="col-2">
-										<input type="color" th:field="*{surveyColor}" class="form-control form-control-color" value="#198754" required/>
+										<input type="color" th:field="*{surveyResultColor}" class="form-control form-control-color" value="#198754" required/>
 									</div>
 									<div class="col-4">
-										<input id="inputColorCode" class="form-control" th:value="*{surveyColor}" readonly/>
+										<input id="shadowColorCode" class="form-control" th:value="*{surveyResultColor}" readonly/>
 									</div>
 								</div>
-								
 							</div>
 						</div>
 						

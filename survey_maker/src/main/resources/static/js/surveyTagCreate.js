@@ -3,6 +3,7 @@ $(function(){
 	
 	// ディフォルトカラーのコード値設定
 	$('#inputColorCode').val($("#surveyColor").val()); 
+	$('#shadowColorCode').val($("#surveyResultColor").val()); 
 	
 	// 大見出しコピー
 	$('#mainTitleTag').on('click', function() {
@@ -41,6 +42,9 @@ $(function(){
 	// カラー選択フォーカスアウト時、コード値表示
 	$("#surveyColor").on('focusout', function() {
 		$('#inputColorCode').val($(this).val()); 
+	});
+	$("#surveyResultColor").on('focusout', function() {
+		$('#shadowColorCode').val($(this).val()); 
 	});
 	
 	$('#surveyTagCreateDialogSubmit').on('click', function() {

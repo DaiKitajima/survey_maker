@@ -93,6 +93,7 @@ public class SurveyContentController {
 		surveyContent.setId(surveyContentUpdateForm.getId());
 		surveyContent.setUserId(surveyContentUpdateForm.getUserId());
 		surveyContent.setSurveyColor(surveyContentUpdateForm.getSurveyColor());
+		surveyContent.setSurveyResultColor(surveyContentUpdateForm.getSurveyResultColor());
 		// アップロードファイル名取得(コンテンツ画像)
 		if(surveyContentUpdateForm.getSurveyImgFile() != null && StringUtil.isNotEmpty(surveyContentUpdateForm.getSurveyImgFile().getOriginalFilename()) ) {
 			String uploadFileName = surveyContentUpdateForm.getSurveyImgFile().getOriginalFilename();
@@ -151,6 +152,7 @@ public class SurveyContentController {
 		surveyContentUpdateForm.setId(surveyContent.getId());
 		surveyContentUpdateForm.setUserId(surveyContent.getUserId());
 		surveyContentUpdateForm.setSurveyColor(surveyContent.getSurveyColor());
+		surveyContentUpdateForm.setSurveyResultColor(surveyContent.getSurveyResultColor());
 
 		try {
 			String imgFileName = surveyContent.getSurveyImage();
