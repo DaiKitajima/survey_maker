@@ -56,7 +56,7 @@
 	<body style="background: #EEEEEE;">
 
 
-		<div class="container-fluid mb-5">
+		<div class="container-fluid mb-5 container-800">
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
 					<!-- 共通ナビヘッダー -->
@@ -85,8 +85,7 @@
 										<!-- 総合評価 -->
 										<div class="row mb-2" >
 											<div class="col flexbox " >
-												<div class="flex-item">
-													<!-- <img id="surveyResultImg" class="img-thumbnail" th:src="*{surveySummaryImageBase64}" alt="総合評価画像"> -->
+												<div class="flex-item" th:if="*{surveySummaryImageBase64}">
 													<img id="surveyResultImg" style="width:100%;height:100%;" th:src="*{surveySummaryImageBase64}" alt="総合評価画像">
 												</div>
 												<div class="flex-item flex-item-chat" th:style="|background-color:__${survey.surveyResultColor}__;|">
@@ -109,10 +108,10 @@
 										<!-- 軸の評価 -->
 										<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.summaryDisplayFlg != 1}" 
 											th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
-											<div class="col-8 d-flex justify-content-start">
+											<div class="col d-flex justify-content-start">
 												<div class="categoryResult" >
 													<h6 class="og_headline-left-border subTitle" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
-													<div class="progress" style="width:300px;">
+													<div class="progress" style="width:250px;">
 														<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 														</div>
 													</div>
@@ -146,8 +145,7 @@
 							<div class="row mb-4">
 								<div class="col d-flex justify-content-center" >
 									<div class="flexbox">
-										<div class="flex-item">
-											<!-- <img id="surveyResultImg" class="img-thumbnail" th:src="*{surveySummaryImageBase64}" alt="総合評価画像"> -->
+										<div class="flex-item" th:if="*{surveySummaryImageBase64}">
 											<img id="surveyResultImg" style="width:100%;height:100%;" th:src="*{surveySummaryImageBase64}" alt="総合評価画像">
 										</div>
 										<div class="flex-item flex-item-chat" th:style="|background-color:__${survey.surveyResultColor}__;|">
@@ -214,7 +212,7 @@
 								<div class="col-8 d-flex justify-content-center">
 									<div class="categoryResult" >
 										<div class="row mb-2">
-											<div class="col d-flex justify-content-center">
+											<div class="col d-flex justify-content-center" th:if="${categoryResult.categoryResultImgBase64}">
 												<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" width="600" alt="診断軸評価画像">
 											</div>
 										</div>
@@ -242,7 +240,7 @@
 								<div class="col">
 									<div>
 										<div class="row mb-2">
-											<div class="col d-flex justify-content-center">
+											<div class="col d-flex justify-content-center" th:if="${categoryResult.categoryResultImgBase64}">
 												<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" width="100%" alt="診断軸評価画像" >
 											</div>
 										</div>
@@ -272,12 +270,13 @@
 						<div class="row mt-4 mb-2">
 							<div class="col-1"></div>
 							<div class="col-10 d-flex justify-content-center">
-								<div>
+								<div style="width:100%;">
+									<div class="d-flex justify-content-center text-muted"><h6>この診断結果をシェアする</h6></div>
 									<div class="row mb-2 ">
 										<div class="col flexbox">
-											<a id="facebookShare" href="http://www.facebook.com/share.php?u={URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">Facebookにシェア</a>
-											<a id="twiterShare" href="https://twiter.com/share?url={URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">X（Twitter）にシェア</a>
-											<a id="lineShare" href="http://line.me/R/msg/text/?{URL}" class="btn btn-danger mb-1 me-1 flex-item" rel="nofollow noopener" style="width:250px;" target="_blank">LINEにシェア</a>
+											<a id="twiterShare" href="https://twiter.com/share?url={URL}" class="btn btn-danger mb-1 me-1 flex-item" style="background-color:#00acee;border-color:gray;" rel="nofollow noopener" target="_blank">X（Twitter）</a>
+											<a id="facebookShare" href="http://www.facebook.com/share.php?u={URL}" class="btn btn-danger mb-1 me-1 flex-item" style="background-color:#1877f2;border-color:gray;" rel="nofollow noopener" target="_blank">Facebook</a>
+											<a id="lineShare" href="http://line.me/R/msg/text/?{URL}" class="btn btn-danger mb-1 me-1 flex-item" style="background-color:#00b900;border-color:gray;" rel="nofollow noopener" target="_blank">LINE</a>
 										</div>
 									</div>
 									<div class="row mb-2">

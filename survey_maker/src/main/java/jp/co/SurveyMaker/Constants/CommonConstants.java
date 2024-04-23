@@ -16,6 +16,8 @@ public class CommonConstants {
 	public static final String SESSION_KEY_REFERER_LEVEL_THREE = "refererKeyLevelThree";
 	/** リファラ用のキー(その他画面用) */
 	public static final String SESSION_KEY_REFERER_OTHER = "refererKeyOther";
+	/** コンテンツ一覧検索条件用 */
+	public static final String SESSION_KEY_CONTENT_CONDITION = "contentSearchCondition";
 	
 	//==========================================================
 	// 表示

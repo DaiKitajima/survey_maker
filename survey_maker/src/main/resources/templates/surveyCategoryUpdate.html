@@ -38,7 +38,7 @@
 										<input type="color" id="surveyColor" name="surveyCategoryColor" class="form-control form-control-color" th:value="*{surveyCategoryColor}" required/>
 									</div>
 									<div class="col-4">
-										<input id="inputColorCode" class="form-control" th:value="*{surveyCategoryColor}" readonly/>
+										<input id="inputColorCode" class="form-control" th:value="*{surveyCategoryColor}" onblur="colorCodeCopyToContainer(this, this.parentElement.parentElement)"/>
 									</div>
 								</div>
 								

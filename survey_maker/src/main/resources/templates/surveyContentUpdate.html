@@ -33,7 +33,7 @@
 								<span class="h6 text-danger">※コンテンツパターン変更不可</span>
 							</div>
 							<div class="col-4 mt-2 mb-2">
-								<span class="h6">コンテンツ画像</span>
+								<span class="h6">コンテンツ画像(PC)</span>
 								<div class="input-group mb-3 previewContentImg">
 									<input th:field="*{surveyImage}"  class="form-control" th:value="高齢者健康調査.jpg" readonly />
 									<div class="input-group-append">
@@ -55,7 +55,7 @@
 										<input type="color" th:field="*{surveyColor}" class="form-control form-control-color" value="#198754" required/>
 									</div>
 									<div class="col-4">
-										<input id="inputColorCode" class="form-control" th:value="*{surveyColor}" readonly/>
+										<input id="inputColorCode" class="form-control" th:value="*{surveyColor}" onblur="colorCodeCopyToContainer(this, this.parentElement.parentElement)"/>
 									</div>
 								</div>
 								
@@ -102,7 +102,7 @@
 										<input type="color" th:field="*{surveyResultColor}" class="form-control form-control-color" value="#198754" required/>
 									</div>
 									<div class="col-4">
-										<input id="shadowColorCode" class="form-control" th:value="*{surveyResultColor}" readonly/>
+										<input id="shadowColorCode" class="form-control" th:value="*{surveyResultColor}" onblur="colorCodeCopyToContainer(this, this.parentElement.parentElement)"/>
 									</div>
 								</div>
 							</div>
@@ -110,9 +110,16 @@
 						
 						<div class="row">
 							<div class="col-10 mt-2 mb-2">
+								<span class="h6">コンテンツ説明</span>
+								<textarea class="form-control" rows="3" th:field="*{surveyDescription}" required></textarea>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-10 mt-2 mb-2">
 								<div class="row">
 									<div class="col-4">
-										<span class="h6">誘導エリア</span>
+										<span class="h6">診断結果ページ最下部（共通）の誘導エリア</span>
 									</div>
 									<div class="col d-flex justify-content-end mb-1">
 										<a class="btn btn-sm btn-success me-2" style="width:80px;" id="mainTitleTag">大見出し</a>
@@ -121,13 +128,6 @@
 									</div>
 								</div>
 								<textarea th:field="*{surveyInduceArea}" class="form-control" rows="3"></textarea>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-10 mt-2 mb-2">
-								<span class="h6">コンテンツ説明</span>
-								<textarea class="form-control" rows="3" th:field="*{surveyDescription}" required></textarea>
 							</div>
 						</div>
 						

@@ -192,7 +192,7 @@ public class SurveyQuestionController {
 		if(onFlowchartFlg) {
 			mav.setViewName("redirect:/surveyContentDetail/questionFlowChart?contentId=" + questionContentUpdateForm.getSurveyManagementId() + "&onFlowchartFlg=" + onFlowchartFlg );
 		}else {
-			mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId());
+			mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId() + "&questionReturnFlg=" + true );
 		}
 		
 		return mav;
@@ -329,7 +329,7 @@ public class SurveyQuestionController {
 			FileUtil.registTargetFile(savePath, CommonConstants.SAVA_IMG_NAME_QUESTION + questionContentUpdateForm.getQuestionOrderNo() , questionContentUpdateForm.getQuestionImgFile());
 		}
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId());
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId=" + questionContentUpdateForm.getSurveyManagementId() + "&questionReturnFlg=" + true );
 		return mav;
 	}
 	
@@ -371,7 +371,7 @@ public class SurveyQuestionController {
 			surveyQuestionService.questionOrderUpdate(questionOrderLst);
 		}
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId="+ contentId);
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId="+ contentId + "&questionReturnFlg=" + true  );
 		return mav;
 	}
 	
@@ -394,7 +394,7 @@ public class SurveyQuestionController {
 		// 質問順番更新
 		surveyQuestionService.questionOrderUpdate(questionOrderLst);
 		
-		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId="+ contentId);
+		mav.setViewName("redirect:/surveyContentList/contentDetail?contentId="+ contentId + "&questionReturnFlg=" + true );
 		return mav;
 	}
 }

@@ -203,7 +203,7 @@ public class FileUtil {
 				try {
 					// 保存先ファイルが既に存在している場合、削除
 					File targetFile = new File(targetDirStr + FILE_DIRECTORY_DELIMITER + targetFileName );
-					targetFile.deleteOnExit();
+					targetFile.delete();
 				} catch(Exception e) {
 					logger.error("ファイル削除処理でエラーが発生しました。", e);
 					throw e;
@@ -221,19 +221,16 @@ public class FileUtil {
 			fileSaveDir.setWritable(true, false);
 			fileSaveDir.setExecutable(true, false);
 
-
-			// ファイルアップロード
-			File uploadFileDest = null;
-
 			try {
-				uploadFileDest = new File(targetDirStr + FILE_DIRECTORY_DELIMITER + targetFileName);
-
-				uploadFile.transferTo(uploadFileDest);
+				Path uploadFilePath = Paths.get(targetDirStr + FILE_DIRECTORY_DELIMITER + targetFileName );
+				Files.copy(uploadFile.getInputStream(), uploadFilePath);
 
 				// 権限設定
+				File uploadFileDest = new File(targetDirStr + FILE_DIRECTORY_DELIMITER + targetFileName);
 				uploadFileDest.setReadable(true, false);
 				uploadFileDest.setWritable(true, false);
 				uploadFileDest.setExecutable(true, false);
+				
 			} catch (Exception e) {
 				logger.error("ファイルアップロード処理でエラーが発生しました。", e);
 				throw e;

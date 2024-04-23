@@ -29,8 +29,8 @@
 							<span class="h6">質問内容</span>
 						</div>
 						<div class="row">
-							<div class="col-4 mb-2">
-								<input th:field="*{questionTitle}" class="form-control" maxlength="250" required/>
+							<div class="col-8 mb-2">
+								<textarea rows="2" th:field="*{questionTitle}" class="form-control" maxlength="250" required></textarea>
 							</div>
 						</div>
 						
@@ -39,7 +39,7 @@
 						</div>
 						<div class="row">
 							<div class="col-4 mb-2">
-								<input class="form-control" type="file" th:field="*{questionImgFile}" accept=".jpg,.jpeg,.png,.gif" required>
+								<input class="form-control" type="file" th:field="*{questionImgFile}" accept=".jpg,.jpeg,.png,.gif" >
 							</div>
 						</div>
 								

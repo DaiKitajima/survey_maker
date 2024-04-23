@@ -280,3 +280,14 @@ function requiredCheck(formId) {
 
 	return isError;
 }
+
+/**
+ * カラーコードコピー
+ *
+ * @param コピー元要素
+ * @param コピー先要素
+ */
+function colorCodeCopyToContainer(colorElement, targetElement) {
+	const colorInput = targetElement.querySelector("input[type='color']");
+	colorInput.value= colorElement.value;
+}

@@ -63,6 +63,10 @@ $(function(){
 				if(questionCnt == parseInt(nextIndex) + 1){
 					$(this).text("診断する");
 				}
+				
+				// カーソルをTopへ移動
+				$('body,html').animate({scrollTop:0},100);
+				
 				return false;
 			}
 		}

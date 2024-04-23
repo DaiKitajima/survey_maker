@@ -11,7 +11,6 @@
 			@media print,screen and (min-width: 768px) {
 			     .disp-main-img {
 			     				width:100%; 
-			     				height:400px;
 			     				background-position:center center;
 			     				background-size:contain;
 								background-repeat:no-repeat;
@@ -22,7 +21,6 @@
 			@media screen and (max-width: 767px) {
 			     .disp-main-img{
 			     				width:100%; 
-			     				height:200px;
 			     				background-position:center center;
 			     				background-size:contain;
 								background-repeat:no-repeat;
@@ -33,15 +31,15 @@
 	</head>
 
 	<body style="background: #EEEEEE;">
-		<div class="container-fluid mb-5">
+		<div class="container-fluid mb-5 container-800">
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
 
 					<div class="row mb-1">
 						<div class="col-1">
 						</div>
-						<div class="col d-flex justify-content-center">
-							<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" height="50" width="100%" th:alt="${survey.surveyHeaderImage}" class="img-responsive" style="border: none;">
+						<div class="col ratio aspect-ratio-10 d-flex justify-content-center">
+							<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}" >
 						</div>
 						<div class="col-1">
 						</div>
@@ -49,7 +47,7 @@
 					<div class="row mb-5">
 						<div class="col-1">
 						</div>
-						<div class="col d-flex justify-content-center">
+						<div class="col ratio aspect-ratio-60 d-flex justify-content-center">
 							<div id="contentImg" class="disp-main-img"></div>
 						</div>
 						<div class="col-1">

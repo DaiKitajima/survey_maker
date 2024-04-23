@@ -78,3 +78,56 @@
 .summaryCont{
 	font-size:11px;
 }
+
+@media print,screen and (min-width: 768px) {
+			     .container-800 {
+			        width:800px;
+			    }
+			}
+			
+@media screen and (max-width: 767px) {
+			     .container-800{
+			        width:100%;
+			    }
+			}
+
+/* 縦横比 */
+.aspect-ratio-10{
+	--bs-aspect-ratio: 10%;
+}
+
+.aspect-ratio-20{
+	--bs-aspect-ratio: 20%;
+}
+
+.aspect-ratio-30{
+	--bs-aspect-ratio: 30%;
+}
+
+.aspect-ratio-40{
+	--bs-aspect-ratio: 40%;
+}
+
+.aspect-ratio-50{
+	--bs-aspect-ratio: 50%;
+}
+
+.aspect-ratio-60{
+	--bs-aspect-ratio: 60%;
+}
+
+.aspect-ratio-70{
+	--bs-aspect-ratio: 70%;
+}
+
+.aspect-ratio-80{
+	--bs-aspect-ratio: 80%;
+}
+
+.aspect-ratio-90{
+	--bs-aspect-ratio: 90%;
+}
+
+.aspect-ratio-100{
+	--bs-aspect-ratio: 100%;
+}

@@ -62,7 +62,7 @@
 								</th:block>
 							</div>
 							<div class="col-2">
-								<span class="h6">コンテンツ画像</span><br>
+								<span class="h6">コンテンツ画像(PC)</span><br>
 								<a onclick="showimage('contentImg')" class="btn btn-default btn-xs active" th:if="*{surveyContent.surveyImageBase64}">
 									<img id="contentImg" th:src="*{surveyContent.surveyImageBase64}" height="30" width="40" th:alt="*{surveyContent.surveyImage}" class="img-thumbnail">
 								</a>
@@ -92,16 +92,17 @@
 						</div>
 						<div class="row">
 							<div class="col-10">
-								<span class="h6">誘導エリア</span>
-								<textarea class="form-control" rows="3" th:field="*{surveyContent.surveyInduceArea}" disabled></textarea>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-10">
 								<span class="h6">コンテンツ説明</span>
 								<textarea class="form-control" rows="3" th:field="*{surveyContent.surveyDescription}" disabled></textarea>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-10">
+								<span class="h6">診断結果ページ最下部（共通）の誘導エリア</span>
+								<textarea class="form-control" rows="3" th:field="*{surveyContent.surveyInduceArea}" disabled></textarea>
+							</div>
+						</div>
+
 						<div class="row mt-2" th:if="*{surveyContent.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT }">
 							<div class="col-10">
 								<span class="text-danger" th:if="*{surveyContent.summaryDisplayFlg == 1}">※診断結果に軸評価内容非表示</span>
@@ -115,12 +116,12 @@
 				<!-- 診断軸・質問タブ START -->
 				<ul class="nav nav-tabs nav-pills">
 					<li class="nav-item bg-white fw-bold text-center" style="width:200px;">
-						<a href="#tabpanel1" class="nav-link active" data-bs-toggle="tab">
+						<a href="#tabpanel1" class="nav-link" th:classappend="${questionReturnFlg != true ? 'active' : '' }" data-bs-toggle="tab">
 							診&nbsp;断&nbsp;軸&nbsp;([[__*{#lists.size(categoryLst)}__]])
 						</a>
 					</li>
 					<li class="nav-item bg-white fw-bold text-center" style="width:200px;">
-						<a href="#tabpanel2" class="nav-link" data-bs-toggle="tab">
+						<a href="#tabpanel2" class="nav-link" th:classappend="${questionReturnFlg == true ? 'active' : '' }" data-bs-toggle="tab">
 							質問・回答&nbsp;([[__*{#lists.size(questionFormLst)}__]])
 						</a>
 					</li>
@@ -130,7 +131,7 @@
 				<div class="tab-content">
 
 					<!-- 診断軸 START -->
-					<div id="tabpanel1" class="card shadow-lg tab-pane active">
+					<div id="tabpanel1" class="card shadow-lg tab-pane" th:classappend="${questionReturnFlg != true ? 'active' : '' }">
 						<div class="card-header bg-white">
 							<div class="d-flex justify-content-between">
 								<div>
@@ -236,7 +237,7 @@
 																	</span>
 																</div>
 																<div class="col-9">
-																	<a th:onclick="|showimage('contentImgAbove${stat.index}')|" class="btn btn-default btn-xs active">
+																	<a th:onclick="|showimage('contentImgAbove${stat.index}')|" class="btn btn-default btn-xs active" th:if="${category.surveySummaryImageAboveBase64}">
 																		<img th:id="|contentImgAbove${stat.index}|" th:src="${category.surveySummaryImageAboveBase64}" height="30" width="40" th:alt="${category.surveySummaryImageAbove}" class="img-thumbnail">
 																	</a>
 																</div>
@@ -294,7 +295,7 @@
 																	</span>
 																</div>
 																<div class="col-9">
-																	<a th:onclick="|showimage('contentImgBelow${stat.index}')|" class="btn btn-default btn-xs active">
+																	<a th:onclick="|showimage('contentImgBelow${stat.index}')|" class="btn btn-default btn-xs active" th:if="${category.surveySummaryImageBelowBase64}">
 																		<img th:id="|contentImgBelow${stat.index}|" th:src="${category.surveySummaryImageBelowBase64}" height="30" width="40" th:alt="${category.surveySummaryImageBelow}" class="img-thumbnail">
 																	</a>
 																</div>
@@ -350,7 +351,7 @@
 																</span>
 															</td>
 															<td class="align-middle" th:if="*{surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT && surveyContent.surveyPatternId != T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_SINGULAR }">
-																<a th:onclick="|showimage('contentResultImg${stat.index}_${stat1.index}')|" class="btn btn-default btn-xs active">
+																<a th:onclick="|showimage('contentResultImg${stat.index}_${stat1.index}')|" class="btn btn-default btn-xs active" th:if="${result.surveyResultImgBase64}" >
 																	<img th:id="|contentResultImg${stat.index}_${stat1.index}|" th:src="${result.surveyResultImgBase64}" height="30" width="40" th:alt="${result.surveyResultImage}" class="img-thumbnail">
 																</a>
 															</td>
@@ -367,7 +368,7 @@
 							</div>
 						</div>
 					</div>
-					<div id="tabpanel2" class="card shadow-lg tab-pane">
+					<div id="tabpanel2" class="card shadow-lg tab-pane" th:classappend="${questionReturnFlg == true ? 'active' : '' }">
 						<!-- 質問コンテンツ -->
 						<div class="card shadow-lg mb-2">
 							<div class="card-body">
@@ -450,7 +451,7 @@
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;">
 													<input type="hidden" th:value="${question.questionOrderNo}" id="questionOrderNo">
-													<span th:text="|${stat.count}、${question.questionTitle}|"></span>
+													<span th:utext="|${stat.count}、${question.questionTitle}|"></span>
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;">
 													<ul>
@@ -606,7 +607,7 @@
 
 												</td>
 												<td class="align-middle text-left" style="white-space: nowrap;">
-													<a th:onclick="|showimage('contentQuestionImg__${stat.index}__')|" class="btn btn-default btn-xs active">
+													<a th:onclick="|showimage('contentQuestionImg__${stat.index}__')|" class="btn btn-default btn-xs active" th:if="${question.questionImageBase64}" >
 														<img th:id="contentQuestionImg__${stat.index}__" th:src="${question.questionImageBase64}" height="40" width="50" th:alt="${question.questionImage}" class="img-thumbnail">
 													</a>
 												</td>

@@ -89,12 +89,12 @@ public class SurveyContentListController {
 
 		// 検索条件設定
 		SurveyManagement condition = new SurveyManagement();
-		if(	session.getAttribute("contentSearchCondition") == null ) {
+		if(	session.getAttribute(CommonConstants.SESSION_KEY_CONTENT_CONDITION) == null ) {
 			condition.setUserId(user.getId());
 			condition.setSurveyName(null);
 			condition.setSurveyPatternId(null);
 		}else {
-			condition = (SurveyManagement) session.getAttribute("contentSearchCondition");
+			condition = (SurveyManagement) session.getAttribute(CommonConstants.SESSION_KEY_CONTENT_CONDITION);
 		}
 
 		SurveyContentListForm surveyContentListForm = new SurveyContentListForm();
@@ -187,7 +187,7 @@ public class SurveyContentListController {
 		condition.setSurveyName(surveyContentListForm.getSurveyNameForSearch());
 		condition.setSurveyPatternId(surveyContentListForm.getSurveyPatternIdForSearch());
 
-		session.setAttribute("contentSearchCondition", condition);
+		session.setAttribute(CommonConstants.SESSION_KEY_CONTENT_CONDITION, condition);
 		mav.setViewName("redirect:/surveyContentList");
 		return mav;
 	}
@@ -196,7 +196,8 @@ public class SurveyContentListController {
 	public ModelAndView surveyContentDetail(
 			HttpServletRequest request,
 			HttpSession session,
-			@RequestParam(value="contentId", required = true, defaultValue="-1") Integer contentId ) throws Exception {
+			@RequestParam(value="contentId", required = true, defaultValue="-1") Integer contentId,
+			@RequestParam(value="questionReturnFlg", required = false) boolean questionReturnFlg ) throws Exception {
 		ModelAndView mav = new ModelAndView();
 		// セッションからユーザ情報取得して、コンテンツ所属検証
 		User user = (User) session.getAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
@@ -238,6 +239,8 @@ public class SurveyContentListController {
 
 		mav.addObject("surveyContentDetailForm", surveyContentDetailForm );
 
+		mav.addObject("questionReturnFlg", questionReturnFlg);
+		
 		// リファラ
 		mav.addObject("referer", request.getHeader("referer"));
 		mav.setViewName("surveyContentDetail");

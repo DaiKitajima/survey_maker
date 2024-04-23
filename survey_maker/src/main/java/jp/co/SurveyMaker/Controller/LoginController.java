@@ -42,6 +42,11 @@ public class LoginController {
 		User resultUser = null;
 		try {
 			resultUser = loginService.login(user);
+			
+			// セッションクリア
+			session.removeAttribute(CommonConstants.SESSION_KEY_USER_LOGIN);
+			session.removeAttribute(CommonConstants.SESSION_KEY_CONTENT_CONDITION);
+			
 		} catch (Exception e) {
 			// ログイン失敗
 			mav.addObject("loginForm", new LoginForm());

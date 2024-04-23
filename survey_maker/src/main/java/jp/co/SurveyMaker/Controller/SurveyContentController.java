@@ -162,7 +162,7 @@ public class SurveyContentController {
 					+ Base64.getEncoder().encodeToString(imgByte);
 			surveyContentUpdateForm.setSurveyImageBase64(encodedImage);
 		} catch (IOException e) {
-			log.error("コンテンツ画像ファイル取得にエラーが発生しました。",e);
+			log.error("コンテンツPC画像ファイル取得にエラーが発生しました。",e);
 		}
 		
 		try {
