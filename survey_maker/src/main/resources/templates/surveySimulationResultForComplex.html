@@ -213,7 +213,7 @@
 									<div class="categoryResult" >
 										<div class="row mb-2">
 											<div class="col d-flex justify-content-center" th:if="${categoryResult.categoryResultImgBase64}">
-												<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" width="600" alt="診断軸評価画像">
+												<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" width="100%" height="300px" alt="診断軸評価画像">
 											</div>
 										</div>
 										<!-- 軸の結果詳細 -->
@@ -241,7 +241,7 @@
 									<div>
 										<div class="row mb-2">
 											<div class="col d-flex justify-content-center" th:if="${categoryResult.categoryResultImgBase64}">
-												<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" width="100%" alt="診断軸評価画像" >
+												<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" width="100%" height="200px" alt="診断軸評価画像" >
 											</div>
 										</div>
 										
