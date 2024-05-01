@@ -4,7 +4,7 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveySimulation.js}"></script>
+		<script th:src="@{/js/surveySimulation.js?params=202405011722}"></script>
 		<script th:src="@{/js/chart.js}"></script>
 		<script th:src="@{/js/pointChart.js?param=202403011204}"></script>
 		<style th:inline="text">
@@ -119,6 +119,8 @@
 											</div>
 										</div>
 										
+										<div style="width:100%;height:40px;"></div>
+										
 										<!-- 共通誘導エリア -->
 										<div class="row mb-2" th:if="${survey.surveyInduceArea != ''}">
 											<div class="col d-flex justify-content-start">
@@ -186,6 +188,7 @@
 											</div>
 										</div>
 										
+										<div style="width:100%;height:40px;"></div>
 										<!-- 共通誘導エリア -->
 										<div class="row mb-2" th:if="${survey.surveyInduceArea != ''}">
 											<div class="col d-flex justify-content-start">
@@ -220,6 +223,8 @@
 												
 											</div>
 										</div>
+										
+										<div style="width:100%;height:40px;"></div>
 										<!-- 共通誘導エリア -->
 										<div class="row mb-2">
 											<div class="col summaryCont" th:utext="${survey.surveyInduceArea}">
@@ -250,6 +255,8 @@
 													<div class="row mb-2 mt-4">
 														<div class="col summaryCont" th:utext="${categoryResult.categoryResultDetail}"></div>
 													</div>
+													
+													<div style="width:100%;height:40px;"></div>
 													<!-- 共通誘導エリア -->
 													<div class="row mb-2">
 														<div class="col summaryCont" th:utext="${survey.surveyInduceArea}"></div>

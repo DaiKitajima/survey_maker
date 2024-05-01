@@ -4,7 +4,7 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 
-		<script th:src="@{/js/surveySimulation.js}"></script>
+		<script th:src="@{/js/surveySimulation.js?params=202405011722}"></script>
 		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 		<!-- progress bar -->
 		<link rel="stylesheet" th:href="@{/css/progressBar.css}"/>
@@ -27,7 +27,7 @@
 	<body style="background: #EEEEEE;" th:object="${surveySimulationForm}">
 		<div class="container-fluid mb-5 container-800 padding-none">
 			<div class="card shadow-lg mb-2">
-				<div class="card-body padding-none">
+				<div class="card-body">
 					<!-- 共通ナビヘッダー -->
 					<th:block th:replace="surveyNav.html" />
 				
