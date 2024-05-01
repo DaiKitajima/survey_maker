@@ -31,24 +31,28 @@
 	</head>
 
 	<body style="background: #EEEEEE;">
-		<div class="container-fluid mb-5 container-800">
+		<div class="container-fluid mb-5 container-800 padding-none">
 			<div class="card shadow-lg mb-2">
-				<div class="card-body">
+				<div class="card-body for-pc">
 
 					<div class="row mb-1">
 						<div class="col-1">
 						</div>
-						<div class="col ratio aspect-ratio-10 d-flex justify-content-center">
-							<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}" >
+						<div class="col d-flex justify-content-center">
+							<div class="ratio aspect-ratio-10">
+								<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}" >
+							</div>
 						</div>
 						<div class="col-1">
 						</div>
 					</div>
-					<div class="row mb-5">
+					<div class="row mb-4">
 						<div class="col-1">
 						</div>
-						<div class="col ratio aspect-ratio-60 d-flex justify-content-center">
-							<div id="contentImg" class="disp-main-img"></div>
+						<div class="col d-flex justify-content-center">
+							<div class="ratio aspect-ratio-60">
+								<div id="contentImg" class="disp-main-img"></div>
+							</div>
 						</div>
 						<div class="col-1">
 						</div>
@@ -60,6 +64,34 @@
 							<span th:utext="${survey.surveyDescription}" class="h6 text-muted"></span>
 						</div>
 						<div class="col-1">
+						</div>
+					</div>
+					<div class="row mt-4 mb-5">
+						<div class="col d-flex justify-content-center ">
+							<a th:href="@{/api/surveyExecute?contentId=__${survey.id}__&userId=__${survey.userId}__}" class="btn btn-warning btn-lg text-light" style="width:300px;border-radius: 40px;" ><span class="h2">　診断スタート　▶</span></a>
+						</div>
+					</div>
+
+				</div>
+				<div class="card-body for-sp">
+
+					<div class="row mb-1">
+						<div class="col d-flex justify-content-center">
+							<div class="ratio aspect-ratio-10">
+								<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}" >
+							</div>
+						</div>
+					</div>
+					<div class="row mb-4">
+						<div class="col d-flex justify-content-center">
+							<div class="ratio aspect-ratio-60">
+								<div id="contentImg" class="disp-main-img"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row mt-2 mb-5">
+						<div class="col d-flex justify-content-center">
+							<span th:utext="${survey.surveyDescription}" class="h6 text-muted"></span>
 						</div>
 					</div>
 					<div class="row mt-4 mb-5">

@@ -5,6 +5,7 @@
 		<th:block th:replace="commonTop.html" />
 
 		<script th:src="@{/js/surveyContentDetail.js}"></script>
+		<script th:src="@{/js/surveyTagCreate.js}"></script>
 		<title>診断質問コンテンツ更新画面</title>
 	</head>
 
@@ -28,9 +29,12 @@
 						<div class="row">
 							<span class="h6">質問内容</span>
 						</div>
-						<div class="row">
-							<div class="col-8 mb-2">
+						<div class="row mb-2">
+							<div class="col-8 ">
 								<textarea rows="2" th:field="*{questionTitle}" class="form-control" maxlength="250" required></textarea>
+							</div>
+							<div class="col">
+								<a class="btn btn-sm btn-success me-2" style="width:90px;" id="fontSizeTag">フォントサイズ</a>
 							</div>
 						</div>
 						
@@ -124,5 +128,6 @@
 		
 		<!-- ダイアログのインクルード -->
 		<th:block th:replace="questionAnswerDeleteConfirmDialog.html" />
+		<th:block th:replace="surveyTagCreateDialog.html" />
 	</body>
 </html>

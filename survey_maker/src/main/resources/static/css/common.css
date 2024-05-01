@@ -83,12 +83,33 @@
 			     .container-800 {
 			        width:800px;
 			    }
+				.for-pc { display:block; }
+				.for-sp { display:none; }
+				.padding-none{
+					/* PCバージョンの場合、無効 */
+				}
+				.qustionImgRange{
+					width:600px;
+					height:380px;
+					background: #FFFFFF;
+				}
 			}
 			
 @media screen and (max-width: 767px) {
 			     .container-800{
 			        width:100%;
 			    }
+				.for-pc { display:none; }
+				.for-sp { display:block; }
+				.padding-none{
+					padding-left:0;
+					padding-right:0;
+				}
+				.qustionImgRange{
+					width:100%;
+					height:auto;
+					background: #FFFFFF;
+				}
 			}
 
 /* 縦横比 */

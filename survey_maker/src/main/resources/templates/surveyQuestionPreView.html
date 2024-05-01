@@ -16,23 +16,18 @@
 			}
 			
 			@media screen and (max-width: 767px) {
-			     .progress-bar-item-width{
+			    .progress-bar-item-width{
 			        width:9.5% !important;
 			    }
 			}
 			
-			.qustionImgRange{
-				width:600px;
-				height:400px;
-				background: #FFFFFF;
-			}
 		</style>
 	</head>
 
 	<body style="background: #EEEEEE;" th:object="${surveySimulationForm}">
-		<div class="container-fluid mb-5 container-800">
+		<div class="container-fluid mb-5 container-800 padding-none">
 			<div class="card shadow-lg mb-2">
-				<div class="card-body">
+				<div class="card-body padding-none">
 					<!-- 共通ナビヘッダー -->
 					<th:block th:replace="surveyNav.html" />
 				
@@ -50,7 +45,7 @@
 							<div class="row mt-5 mb-3">
 								<div class="col d-flex justify-content-center">
 									<input type="hidden" th:name="answerResultLst[__${stat.index}__].questionId" th:value="${question.id}">
-									<div>
+									<div style="width:90%;">
 										<span class="h2" th:text="|Q__${question.questionOrderNo}__|"></span><br>
 										<p class="text-muted h3" th:utext="${question.questionTitle}"></p>
 										
