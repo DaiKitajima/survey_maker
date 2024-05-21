@@ -30,21 +30,20 @@
 		</style>
 	</head>
 
-	<body style="background: #EEEEEE;">
-		<div class="container-fluid mb-5 container-800 padding-none">
-			<div class="card shadow-lg mb-2">
+	<body style="background: #FFFFFF;font-family:'Noto Sans JP';font-size:16px;line-height:1.8em;">
+		<div class="container-fluid mb-5 container-870 padding-none">
+			<div class="card mb-2" style="border:none;">
 				<div class="card-body for-pc">
 
 					<div class="row mb-1">
 						<div class="col-1">
 						</div>
-						<div class="col d-flex justify-content-center">
+						<div class="col-6 d-flex justify-content-center">
 							<div class="ratio aspect-ratio-10">
 								<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}" >
 							</div>
 						</div>
-						<div class="col-1">
-						</div>
+						
 					</div>
 					<div class="row mb-4">
 						<div class="col-1">
@@ -53,8 +52,6 @@
 							<div class="ratio aspect-ratio-60">
 								<div id="contentImg" class="disp-main-img"></div>
 							</div>
-						</div>
-						<div class="col-1">
 						</div>
 					</div>
 					<div class="row mt-2 mb-5">
@@ -68,7 +65,7 @@
 					</div>
 					<div class="row mt-4 mb-5">
 						<div class="col d-flex justify-content-center ">
-							<a th:href="@{/api/surveyExecute?contentId=__${survey.id}__&userId=__${survey.userId}__}" class="btn btn-warning btn-lg text-light" style="width:300px;border-radius: 40px;" ><span class="h2">　診断スタート　▶</span></a>
+							<a th:href="@{/api/surveyExecute?contentId=__${survey.id}__&userId=__${survey.userId}__}" class="btn btn-warning btn-lg text-light" th:style="|width:300px;border-radius: 40px;background-color:${survey.surveyColor};|" ><span class="h2">診断スタート　▶</span></a>
 						</div>
 					</div>
 
@@ -76,7 +73,7 @@
 				<div class="card-body for-sp">
 
 					<div class="row mb-1">
-						<div class="col d-flex justify-content-center">
+						<div class="col-8 d-flex justify-content-center">
 							<div class="ratio aspect-ratio-10">
 								<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}" >
 							</div>
@@ -96,13 +93,11 @@
 					</div>
 					<div class="row mt-4 mb-5">
 						<div class="col d-flex justify-content-center ">
-							<a th:href="@{/api/surveyExecute?contentId=__${survey.id}__&userId=__${survey.userId}__}" class="btn btn-warning btn-lg text-light" style="width:300px;border-radius: 40px;" ><span class="h2">　診断スタート　▶</span></a>
+							<a th:href="@{/api/surveyExecute?contentId=__${survey.id}__&userId=__${survey.userId}__}" class="btn btn-warning btn-lg text-light" th:style="|width:300px;border-radius: 40px;background-color:${survey.surveyColor};|" ><span class="h2">診断スタート　▶</span></a>
 						</div>
 					</div>
-
 				</div>
 			</div>
-			
 		</div>
 
 	</body>

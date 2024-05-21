@@ -49,14 +49,34 @@
 		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 	</head>
 
-	<body style="background: #EEEEEE;">
-
-
-		<div class="container-fluid mb-5 container-800 padding-none">
-			<div class="card shadow-lg mb-2">
+	<body style="background: #FFFFFF;font-family:'Noto Sans JP';font-size:16px;line-height:1.8em;">
+		<div class="container-fluid mb-5 container-870 padding-none">
+			<div class="card mb-2" style="border:none;">
 				<div class="card-body">
-					<!-- 共通ナビヘッダー -->
-					<th:block th:replace="surveyNav.html" />
+					<!-- コンテンツヘッダ画像 -->
+					<div class="row mb-3 for-pc">
+						<div class="col-6 d-flex justify-content-center">
+							<div class="ratio aspect-ratio-10">
+								<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}">
+							</div>
+						</div>
+					</div>
+					<div class="row mb-3 for-sp">
+						<div class="col-8 d-flex justify-content-center">
+							<div class="ratio aspect-ratio-10">
+								<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}">
+							</div>
+						</div>
+					</div>
+					<!-- ナビ START -->
+					<nav class="navbar navbar-expand-lg navbar-dark nav-fill bg-info mb-2 pt-0 pb-0" >
+						<div class="container-fluid d-flex justify-content-center" th:style="|background-color:${survey.surveyColor}|">
+							<div class="navbar-brand ms-3 me-5">
+								<span class="h5" th:text="${survey.surveyName}">高齢者健康調査</span>
+							</div>
+						</div>
+					</nav>
+					<!-- ナビ END -->
 					
 					<th:block th:object="${surveyResultForm}" >
 						<input type="hidden" th:field="*{id}">
@@ -75,8 +95,8 @@
 						<!--PC版 複数ポイント型のコンテンツ-->
 						<div class="for-pc" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">
 							<div class="row mb-4">
-								<div class="col-2"></div>
-								<div class="col-8 d-flex justify-content-center" >
+								<div class="col-1"></div>
+								<div class="col-10 d-flex justify-content-center" >
 									<div class="" >
 										<!-- 総合評価 -->
 										<div class="row mb-2" >
@@ -135,7 +155,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-2"></div>
+								<div class="col-1"></div>
 							</div>
 						</div>
 						
@@ -209,8 +229,8 @@
 						<!-- 複数（結果加算型） PC -->
 						<div class="for-pc">
 							<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && __${categoryResult.categoryId}__ == __*{topCategoryId}__ }" >
-								<div class="col-2"></div>
-								<div class="col-8 d-flex justify-content-center">
+								<div class="col-1"></div>
+								<div class="col-10 d-flex justify-content-center">
 									<div class="categoryResult" style="width:100%;">
 										<div class="row mb-2">
 											<div class="col d-flex justify-content-center" th:if="${categoryResult.categoryResultImgBase64}">
@@ -233,7 +253,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-2"></div>
+								<div class="col-1"></div>
 							</div>
 						</div>
 						
@@ -290,7 +310,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="row mb-2">
+									<div class="row mb-2" style="margin-top:50px;">
 										<div class="col d-flex justify-content-center">
 											<a style="text-decoration: none;" th:href="@{/api/top?contentId=__${survey.id}__&userId=__${survey.userId}__}" ><span class="text-muted">診断トップに戻る</span></a>
 										</div>

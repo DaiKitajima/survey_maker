@@ -24,7 +24,7 @@
 		</style>
 	</head>
 
-	<body style="background: #EEEEEE;" th:object="${surveySimulationForm}">
+	<body style="background: #EEEEEE;font-family:'Noto Sans JP';font-size:16px;line-height:1.8em;" th:object="${surveySimulationForm}">
 		<div class="container-fluid mb-5 container-800 padding-none">
 			<div class="card shadow-lg mb-2">
 				<div class="card-body">
@@ -50,10 +50,8 @@
 										<p class="text-muted h3" th:utext="${question.questionTitle}"></p>
 										
 										<div class="d-flex justify-content-center" th:if="${question.questionImageBase64}">
-											<div class="qustionImgRange" >
-												<div class="ratio aspect-ratio-60" >
-													<img th:id="questionImg__${stat.index}__" th:src="${question.questionImageBase64}" th:alt="${question.questionImage}" >
-												</div>
+											<div class="image-container" >
+												<img th:id="questionImg__${stat.index}__" th:src="${question.questionImageBase64}" th:alt="${question.questionImage}" >
 											</div>
 										</div>
 										
@@ -72,7 +70,7 @@
 						</div>
 						<div class="row mt-4 mb-4">
 							<div class="col d-flex justify-content-center">
-								<button class="btn btn-sm btn-success" style="width:150px;" id="nextQuestion">次へ</button>
+								<button class="btn btn-sm btn-success" th:style="|width:150px;background-color: *{surveyContent.surveyColor};|" id="nextQuestion">次へ</button>
 							</div>
 						</div>
 					</form>
