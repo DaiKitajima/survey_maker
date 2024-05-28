@@ -1,7 +1,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 		<!-- コンテンツヘッダ画像 -->
-		<div class="row mb-1">
-			<div class="col d-flex justify-content-center">
+		<div class="row mb-3 for-pc">
+			<div class="col-6 d-flex justify-content-center">
+				<div class="ratio aspect-ratio-10">
+					<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}">
+				</div>
+			</div>
+		</div>
+		<div class="row mb-3 for-sp">
+			<div class="col-8 d-flex justify-content-center">
 				<div class="ratio aspect-ratio-10">
 					<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}">
 				</div>

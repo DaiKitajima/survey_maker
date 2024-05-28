@@ -23,10 +23,6 @@
 					padding-top: 6% !important;
 					padding-right: 2% !important;
 					padding-left: 2% !important;
-/* 				  margin-bottom: 5% !important;
-				  margin-right: 0.5rem !important;
-				  margin-left: 0.5rem !important;
-				  margin-top: 5% !important; */
 				}
 				
 			}
@@ -53,30 +49,8 @@
 		<div class="container-fluid mb-5 container-870 padding-none">
 			<div class="card mb-2" style="border:none;">
 				<div class="card-body">
-					<!-- コンテンツヘッダ画像 -->
-					<div class="row mb-3 for-pc">
-						<div class="col-6 d-flex justify-content-center">
-							<div class="ratio aspect-ratio-10">
-								<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}">
-							</div>
-						</div>
-					</div>
-					<div class="row mb-3 for-sp">
-						<div class="col-8 d-flex justify-content-center">
-							<div class="ratio aspect-ratio-10">
-								<img id="headerImg" th:src="${survey.surveyHeaderImageBase64}" th:alt="${survey.surveyHeaderImage}">
-							</div>
-						</div>
-					</div>
-					<!-- ナビ START -->
-					<nav class="navbar navbar-expand-lg navbar-dark nav-fill bg-info mb-2 pt-0 pb-0" >
-						<div class="container-fluid d-flex justify-content-center" th:style="|background-color:${survey.surveyColor}|">
-							<div class="navbar-brand ms-3 me-5">
-								<span class="h5" th:text="${survey.surveyName}">高齢者健康調査</span>
-							</div>
-						</div>
-					</nav>
-					<!-- ナビ END -->
+					<!-- 共通ナビヘッダー -->
+					<th:block th:replace="surveyNav.html" />
 					
 					<th:block th:object="${surveyResultForm}" >
 						<input type="hidden" th:field="*{id}">
@@ -95,8 +69,7 @@
 						<!--PC版 複数ポイント型のコンテンツ-->
 						<div class="for-pc" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_POINT}">
 							<div class="row mb-4">
-								<div class="col-1"></div>
-								<div class="col-10 d-flex justify-content-center" >
+								<div class="col d-flex justify-content-center" >
 									<div class="" >
 										<!-- 総合評価 -->
 										<div class="row mb-2" >
@@ -155,7 +128,6 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-1"></div>
 							</div>
 						</div>
 						
@@ -229,12 +201,13 @@
 						<!-- 複数（結果加算型） PC -->
 						<div class="for-pc">
 							<div class="row mb-4" th:each="categoryResult,stat:*{categoryResultLst}" th:if="*{survey.surveyPatternId == T(jp.co.SurveyMaker.Constants.CommonConstants).PARTTERN_COMPLEX_TOTAL && __${categoryResult.categoryId}__ == __*{topCategoryId}__ }" >
-								<div class="col-1"></div>
-								<div class="col-10 d-flex justify-content-center">
+								<div class="col d-flex justify-content-center">
 									<div class="categoryResult" style="width:100%;">
 										<div class="row mb-2">
 											<div class="col d-flex justify-content-center" th:if="${categoryResult.categoryResultImgBase64}">
-												<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" width="100%" height="300px" alt="診断軸評価画像">
+												<div class="image-container" >
+													<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" alt="診断軸評価画像">
+												</div>
 											</div>
 										</div>
 										<!-- 軸の結果詳細 -->
@@ -253,7 +226,6 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-1"></div>
 							</div>
 						</div>
 						
@@ -264,7 +236,9 @@
 									<div>
 										<div class="row mb-2">
 											<div class="col d-flex justify-content-center" th:if="${categoryResult.categoryResultImgBase64}">
-												<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" width="100%" height="200px" alt="診断軸評価画像" >
+												<div class="image-container" >
+													<img th:id="categoryImg__${stat.index}__" th:src="${categoryResult.categoryResultImgBase64}" alt="診断軸評価画像" >
+												</div>
 											</div>
 										</div>
 										
@@ -291,8 +265,7 @@
 						
 						<!-- コンテンツシェア(共通) -->
 						<div class="row mt-4 mb-2">
-							<div class="col-1"></div>
-							<div class="col-10 d-flex justify-content-center">
+							<div class="col d-flex justify-content-center">
 								<div style="width:100%;">
 									<div class="d-flex justify-content-center text-muted"><h6>この診断結果をシェアする</h6></div>
 									<div class="row mb-2 ">
@@ -317,7 +290,6 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-1"></div>
 						</div>
 
 					</th:block>
