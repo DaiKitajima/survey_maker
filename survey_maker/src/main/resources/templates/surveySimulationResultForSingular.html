@@ -32,7 +32,7 @@
 		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
 	</head>
 
-	<body style="background: #FFFFFF;font-family:'Noto Sans JP';font-size:16px;line-height:1.8em;">
+	<body class="body-area-style">
 
 		<div class="container-fluid mb-5 container-870 padding-none">
 			<div class="card mb-2" style="border:none;">
@@ -65,13 +65,13 @@
 										<div class="row mb-2" >
 											<div class="col d-flex justify-content-start">
 												<div class="og_underline-bottom-border mt-2 mb-2" th:style="|width:100%;border-bottom-color:${survey.surveyColor};|">
-													<span class="h6 title" th:text="*{surveySummaryTitle}">大見出し</span>
+													<span th:text="*{surveySummaryTitle}">大見出し</span>
 												</div>
 											</div>
 										</div>
 										<div class="row mb-4 " >
 											<div class="col d-flex justify-content-start">
-												<div style="width:100%;" class="summaryCont" th:utext="*{surveySummaryDetail}"></div>
+												<div style="width:100%;" th:utext="*{surveySummaryDetail}"></div>
 											</div>
 										</div>
 										
@@ -79,13 +79,13 @@
 										<div class="row mt-5 mb-5" th:each="categoryResult,stat:*{categoryResultLst}" th:if="${stat.first}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 											<div class="col d-flex justify-content-start">
 												<div class="categoryResult" style="width:100%;">
-													<h6 class="og_headline-left-border subTitle" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+													<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
 													<div class="progress" style="width:250px;">
 														<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 														</div>
 													</div>
-													<span class="h6 summaryCont mb-2" th:utext="${categoryResult.categoryResultTitle}"></span><br>
-													<span class="summaryCont" th:utext="${categoryResult.categoryResultDetail}"></span>
+													<span class="mb-2" th:utext="${categoryResult.categoryResultTitle}"></span><br>
+													<span th:utext="${categoryResult.categoryResultDetail}"></span>
 												</div>
 											</div>
 										</div>
@@ -94,13 +94,13 @@
 										<!-- 共通誘導エリア -->
 										<div class="row mb-2" th:if="${survey.surveyInduceArea != ''}">
 											<div class="col d-flex justify-content-start">
-												<div style="width:100%;" class="summaryCont" th:utext="${survey.surveyInduceArea}"></div>
+												<div style="width:100%;" th:utext="${survey.surveyInduceArea}"></div>
 											</div>
 										</div>
 										<!-- 総合評価誘導エリア -->
 										<div class="row mb-2" th:if="*{summaryInduceArea != '' }">
 											<div class="col d-flex justify-content-start">
-												<div style="width:100%;" class="summaryCont" th:utext="*{summaryInduceArea}"></div>
+												<div style="width:100%;" th:utext="*{summaryInduceArea}"></div>
 											</div>
 										</div>
 									</div>
@@ -121,13 +121,13 @@
 							<div class="row mb-2" >
 								<div class="col d-flex justify-content-start">
 									<div class="og_underline-bottom-border mt-2 mb-2" th:style="|width:100%;border-bottom-color:${survey.surveyColor};|">
-										<span class="h6 title" th:text="*{surveySummaryTitle}">大見出し</span>
+										<span th:text="*{surveySummaryTitle}">大見出し</span>
 									</div>
 								</div>
 							</div>
 							<div class="row mb-4 " >
 								<div class="col d-flex justify-content-start">
-									<div style="width:100%;" class="summaryCont" th:utext="*{surveySummaryDetail}"></div>
+									<div style="width:100%;" th:utext="*{surveySummaryDetail}"></div>
 								</div>
 							</div>
 							
@@ -135,13 +135,13 @@
 							<div class="row mt-5 mb-5" th:each="categoryResult,stat:*{categoryResultLst}" th:if="${stat.first}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 								<div class="col d-flex justify-content-start">
 									<div class="categoryResult" style="width:100%;">
-										<h6 class="og_headline-left-border subTitle" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+										<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
 										<div class="progress" style="width:250px;">
 											<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 											</div>
 										</div>
-										<span class="h6 summaryCont mb-2" th:utext="${categoryResult.categoryResultTitle}"></span><br>
-										<span class="summaryCont" th:utext="${categoryResult.categoryResultDetail}"></span>
+										<span class="mb-2" th:utext="${categoryResult.categoryResultTitle}"></span><br>
+										<span th:utext="${categoryResult.categoryResultDetail}"></span>
 									</div>
 								</div>
 							</div>
@@ -150,13 +150,13 @@
 							<!-- 共通誘導エリア -->
 							<div class="row mb-2" th:if="${survey.surveyInduceArea != ''}">
 								<div class="col d-flex justify-content-start">
-									<div style="width:100%;" class="summaryCont" th:utext="${survey.surveyInduceArea}"></div>
+									<div style="width:100%;" th:utext="${survey.surveyInduceArea}"></div>
 								</div>
 							</div>
 							<!-- 総合評価誘導エリア -->
 							<div class="row mb-2" th:if="*{summaryInduceArea != '' }">
 								<div class="col d-flex justify-content-start">
-									<div style="width:100%;" class="summaryCont" th:utext="*{summaryInduceArea}"></div>
+									<div style="width:100%;" th:utext="*{summaryInduceArea}"></div>
 								</div>
 							</div>
 						</div>

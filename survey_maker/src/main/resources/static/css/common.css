@@ -67,18 +67,6 @@
     -box-shadow: 0 9px 4px -4px #555, 0 1px 0 #ccc inset, 0 -1px 0 #ccc inset, -1px 0 0 #ccc inset;
 }
 
-.title{
-	font-size:14px;
-}
-
-.subTitle{
-	font-size:12px;
-}
-
-.summaryCont{
-	font-size:11px;
-}
-
 @media print,screen and (min-width: 768px) {
 			     .container-800 {
 			        width:800px;
@@ -100,6 +88,14 @@
 				.image-container {
 				  width: 600px;
 				  height: 380px;
+				  overflow: hidden;
+				  position: relative;
+				  background: #FFFFFF;
+				}
+				
+				.header-image-container {
+				  width: 400px;
+				  height: 40px;
 				  overflow: hidden;
 				  position: relative;
 				  background: #FFFFFF;
@@ -132,7 +128,39 @@
 				  position: relative;
 				  background: #FFFFFF;
 				}
+				
+				.header-image-container {
+				  width: 70%;
+				  height: 25px;
+				  overflow: hidden;
+				  position: relative;
+				  background: #FFFFFF;
+				}
 			}
+			
+.image-container img, .header-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.body-area-style{
+	background: #FFFFFF;
+	font-family: "Noto Sans JP";
+	font-size:16px;
+	line-height:1.8em;
+	color:#333333;
+}
+
+.question-font{
+	font-size:18px;
+	font-weight:700;
+}
 
 /* 縦横比 */
 .aspect-ratio-10{
@@ -175,13 +203,3 @@
 	--bs-aspect-ratio: 100%;
 }
 
-.image-container img {
-  max-width: 100%;
-  max-height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-}

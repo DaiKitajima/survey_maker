@@ -4,7 +4,7 @@
 		<!-- 共通Topインクルード -->
 		<th:block th:replace="commonTop.html" />
 		<script th:src="@{/js/surveyContentList.js?params=202402291738}"></script>
-		<script th:src="@{/js/surveyTagCreate.js?params=202405011722}"></script>
+		<script th:src="@{/js/surveyTagCreate.js?params=202405311722}"></script>
 		<title>診断コンテンツ登録画面</title>
 	</head>
 
@@ -30,7 +30,7 @@
 								<input th:field="*{surveyName}" class="form-control" maxlength="50" required />
 							</div>
 							<div class="col-4 mt-2 mb-2">
-								<span class="h6">コンテンツパターン</span>
+								<span class="h6">コンテンツパターン</span><span class="text-danger"> ※登録後、変更不可</span>
 								<select class="form-control" th:field="*{surveyPatternId}" required>
 									<option value="">未選択</option>
 									<option	th:value="${pattern.id}" th:each="pattern,stat: ${patternLst}" >[[${pattern.surveyPatternName}]]</option>
