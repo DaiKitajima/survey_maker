@@ -24,13 +24,16 @@
 					padding-right: 2% !important;
 					padding-left: 2% !important;
 				}
-				
+				.card-body-padding{
+					padding: 1rem 1rem;
+				}
 			}
 			
 			@media screen and (max-width: 767px) {
 			     .flexbox{
 							display:flex;
 							flex-direction: column;
+							width:100%;
 			    }
 				.flex-item {
 				  width: 100%;
@@ -39,7 +42,9 @@
 				.flex-item-chat {
 					padding: 2vw;
 				}
-
+				.card-body-padding{
+					padding: 1rem 0.5rem 1rem 0.5rem;
+				}
 			}
 		</style>
 		<title th:text="|${survey.surveyName}画面|">高齢者健康調査画面</title>
@@ -48,7 +53,7 @@
 	<body class="body-area-style">
 		<div class="container-fluid mb-5 container-870 padding-none">
 			<div class="card mb-2" style="border:none;">
-				<div class="card-body">
+				<div class="card-body card-body-padding">
 					<!-- 共通ナビヘッダー -->
 					<th:block th:replace="surveyNav.html" />
 					
@@ -83,13 +88,13 @@
 												</div>
 											</div>
 										</div>
-										<div class="row mb-2 mt-4" >
+<!-- 										<div class="row mb-2 mt-4" >
 											<div class="col d-flex justify-content-start ">
 												<div class="og_underline-bottom-border" th:style="|width:100%;border-bottom-color:${survey.surveyColor};|">
 													<div th:text="*{surveySummaryTitle}">大見出し</div>
 												</div>
 											</div>
-										</div>
+										</div> -->
 										<div class="row mb-4 " >
 											<div class="col d-flex justify-content-start">
 												<div style="width:100%;" th:utext="*{surveySummaryDetail}"></div>
@@ -101,7 +106,9 @@
 											th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 											<div class="col d-flex justify-content-start">
 												<div class="categoryResult" style="width:100%;" >
-													<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+													<div class="og_headline-left-border mb-1" th:style="|border-left-color:${categoryResult.categoryColor};|">
+														<span class="ms-1" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|">身体の調査</span>
+													</div>
 													<div class="progress" style="width:250px;">
 														<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 														</div>
@@ -151,13 +158,13 @@
 								<div class="col">
 									<div>
 										<!-- 総合評価 -->
-										<div class="row mb-4 " >
+<!-- 										<div class="row mb-4 " >
 											<div class="col d-flex justify-content-start" >
 												<div class="og_underline-bottom-border" th:style="|width:100%;border-bottom-color:${survey.surveyColor};|">
 													<div th:text="*{surveySummaryTitle}">大見出し</div>
 												</div>
 											</div>
-										</div>
+										</div> -->
 										<div class="row mb-4 " >
 											<div class="col d-flex justify-content-start">
 												<div style="width:100%;" th:utext="*{surveySummaryDetail}"></div>
@@ -169,7 +176,9 @@
 											th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 											<div class="col d-flex justify-content-start">
 												<div class="categoryResult" style="width:100%;" >
-													<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+													<div class="og_headline-left-border mb-1" th:style="|border-left-color:${categoryResult.categoryColor};|">
+														<span class="ms-1" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|">身体の調査</span>
+													</div>
 													<div class="progress" style="width:250px;">
 														<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 														</div>

@@ -51,11 +51,11 @@ $(function(){
 						    backgroundColor: 'snow',
 						    //グリッドライン
 						    grid: {
-						      color: 'pink',
+						      color: 'gray',
 						    },
 						    //アングルライン
 						    angleLines: {
-						      color: 'green',
+						      color: 'gray',
 						    },
 						    //各軸のラベル
 						    pointLabels: {
