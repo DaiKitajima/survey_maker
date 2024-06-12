@@ -79,7 +79,10 @@
 										<div class="row mt-5 mb-5" th:each="categoryResult,stat:*{categoryResultLst}" th:if="${stat.first}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 											<div class="col d-flex justify-content-start">
 												<div class="categoryResult" style="width:100%;">
-													<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+													<div class="og_headline-left-border mb-1" th:style="|border-left-color:${categoryResult.categoryColor};|">
+														<span class="ms-1" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|">身体の調査</span>
+													</div>
+													
 													<div class="progress" style="width:250px;">
 														<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 														</div>
@@ -135,7 +138,10 @@
 							<div class="row mt-5 mb-5" th:each="categoryResult,stat:*{categoryResultLst}" th:if="${stat.first}" th:with="percent=__${categoryResult.categoryPoint*100/categoryResult.categoryMaxPoint}__">
 								<div class="col d-flex justify-content-start">
 									<div class="categoryResult" style="width:100%;">
-										<h6 class="og_headline-left-border" th:style="|border-left-color:${categoryResult.categoryColor};|" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|" >身体の調査</h6>
+										<div class="og_headline-left-border mb-1" th:style="|border-left-color:${categoryResult.categoryColor};|">
+											<span class="ms-1" th:text="|${categoryResult.categoryName}(__${categoryResult.categoryPoint}__pt)|">身体の調査</span>
+										</div>
+										
 										<div class="progress" style="width:250px;">
 											<div class="progress-bar" th:style="|background-color:${categoryResult.categoryColor};width:${percent}%|">
 											</div>

@@ -29,7 +29,7 @@ $(function(){
 		var colorCD = $('#inputColorCode').val(); 
 		var content = "";
 		content = content + "<div class=\"mt-2 mb-2\" style=\"border-left:solid 5px;background-color: white;border-left-color:" + colorCD + ";\">\n";
-		content = content + "	<span>小見出し</span>\n";
+		content = content + "	<span class=\"ms-1\">小見出し</span>\n";
 		content = content + "</div>";
 		$("#surveyTagContent").val(content);
 		$("#surveyTagCreateDialog").modal("show");
